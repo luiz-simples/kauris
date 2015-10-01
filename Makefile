@@ -25,8 +25,9 @@ run-db-postgres:
 run-dev:
 	( ( docker stop ${CN_DEV} && docker rm ${CN_DEV} ) || echo "Container not found: ${CN_DEV}" ) && \
 	make run-db-postgres && \
-	cp -Rf docker/development ${PWD}/Dockerfile
+	cp -Rf docker/development ${PWD}/Dockerfile && \
 	docker build --rm -t kauris-dev . && \
+	rm -Rf ${PWD}/Dockerfile && \
 	docker run \
 		-v ${HOME}/.gitconfig:/kauris/.gitconfig \
 		-v ${HOME}/.ssh:/kauris/.ssh \

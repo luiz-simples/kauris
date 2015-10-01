@@ -1,0 +1,17 @@
+{
+  "name": "kauris-server",
+  "version": "1.0.0",
+  "description": "Kauris Server",
+  "main": "server.js",
+  "author": "Nurimba <luiz.simples@gmail.com>",
+  "license": "UNLICENSED",
+  "scripts": {
+    "test": "mocha test/"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.3"
+  },
+  "dependencies": {
+    "q-postgres": "^1.0.1"
+  }
+}

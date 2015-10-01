@@ -58,6 +58,8 @@ RUN apt-get autoclean  -qqy --force-yes
 RUN apt-get clean
 RUN apt-get update
 
+RUN echo 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:./node_modules/.bin"' >> /etc/bash.bashrc
+
 RUN echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
     useradd -u 5001 -G users,sudo -d /kauris --shell /bin/bash -m kauris && \
     echo "secret\nsecret" | passwd kauris

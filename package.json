@@ -1,0 +1,19 @@
+{
+  "name": "kauris",
+  "version": "1.0.0",
+  "description": "Kauris App",
+  "author": "Nurimba <luiz.simples@gmail.com>",
+  "license": "UNLICENSED",
+  "scripts": {
+    "install": "cd server/ && npm install && npm update --save && cd ../",
+    "test": "cd server/ && npm test && cd ../"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/luiz-simples/kauris.git"
+  },
+  "bugs": {
+    "url": "https://github.com/luiz-simples/kauris/issues"
+  },
+  "homepage": "https://github.com/luiz-simples/kauris#readme"
+}
