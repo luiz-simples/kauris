@@ -9,9 +9,15 @@
     "test": "mocha test/"
   },
   "devDependencies": {
-    "mocha": "^2.3.3"
+    "chai": "^3.3.0",
+    "faker": "^3.0.1",
+    "mocha": "^2.3.3",
+    "sinon": "^1.17.1"
   },
   "dependencies": {
+    "cpf_cnpj": "0.0.2",
+    "moment-timezone": "^0.4.0",
+    "q": "^1.4.1",
     "q-postgres": "^1.0.1"
   }
 }
