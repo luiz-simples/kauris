@@ -15,7 +15,8 @@ var makeModel = function(model) {
     if (field.kind === 'cnpj')     modelArgs[field.attr] = cnpj.generate(withMask);
     if (field.kind === 'name')     modelArgs[field.attr] = faker.name.firstName();
     if (field.kind === 'email')    modelArgs[field.attr] = faker.internet.email();
-    if (field.kind === 'string')   modelArgs[field.attr] = faker.lorem.words().join(' ');
+    if (field.kind === 'string')   modelArgs[field.attr] = faker.lorem.words(3).join(' ');
+    if (field.kind === 'text')     modelArgs[field.attr] = faker.lorem.words(10).join(' ');
     if (field.kind === 'password') modelArgs[field.attr] = 'asd123';
     if (field.kind === 'integer')  modelArgs[field.attr] = faker.random.number();
     if (field.kind === 'float')    modelArgs[field.attr] = parseFloat(String(faker.random.number()).concat('.000'));

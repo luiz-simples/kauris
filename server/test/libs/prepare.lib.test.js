@@ -9,6 +9,30 @@ var prepareLib = require('./prepare.lib');
 describe('Libs', function() {
   describe('PrepareLib', function () {
     describe('#make', function () {
+      it('should return arguments with kinds of string', function() {
+        var model = {
+          fields: [
+            { attr: 'attrString', kind: 'string' }
+          ]
+        };
+
+        return prepareLib.make(model).then(function(preparedArguments) {
+          expect(preparedArguments).to.have.property('attrString').and.to.be.a('string');
+        });
+      });
+
+      it('should return arguments with kinds of text', function() {
+        var model = {
+          fields: [
+            { attr: 'attrText', kind: 'text' }
+          ]
+        };
+
+        return prepareLib.make(model).then(function(preparedArguments) {
+          expect(preparedArguments).to.have.property('attrText').and.to.be.a('string');
+        });
+      });
+
       it('should return arguments with kinds of name', function() {
         var model = {
           fields: [
@@ -160,18 +184,6 @@ describe('Libs', function() {
 
         return prepareLib.make(model).then(function(preparedArguments) {
           expect(preparedArguments).to.have.property('attrPercent').and.to.be.a('number');
-        });
-      });
-
-      it('should return arguments with kinds of string', function() {
-        var model = {
-          fields: [
-            { attr: 'attrString', kind: 'string' }
-          ]
-        };
-
-        return prepareLib.make(model).then(function(preparedArguments) {
-          expect(preparedArguments).to.have.property('attrString').and.to.be.a('string');
         });
       });
 
