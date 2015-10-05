@@ -12,12 +12,19 @@ describe('Profile', function() {
     describe('#insert', function () {
       it('should reject profile with empty name.', function() {
         var errorProfileNameEmpty = 'profile.name.empty';
+        var connection = {
+          searchByModel: function() {
+            return q.Promise(function(resolve) {
+              resolve({ count: 0, data: [] });
+            });
+          }
+        };
 
         return profileHelper.prepareProfile().then(function(profileArgs) {
           var empty = '';
           profileArgs.profileName = empty;
 
-          var profileInsertValidations = new ProfileInsertValidations();
+          var profileInsertValidations = new ProfileInsertValidations(connection);
           return profileInsertValidations.verify(profileArgs);
         }).catch(function(error) {
           expect(error).to.a('array');
@@ -64,12 +71,31 @@ describe('Profile', function() {
           var profileInsertValidations = new ProfileInsertValidations(connection);
           return profileInsertValidations.verify(profileArgs);
         }).then(function() {
-          return expect(correctArgument).to.be.deep.equal({
+          expect(correctArgument).to.be.deep.equal({
             tableName: 'profile',
             limit: 1,
             fields: [
               { attr: 'profileName', kind: 'name', value: profileName, comparator: 'like' }
             ]
+          });
+        }).catch(function() {
+          return expect(false).to.be.ok;
+        });
+      });
+
+      it('should resolve verify profile arguments.', function() {
+        var connection = {
+          searchByModel: function() {
+            return q.Promise(function(resolve) {
+              resolve({ count: 0, data: [] });
+            });
+          }
+        };
+
+        return profileHelper.prepareProfile().then(function(profileArgs) {
+          var profileInsertValidations = new ProfileInsertValidations(connection);
+          return profileInsertValidations.verify(profileArgs).then(function(profileResolved) {
+            expect(profileResolved).to.be.deep.equal(profileArgs);
           });
         }).catch(function() {
           return expect(false).to.be.ok;

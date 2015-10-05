@@ -13,8 +13,9 @@ function ProfileInserValidations(connection) {
       var profileNameEmpty      = 'profile.name.empty';
       var profileNameRegistered = 'profile.name.registered';
       profileArgs[profileName]  = nameString;
+      var errors                = [];
 
-      if (nameEmpty) return reject([profileNameEmpty]);
+      if (nameEmpty) errors.push(profileNameEmpty);
 
       var modelFilter = {
         tableName: 'profile',
@@ -25,7 +26,8 @@ function ProfileInserValidations(connection) {
       };
 
       connection.searchByModel(modelFilter).then(function(resultSet) {
-        if (resultSet.count) throw [profileNameRegistered];
+        if (resultSet.count) errors.push(profileNameRegistered);
+        if (errors.length) throw errors;
         return profileArgs;
       }).then(resolve).catch(reject);
     });
