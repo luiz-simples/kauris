@@ -9,7 +9,7 @@ var prepareLib = require('./prepare.lib');
 describe('Libs', function() {
   describe('PrepareLib', function () {
     describe('#make', function () {
-      it('should return arguments with kinds of string', function() {
+      it('should return arguments with kinds of string.', function() {
         var model = {
           fields: [
             { attr: 'attrString', kind: 'string' }
@@ -21,7 +21,7 @@ describe('Libs', function() {
         });
       });
 
-      it('should return arguments with kinds of text', function() {
+      it('should return arguments with kinds of text.', function() {
         var model = {
           fields: [
             { attr: 'attrText', kind: 'text' }
@@ -33,7 +33,7 @@ describe('Libs', function() {
         });
       });
 
-      it('should return arguments with kinds of name', function() {
+      it('should return arguments with kinds of name.', function() {
         var model = {
           fields: [
             { attr: 'attrName', kind: 'name' }
@@ -45,7 +45,7 @@ describe('Libs', function() {
         });
       });
 
-      it('should return arguments with kinds of email', function() {
+      it('should return arguments with kinds of email.', function() {
         var model = {
           fields: [
             { attr: 'attrEmail', kind: 'email' }
@@ -61,7 +61,7 @@ describe('Libs', function() {
         });
       });
 
-      it('should return arguments with kinds of cpf', function() {
+      it('should return arguments with kinds of cpf.', function() {
         var model = {
           fields: [
             { attr: 'attrCpf', kind: 'cpf' }
@@ -76,7 +76,7 @@ describe('Libs', function() {
         });
       });
 
-      it('should return arguments with kinds of cnpj', function() {
+      it('should return arguments with kinds of cnpj.', function() {
         var model = {
           fields: [
             { attr: 'attrCnpj', kind: 'cnpj' }
@@ -91,7 +91,7 @@ describe('Libs', function() {
         });
       });
 
-      it('should return arguments with kinds of password', function() {
+      it('should return arguments with kinds of password.', function() {
         var model = {
           fields: [
             { attr: 'attrPassword', kind: 'password' }
@@ -103,7 +103,7 @@ describe('Libs', function() {
         });
       });
 
-      it('should return arguments with kinds of boolean', function() {
+      it('should return arguments with kinds of boolean.', function() {
         var model = {
           fields: [
             { attr: 'attrBoolean', kind: 'boolean' }
@@ -115,7 +115,7 @@ describe('Libs', function() {
         });
       });
 
-      it('should return arguments with kinds of date and time', function() {
+      it('should return arguments with kinds of date and time.', function() {
         var model = {
           fields: [
             { attr: 'attrDateTime', kind: 'datetime' }
@@ -127,7 +127,7 @@ describe('Libs', function() {
         });
       });
 
-      it('should return arguments with kinds of date', function() {
+      it('should return arguments with kinds of date.', function() {
         var model = {
           fields: [
             { attr: 'attrDate', kind: 'date' }
@@ -139,7 +139,7 @@ describe('Libs', function() {
         });
       });
 
-      it('should return arguments with kinds of integer', function() {
+      it('should return arguments with kinds of integer.', function() {
         var model = {
           fields: [
             { attr: 'attrInteger', kind: 'integer' }
@@ -151,7 +151,7 @@ describe('Libs', function() {
         });
       });
 
-      it('should return arguments with kinds of currency', function() {
+      it('should return arguments with kinds of currency.', function() {
         var model = {
           fields: [
             { attr: 'attrCurrency', kind: 'currency' }
@@ -163,7 +163,7 @@ describe('Libs', function() {
         });
       });
 
-      it('should return arguments with kinds of float', function() {
+      it('should return arguments with kinds of float.', function() {
         var model = {
           fields: [
             { attr: 'attrFloat', kind: 'float' }
@@ -175,7 +175,7 @@ describe('Libs', function() {
         });
       });
 
-      it('should return arguments with kinds of percent', function() {
+      it('should return arguments with kinds of percent.', function() {
         var model = {
           fields: [
             { attr: 'attrPercent', kind: 'percent' }
@@ -187,7 +187,7 @@ describe('Libs', function() {
         });
       });
 
-      it('should return arguments with kinds of time', function() {
+      it('should return arguments with kinds of time.', function() {
         var model = {
           fields: [
             { attr: 'attrTime', kind: 'time' }
@@ -202,7 +202,7 @@ describe('Libs', function() {
         });
       });
 
-      it('should return prepared arguments of model', function() {
+      it('should return prepared arguments of model.', function() {
         var model = {
           fields: [
             { attr: 'attr1', kind: 'string' },
@@ -216,7 +216,7 @@ describe('Libs', function() {
         });
       });
 
-      it('should return arguments replaced passing input args', function() {
+      it('should return arguments replaced passing input args.', function() {
         var model = {
           fields: [
             { attr: 'attr3', kind: 'string' },
