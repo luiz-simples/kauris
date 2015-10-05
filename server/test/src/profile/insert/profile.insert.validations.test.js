@@ -1,39 +1,55 @@
 'use strict';
 
-var srcKauris                = '../../../../src/';
-var q                        = require('q');
-var profileHelper            = require('../profile.helper');
-var expect                   = require('chai').expect;
-var ProfileInsertValidations = require(srcKauris.concat('profile/insert/profile.insert.validations'));
-
+var srcKauris            = '../../../../src/';
+var q                    = require('q');
+var profileHelper        = require('../profile.helper');
+var expect               = require('chai').expect;
+var ProfileServiceInsert = require(srcKauris.concat('profile/services/profile.service.insert'));
 
 describe('Profile', function() {
-  describe('validations', function () {
+  describe('Service', function () {
     describe('#insert', function () {
-      it('should reject profile with empty name.', function() {
-        var errorProfileNameEmpty = 'profile.name.empty';
-        var connection = {
+      var connection;
+
+      beforeEach(function() {
+        connection = {
           searchByModel: function() {
             return q.Promise(function(resolve) {
               resolve({ count: 0, data: [] });
             });
           }
         };
+      });
 
+      it('should resolve verify with profile valid arguments.', function() {
+        return profileHelper.prepareProfile().then(function(profileArgs) {
+          var profileServiceInsert = new ProfileServiceInsert(connection);
+          return profileServiceInsert.insert(profileArgs).then(function(profileResolved) {
+            expect(profileResolved).to.be.deep.equal(profileArgs);
+          });
+        }).catch(function() {
+          return expect(false).to.be.ok;
+        });
+      });
+
+      it('should reject profile with empty name.', function() {
+        var errorProfileNameEmpty = 'profile.name.empty';
         return profileHelper.prepareProfile().then(function(profileArgs) {
           var empty = '';
           profileArgs.profileName = empty;
 
-          var profileInsertValidations = new ProfileInsertValidations(connection);
-          return profileInsertValidations.verify(profileArgs);
+          var profileServiceInsert = new ProfileServiceInsert(connection);
+          return profileServiceInsert.insert(profileArgs);
+        }).then(function() {
+          return expect(false).to.be.ok;
         }).catch(function(error) {
-          expect(error).to.a('array');
-          expect(error).to.deep.equal([errorProfileNameEmpty]);
+          expect(error).to.a('string');
+          expect(error).to.be.equal(errorProfileNameEmpty);
         });
       });
 
       it('should reject profile with name already registered.', function() {
-        var connection = {
+        connection = {
           searchByModel: function() {
             return profileHelper.prepareProfile().then(function(profileArgs) {
               profileArgs.profileId = 10;
@@ -43,13 +59,13 @@ describe('Profile', function() {
         };
 
         return profileHelper.prepareProfile().then(function(profileArgs) {
-          var profileInsertValidations = new ProfileInsertValidations(connection);
-          return profileInsertValidations.verify(profileArgs);
+          var profileServiceInsert = new ProfileServiceInsert(connection);
+          return profileServiceInsert.insert(profileArgs);
         }).then(function() {
           return expect(false).to.be.ok;
         }).catch(function(error) {
-          expect(error).to.a('array');
-          expect(error).to.deep.equal(['profile.name.registered']);
+          expect(error).to.a('string');
+          expect(error).to.be.equal('profile.name.registered');
         });
       });
 
@@ -57,7 +73,7 @@ describe('Profile', function() {
         var profileName = '';
         var correctArgument = null;
 
-        var connection = {
+        connection = {
           searchByModel: function(argumentModel) {
             return q.Promise(function(resolve) {
               correctArgument = argumentModel;
@@ -68,8 +84,8 @@ describe('Profile', function() {
 
         return profileHelper.prepareProfile().then(function(profileArgs) {
           profileName = profileArgs.profileName;
-          var profileInsertValidations = new ProfileInsertValidations(connection);
-          return profileInsertValidations.verify(profileArgs);
+          var profileServiceInsert = new ProfileServiceInsert(connection);
+          return profileServiceInsert.insert(profileArgs);
         }).then(function() {
           expect(correctArgument).to.be.deep.equal({
             tableName: 'profile',
@@ -77,25 +93,6 @@ describe('Profile', function() {
             fields: [
               { attr: 'profileName', kind: 'name', value: profileName, comparator: 'like' }
             ]
-          });
-        }).catch(function() {
-          return expect(false).to.be.ok;
-        });
-      });
-
-      it('should resolve verify profile arguments.', function() {
-        var connection = {
-          searchByModel: function() {
-            return q.Promise(function(resolve) {
-              resolve({ count: 0, data: [] });
-            });
-          }
-        };
-
-        return profileHelper.prepareProfile().then(function(profileArgs) {
-          var profileInsertValidations = new ProfileInsertValidations(connection);
-          return profileInsertValidations.verify(profileArgs).then(function(profileResolved) {
-            expect(profileResolved).to.be.deep.equal(profileArgs);
           });
         }).catch(function() {
           return expect(false).to.be.ok;
