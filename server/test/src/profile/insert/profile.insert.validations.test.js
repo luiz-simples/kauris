@@ -1,7 +1,6 @@
 'use strict';
 
 var srcKauris            = '../../../../src/';
-var q                    = require('q');
 var profileHelper        = require('../profile.helper');
 var expect               = require('chai').expect;
 var ProfileServiceInsert = require(srcKauris.concat('profile/services/profile.service.insert'));
@@ -9,23 +8,19 @@ var ProfileServiceInsert = require(srcKauris.concat('profile/services/profile.se
 describe('Profile', function() {
   describe('Service', function () {
     describe('#insert', function () {
-      var connection;
+      var test;
 
       beforeEach(function() {
-        connection = {
-          searchByModel: function() {
-            return q.Promise(function(resolve) {
-              resolve({ count: 0, data: [] });
-            });
-          }
-        };
+        test = this;
       });
 
       it('should resolve verify with profile valid arguments.', function() {
         return profileHelper.prepareProfile().then(function(profileArgs) {
-          var profileServiceInsert = new ProfileServiceInsert(connection);
-          return profileServiceInsert.insert(profileArgs).then(function(profileResolved) {
-            expect(profileResolved).to.be.deep.equal(profileArgs);
+          return test.connectionMockLib.make().then(function(connectionMocked) {
+            var profileServiceInsert = new ProfileServiceInsert(connectionMocked);
+            return profileServiceInsert.insert(profileArgs).then(function(profileResolved) {
+              expect(profileResolved).to.be.deep.equal(profileArgs);
+            });
           });
         }).catch(function() {
           return expect(false).to.be.ok;
@@ -38,8 +33,11 @@ describe('Profile', function() {
           var empty = '';
           profileArgs.profileName = empty;
 
-          var profileServiceInsert = new ProfileServiceInsert(connection);
-          return profileServiceInsert.insert(profileArgs);
+          return test.connectionMockLib.make().then(function(connectionMocked) {
+            var profileServiceInsert = new ProfileServiceInsert(connectionMocked);
+
+            return profileServiceInsert.insert(profileArgs);
+          });
         }).then(function() {
           return expect(false).to.be.ok;
         }).catch(function(error) {
@@ -49,18 +47,16 @@ describe('Profile', function() {
       });
 
       it('should reject profile with name already registered.', function() {
-        connection = {
-          searchByModel: function() {
-            return profileHelper.prepareProfile().then(function(profileArgs) {
-              profileArgs.profileId = 10;
-              return { count: 1, data: [profileArgs] };
-            });
-          }
-        };
-
         return profileHelper.prepareProfile().then(function(profileArgs) {
-          var profileServiceInsert = new ProfileServiceInsert(connection);
-          return profileServiceInsert.insert(profileArgs);
+          profileArgs.profileId = 10;
+
+          return test.connectionMockLib.make([profileArgs]).then(function(connectionMocked) {
+            return profileHelper.prepareProfile().then(function(profileArgs) {
+              var profileServiceInsert = new ProfileServiceInsert(connectionMocked);
+
+              return profileServiceInsert.insert(profileArgs);
+            });
+          });
         }).then(function() {
           return expect(false).to.be.ok;
         }).catch(function(error) {
@@ -70,30 +66,31 @@ describe('Profile', function() {
       });
 
       it('should call searchByModel with correct argument.', function() {
-        var profileName = '';
+        var emptyRows       = [];
+        var profileName     = '';
         var correctArgument = null;
-
-        connection = {
-          searchByModel: function(argumentModel) {
-            return q.Promise(function(resolve) {
-              correctArgument = argumentModel;
-              resolve({ count: 0, data: [] });
-            });
-          }
+        var expectedSearchByModel = null;
+        var callMethod = function(argument) {
+          correctArgument = argument;
         };
 
         return profileHelper.prepareProfile().then(function(profileArgs) {
           profileName = profileArgs.profileName;
-          var profileServiceInsert = new ProfileServiceInsert(connection);
-          return profileServiceInsert.insert(profileArgs);
-        }).then(function() {
-          expect(correctArgument).to.be.deep.equal({
+
+          expectedSearchByModel = {
             tableName: 'profile',
             limit: 1,
             fields: [
               { attr: 'profileName', kind: 'name', value: profileName, comparator: 'like' }
             ]
+          };
+
+          return test.connectionMockLib.make(emptyRows, callMethod).then(function(connectionMocked) {
+            var profileServiceInsert = new ProfileServiceInsert(connectionMocked);
+            return profileServiceInsert.insert(profileArgs);
           });
+        }).then(function() {
+          expect(correctArgument).to.be.deep.equal(expectedSearchByModel);
         }).catch(function() {
           return expect(false).to.be.ok;
         });
