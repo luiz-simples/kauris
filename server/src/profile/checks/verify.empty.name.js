@@ -1,16 +1,18 @@
 'use strict';
 
-var q = require('q');
+function VerifyEmptyName(injector) {
+  var verify = this;
 
-function VerifyEmptyName() {
-  return function(args) {
-    return q.Promise(function(resolve, reject) {
-      var profileName      = 'profileName';
-      var profileNameEmpty = 'profile.name.empty';
-      var nameString       = String(args.hasOwnProperty(profileName) && args[profileName] ? args.profileName : '').trim();
-      var nameEmpty        = !nameString.length;
+  verify.check = function(args) {
+    var promise = injector.q.Promise;
 
-      if (nameEmpty) return reject(profileNameEmpty);
+    return promise(function(resolve, reject) {
+      var profileName  = 'profileName';
+      var profileError = 'profile.name.empty';
+      var nameString   = String(args.hasOwnProperty(profileName) && args[profileName] ? args.profileName : '').trim();
+      var nameEmpty    = !nameString.length;
+
+      if (nameEmpty) return reject(profileError);
       resolve(args);
     });
   };

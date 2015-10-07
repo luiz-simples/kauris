@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "cpf_cnpj": "0.0.2",
+    "lodash": "^3.10.1",
     "moment-timezone": "^0.4.0",
     "q": "^1.4.1",
     "q-postgres": "^1.0.1"

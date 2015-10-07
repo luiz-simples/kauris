@@ -1,12 +1,15 @@
 'use strict';
 
-var q = require('q');
+function VerifyRegisteredName(injector) {
+  var verify = this;
 
-function VerifyRegisteredName(connection) {
-  return function(args) {
-    return q.Promise(function(resolve, reject) {
-      var profileName           = 'profileName';
-      var profileNameRegistered = 'profile.name.registered';
+  verify.check = function(args) {
+    var promise    = injector.q.Promise;
+    var connection = injector.connection;
+
+    return promise(function(resolve, reject) {
+      var profileName  = 'profileName';
+      var profileError = 'profile.name.registered';
 
       var modelFilter = {
         tableName: 'profile',
@@ -17,7 +20,7 @@ function VerifyRegisteredName(connection) {
       };
 
       connection.searchByModel(modelFilter).then(function(resultSet) {
-        if (resultSet.count) return reject(profileNameRegistered);
+        if (resultSet.count) return reject(profileError);
         resolve(args);
       }).catch(reject);
     });
