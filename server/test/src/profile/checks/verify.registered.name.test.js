@@ -10,12 +10,12 @@ describe('Profile', function() {
   describe('Checks', function () {
     describe('VerifyRegisteredName', function () {
       describe('#check', function () {
-        var injector, errorProfileRegistered, profileArgs, string;
+        var injector, errorProfile, profileArgs, string;
 
         beforeEach(function() {
-          string                 = 'string';
-          injector               = { q: q };
-          errorProfileRegistered = 'profile.name.registered';
+          string       = 'string';
+          injector     = { q: q };
+          errorProfile = 'profile.name.registered';
 
           return profileHelper.prepareProfile().then(function(newProfileArgs) {
             profileArgs = newProfileArgs;
@@ -34,7 +34,7 @@ describe('Profile', function() {
             return expect(false).to.be.ok;
           }).catch(function(error) {
             expect(error).to.a(string);
-            expect(error).to.be.equal(errorProfileRegistered);
+            expect(error).to.be.equal(errorProfile);
           });
         });
 
@@ -47,7 +47,7 @@ describe('Profile', function() {
           };
 
           expectedSearchByModel = {
-            tableName: 'profile',
+            tableName: 'profiles',
             limit: 1,
             fields: [
               { attr: 'profileName', kind: 'name', value: profileArgs.profileName, comparator: 'like' }

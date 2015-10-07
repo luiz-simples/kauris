@@ -31,7 +31,7 @@ describe('Profile', function() {
           profileArgs = newProfileArgs;
 
           expectedDeleteRow = {
-            tableName: 'profile',
+            tableName: 'profiles',
             action: 'delete',
 
             where: [

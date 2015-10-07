@@ -31,7 +31,7 @@ describe('Profile', function() {
           profileArgs = newProfileArgs;
 
           expecteUpdateRow = {
-            tableName: 'profile',
+            tableName: 'profiles',
             action: 'update',
 
             fields: [

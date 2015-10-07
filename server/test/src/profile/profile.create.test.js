@@ -30,7 +30,7 @@ describe('Profile', function() {
           profileArgs = newProfileArgs;
 
           expectedCreateRow = {
-            tableName: 'profile',
+            tableName: 'profiles',
             action: 'create',
             fields: [
               { attr: 'profileName', kind: 'name', value: profileArgs.profileName }

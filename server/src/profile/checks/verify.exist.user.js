@@ -8,14 +8,13 @@ function VerifyRegisteredName(injector) {
     var connection = injector.connection;
 
     return promise(function(resolve, reject) {
-      var profileName  = 'profileName';
-      var profileError = 'profile.name.registered';
+      var profileError = 'profile.exist.user';
 
       var modelFilter = {
-        tableName: 'profiles',
+        tableName: 'users',
         limit: 1,
         fields: [
-          { attr: profileName, kind: 'name', value: args.profileName, comparator: 'like' }
+          { attr: 'userProfile', kind: 'foreign', value: args.profileId, comparator: '=' }
         ]
       };
 

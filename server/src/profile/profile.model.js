@@ -1,7 +1,7 @@
 'use strict';
 
 var ProfileModel = {
-  tableName: 'profile',
+  tableName: 'profiles',
   fields: [
     { attr: 'profileId',   kind: 'primary' },
     { attr: 'profileName', kind: 'name'    }
