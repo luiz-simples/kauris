@@ -3,18 +3,18 @@
 function ProfileValidation(injector) {
   var service = this;
 
-  service.beforeSave = function(args) {
+  service.beforeSave = function(profileArgs) {
     var runPromises          = injector.q.all;
     var verifyEmptyName      = injector.verifyEmptyName;
     var verifyRegisteredName = injector.verifyRegisteredName;
 
     var validations = [
-      verifyEmptyName.check(args),
-      verifyRegisteredName.check(args)
+      verifyEmptyName.check(profileArgs),
+      verifyRegisteredName.check(profileArgs)
     ];
 
     return runPromises(validations).then(function() {
-      return args;
+      return profileArgs;
     });
   };
 }
