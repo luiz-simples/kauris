@@ -11,10 +11,10 @@ var ProfileCreate = require(srcKauris.concat('profile/profile.create'));
 describe('Profile', function() {
   describe('Create', function () {
     describe('#save', function () {
-      var injector, expectedInsertRow, profileValidationCalled, insertArgumentsCalled, profileArgs;
+      var injector, expectedCreateRow, profileValidationCalled, createArgumentsCalled, profileArgs;
 
       beforeEach(function() {
-        insertArgumentsCalled   = false;
+        createArgumentsCalled   = false;
         profileValidationCalled = false;
 
         var profileValidation = {
@@ -29,7 +29,7 @@ describe('Profile', function() {
         return profileHelper.prepareProfile().then(function(newProfileArgs) {
           profileArgs = newProfileArgs;
 
-          expectedInsertRow = {
+          expectedCreateRow = {
             tableName: 'profile',
             action: 'create',
             fields: [
@@ -40,10 +40,10 @@ describe('Profile', function() {
           var connection = {
             persist: function(args) {
               return q.Promise(function(resolve) {
-                insertArgumentsCalled = lodash.cloneDeep(args);
-                var insertRow         = lodash.cloneDeep(profileArgs);
-                insertRow.profileId   = 10;
-                resolve(insertRow);
+                createArgumentsCalled = lodash.cloneDeep(args);
+                var createRow         = lodash.cloneDeep(profileArgs);
+                createRow.profileId   = 10;
+                resolve(createRow);
               });
             }
           };
@@ -58,7 +58,7 @@ describe('Profile', function() {
         });
       });
 
-      it('should save profile with valid arguments.', function() {
+      it('should create profile with valid arguments.', function() {
         var profileCreate = new ProfileCreate(injector);
 
         return profileCreate.save(lodash.cloneDeep(profileArgs)).then(function(profileCreated) {
@@ -66,7 +66,7 @@ describe('Profile', function() {
           expect(profileCreated).to.be.have.property('profileName', profileArgs.profileName).and.is.a('string');
 
           expect(profileValidationCalled).to.be.deep.equal(profileArgs);
-          expect(insertArgumentsCalled).to.be.deep.equal(expectedInsertRow);
+          expect(createArgumentsCalled).to.be.deep.equal(expectedCreateRow);
         }).catch(function() {
           return expect(false).to.be.ok;
         });

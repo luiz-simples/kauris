@@ -17,6 +17,19 @@ function ProfileValidation(injector) {
       return profileArgs;
     });
   };
+
+  service.beforeDelete = function(profileArgs) {
+    var runPromises     = injector.q.all;
+    var verifyExistUser = injector.verifyExistUser;
+
+    var validations = [
+      verifyExistUser.check(profileArgs)
+    ];
+
+    return runPromises(validations).then(function() {
+      return profileArgs;
+    });
+  };
 }
 
 module.exports = ProfileValidation;

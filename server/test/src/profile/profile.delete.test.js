@@ -6,19 +6,19 @@ var lodash        = require('lodash');
 var profileHelper = require('./profile.helper');
 var expect        = require('chai').expect;
 var profileModel  = require(srcKauris.concat('profile/profile.model'));
-var ProfileUpdate = require(srcKauris.concat('profile/profile.update'));
+var ProfileDelete = require(srcKauris.concat('profile/profile.delete'));
 
 describe('Profile', function() {
-  describe('Update', function () {
+  describe('Delete', function () {
     describe('#save', function () {
-      var injector, expecteUpdateRow, profileValidationCalled, updateArgumentsCalled, profileArgs;
+      var injector, expectedDeleteRow, profileValidationCalled, deleteArgumentsCalled, profileArgs;
 
       beforeEach(function() {
-        updateArgumentsCalled   = false;
+        deleteArgumentsCalled   = false;
         profileValidationCalled = false;
 
         var profileValidation = {
-          beforeSave: function(args) {
+          beforeDelete: function(args) {
             return q.Promise(function(resolve) {
               profileValidationCalled = lodash.cloneDeep(args);
               resolve(args);
@@ -30,13 +30,9 @@ describe('Profile', function() {
           newProfileArgs.profileId = 10;
           profileArgs = newProfileArgs;
 
-          expecteUpdateRow = {
+          expectedDeleteRow = {
             tableName: 'profile',
-            action: 'update',
-
-            fields: [
-              { attr: 'profileName', kind: 'name', value: profileArgs.profileName }
-            ],
+            action: 'delete',
 
             where: [
               { attr: 'profileId', kind: 'primary', value: profileArgs.profileId }
@@ -46,9 +42,9 @@ describe('Profile', function() {
           var connection = {
             persist: function(args) {
               return q.Promise(function(resolve) {
-                updateArgumentsCalled = lodash.cloneDeep(args);
-                var updateRow         = lodash.cloneDeep(profileArgs);
-                resolve(updateRow);
+                deleteArgumentsCalled = lodash.cloneDeep(args);
+                var deletedRow        = lodash.cloneDeep(profileArgs);
+                resolve(deletedRow);
               });
             }
           };
@@ -63,14 +59,14 @@ describe('Profile', function() {
         });
       });
 
-      it('should update profile with valid arguments.', function() {
-        var profileUpdate = new ProfileUpdate(injector);
+      it('should delete profile with valid arguments.', function() {
+        var profileDelete = new ProfileDelete(injector);
 
-        return profileUpdate.save(lodash.cloneDeep(profileArgs)).then(function(profileUpdated) {
-          expect(profileUpdated).to.be.deep.equal(profileArgs);
+        return profileDelete.save(lodash.cloneDeep(profileArgs)).then(function(profileDeleted) {
+          expect(profileDeleted).to.be.deep.equal(profileArgs);
 
           expect(profileValidationCalled).to.be.deep.equal(profileArgs);
-          expect(updateArgumentsCalled).to.be.deep.equal(expecteUpdateRow);
+          expect(deleteArgumentsCalled).to.be.deep.equal(expectedDeleteRow);
         }).catch(function() {
           return expect(false).to.be.ok;
         });
