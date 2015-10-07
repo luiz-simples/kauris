@@ -6,15 +6,15 @@ var lodash        = require('lodash');
 var profileHelper = require('./profile.helper');
 var expect        = require('chai').expect;
 var profileModel  = require(srcKauris.concat('profile/profile.model'));
-var ProfileCreate = require(srcKauris.concat('profile/profile.create'));
+var ProfileUpdate = require(srcKauris.concat('profile/profile.update'));
 
 describe('Profile', function() {
-  describe('Create', function () {
+  describe('Update', function () {
     describe('#save', function () {
-      var injector, expectedInsertRow, profileValidationCalled, insertArgumentsCalled, profileArgs;
+      var injector, expectedInsertRow, profileValidationCalled, updateArgumentsCalled, profileArgs;
 
       beforeEach(function() {
-        insertArgumentsCalled   = false;
+        updateArgumentsCalled   = false;
         profileValidationCalled = false;
 
         var profileValidation = {
@@ -27,22 +27,27 @@ describe('Profile', function() {
         };
 
         return profileHelper.prepareProfile().then(function(newProfileArgs) {
+          newProfileArgs.profileId = 10;
           profileArgs = newProfileArgs;
 
           expectedInsertRow = {
             tableName: 'profile',
-            action: 'create',
+            action: 'update',
+
             fields: [
               { attr: 'profileName', kind: 'name', value: profileArgs.profileName }
+            ],
+
+            where: [
+              { attr: 'profileId', kind: 'primary', value: profileArgs.profileId }
             ]
           };
 
           var connection = {
             persist: function(args) {
               return q.Promise(function(resolve) {
-                insertArgumentsCalled = lodash.cloneDeep(args);
+                updateArgumentsCalled = lodash.cloneDeep(args);
                 var insertRow         = lodash.cloneDeep(profileArgs);
-                insertRow.profileId   = 10;
                 resolve(insertRow);
               });
             }
@@ -59,14 +64,14 @@ describe('Profile', function() {
       });
 
       it('should save profile with valid arguments.', function() {
-        var profileCreate = new ProfileCreate(injector);
+        var profileUpdate = new ProfileUpdate(injector);
 
-        return profileCreate.save(lodash.cloneDeep(profileArgs)).then(function(profileCreated) {
+        return profileUpdate.save(lodash.cloneDeep(profileArgs)).then(function(profileCreated) {
           expect(profileCreated).to.be.have.property('profileId').and.is.a('number');
           expect(profileCreated).to.be.have.property('profileName', profileArgs.profileName).and.is.a('string');
 
           expect(profileValidationCalled).to.be.deep.equal(profileArgs);
-          expect(insertArgumentsCalled).to.be.deep.equal(expectedInsertRow);
+          expect(updateArgumentsCalled).to.be.deep.equal(expectedInsertRow);
         }).catch(function() {
           return expect(false).to.be.ok;
         });
