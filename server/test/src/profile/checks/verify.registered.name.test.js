@@ -56,7 +56,7 @@ describe('Profile', function() {
           expectedSearchByModel = {
             tableName: 'profiles',
             fields: [{ attr: 'profileId',   kind: 'primary' }],
-            where: [{ attr: 'profileName', kind: 'foreign', value: profileArgs.profileName, comparator: 'like' }],
+            where:  [{ attr: 'profileName', kind: 'foreign', value: profileArgs.profileName, comparator: 'like' }],
             limit: 1
           };
 
@@ -66,7 +66,7 @@ describe('Profile', function() {
 
             return verifyRegisteredName.check(profileArgs);
           }).then(function() {
-            expect(correctArgument).to.deep.eql(expectedSearchByModel);
+            expect(correctArgument).to.deep.equal(expectedSearchByModel);
           }).catch(function() {
             return expect(false).to.be.ok;
           });
