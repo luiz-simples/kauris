@@ -4,10 +4,12 @@ function ProfileUpdate(injector) {
   var service = this;
 
   service.save = function(profileArgs) {
-    var lodash            = injector.lodash;
     var connection        = injector.connection;
-    var profileModel      = lodash.cloneDeep(injector.profileModel);
-    var profileValidation = injector.profileValidation;
+    var ProfileModel      = injector.ProfileModel;
+    var ProfileValidation = injector.ProfileValidation;
+
+    var profileModel      = new ProfileModel();
+    var profileValidation = new ProfileValidation(injector);
 
     var deleteProfile = function(profile) {
       var attrs = Object.keys(profile);

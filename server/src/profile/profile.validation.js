@@ -5,8 +5,11 @@ function ProfileValidation(injector) {
 
   service.beforeSave = function(profileArgs) {
     var runPromises          = injector.q.all;
-    var verifyEmptyName      = injector.verifyEmptyName;
-    var verifyRegisteredName = injector.verifyRegisteredName;
+    var VerifyEmptyName      = injector.VerifyEmptyName;
+    var VerifyRegisteredName = injector.VerifyRegisteredName;
+
+    var verifyEmptyName      = new VerifyEmptyName(injector);
+    var verifyRegisteredName = new VerifyRegisteredName(injector);
 
     var validations = [
       verifyEmptyName.check(profileArgs),
@@ -20,7 +23,8 @@ function ProfileValidation(injector) {
 
   service.beforeDelete = function(profileArgs) {
     var runPromises     = injector.q.all;
-    var verifyExistUser = injector.verifyExistUser;
+    var VerifyExistUser = injector.VerifyExistUser;
+    var verifyExistUser = new VerifyExistUser(injector);
 
     var validations = [
       verifyExistUser.check(profileArgs)

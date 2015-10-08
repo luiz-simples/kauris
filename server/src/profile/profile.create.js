@@ -4,12 +4,15 @@ function ProfileCreate(injector) {
   var service = this;
 
   service.save = function(profileArgs) {
-    var lodash            = injector.lodash;
     var connection        = injector.connection;
-    var profileModel      = lodash.cloneDeep(injector.profileModel);
-    var profileValidation = injector.profileValidation;
+    var ProfileModel      = injector.ProfileModel;
+    var ProfileValidation = injector.ProfileValidation;
+
+    var profileModel      = new ProfileModel();
+    var profileValidation = new ProfileValidation(injector);
 
     var saveProfile = function(profile) {
+
       var attrs = Object.keys(profile);
 
       var args = profileModel.fields.filter(function(field) {

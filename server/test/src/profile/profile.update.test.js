@@ -5,7 +5,7 @@ var q             = require('q');
 var lodash        = require('lodash');
 var profileHelper = require('./profile.helper');
 var expect        = require('chai').expect;
-var profileModel  = require(srcKauris.concat('profile/profile.model'));
+var ProfileModel  = require(srcKauris.concat('profile/profile.model'));
 var ProfileUpdate = require(srcKauris.concat('profile/profile.update'));
 
 describe('Profile', function() {
@@ -17,14 +17,16 @@ describe('Profile', function() {
         updateArgumentsCalled   = false;
         profileValidationCalled = false;
 
-        var profileValidation = {
-          beforeSave: function(args) {
+        function ProfileValidation() {
+          var validation = this;
+
+          validation.beforeSave = function(args) {
             return q.Promise(function(resolve) {
               profileValidationCalled = lodash.cloneDeep(args);
               resolve(args);
             });
-          }
-        };
+          };
+        }
 
         return profileHelper.prepareProfile().then(function(newProfileArgs) {
           newProfileArgs.profileId = 10;
@@ -57,8 +59,8 @@ describe('Profile', function() {
             q: q,
             lodash: lodash,
             connection: connection,
-            profileModel: profileModel,
-            profileValidation: profileValidation
+            ProfileModel: ProfileModel,
+            ProfileValidation: ProfileValidation
           };
         });
       });

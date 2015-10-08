@@ -16,28 +16,32 @@ describe('Profile', function() {
         verifyEmptyNameCalled = false;
         verifyRegisteredNameCalled = false;
 
-        var verifyEmptyName = {
-          check: function(args) {
+        function VerifyEmptyName() {
+          var validation = this;
+
+          validation.check = function(args) {
             return q.Promise(function(resolve) {
               verifyEmptyNameCalled = lodash.cloneDeep(args);
               resolve(args);
             });
-          }
-        };
+          };
+        }
 
-        var verifyRegisteredName = {
-          check: function(args) {
+        function VerifyRegisteredName() {
+          var validation = this;
+
+          validation.check = function(args) {
             return q.Promise(function(resolve) {
               verifyRegisteredNameCalled = lodash.cloneDeep(args);
               resolve(args);
             });
-          }
-        };
+          };
+        }
 
         injector = {
           q: q,
-          verifyEmptyName: verifyEmptyName,
-          verifyRegisteredName: verifyRegisteredName
+          VerifyEmptyName: VerifyEmptyName,
+          VerifyRegisteredName: VerifyRegisteredName
         };
 
         return profileHelper.prepareProfile().then(function(newProfileArgs) {
