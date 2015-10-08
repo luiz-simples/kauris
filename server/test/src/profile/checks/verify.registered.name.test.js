@@ -5,6 +5,8 @@ var q                    = require('q');
 var profileHelper        = require('../profile.helper');
 var expect               = require('chai').expect;
 var VerifyRegisteredName = require(srcKauris.concat('profile/checks/verify.registered.name'));
+var UserModel            = require(srcKauris.concat('user/user.model'));
+var ProfileModel         = require(srcKauris.concat('profile/profile.model'));
 
 describe('Profile', function() {
   describe('Checks', function () {
@@ -14,7 +16,12 @@ describe('Profile', function() {
 
         beforeEach(function() {
           string       = 'string';
-          injector     = { q: q };
+          injector     = {
+            q:            q,
+            UserModel:    UserModel,
+            ProfileModel: ProfileModel
+          };
+
           errorProfile = 'profile.name.registered';
 
           return profileHelper.prepareProfile().then(function(newProfileArgs) {
@@ -48,10 +55,9 @@ describe('Profile', function() {
 
           expectedSearchByModel = {
             tableName: 'profiles',
-            limit: 1,
-            fields: [
-              { attr: 'profileName', kind: 'name', value: profileArgs.profileName, comparator: 'like' }
-            ]
+            fields: [{ attr: 'profileId',   kind: 'primary' }],
+            where: [{ attr: 'profileName', kind: 'foreign', value: profileArgs.profileName, comparator: 'like' }],
+            limit: 1
           };
 
           return this.connectionMockLib.make(emptyRows, callMethod).then(function(connectionMocked) {
@@ -60,7 +66,7 @@ describe('Profile', function() {
 
             return verifyRegisteredName.check(profileArgs);
           }).then(function() {
-            expect(correctArgument).to.be.deep.equal(expectedSearchByModel);
+            expect(correctArgument).to.deep.eql(expectedSearchByModel);
           }).catch(function() {
             return expect(false).to.be.ok;
           });

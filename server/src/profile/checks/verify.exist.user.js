@@ -6,19 +6,18 @@ function VerifyRegisteredName(injector) {
   verify.check = function(args) {
     var promise    = injector.q.Promise;
     var connection = injector.connection;
+    var UserModel  = injector.UserModel;
+    console.log(UserModel);
+    var userSearch = new UserModel();
 
     return promise(function(resolve, reject) {
       var profileError = 'profile.exist.user';
 
-      var modelFilter = {
-        tableName: 'users',
-        limit: 1,
-        fields: [
-          { attr: 'userProfile', kind: 'foreign', value: args.profileId, comparator: '=' }
-        ]
-      };
+      userSearch.fields = [{ attr: 'userId',      kind: 'primary' }];
+      userSearch.where  = [{ attr: 'userProfile', kind: 'foreign', value: args.profileId, comparator: '=' }];
+      userSearch.limit  = 1;
 
-      connection.searchByModel(modelFilter).then(function(resultSet) {
+      connection.searchByModel(userSearch).then(function(resultSet) {
         if (resultSet.count) return reject(profileError);
         resolve(args);
       }).catch(reject);

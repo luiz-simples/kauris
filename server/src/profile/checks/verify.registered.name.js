@@ -4,22 +4,19 @@ function VerifyRegisteredName(injector) {
   var verify = this;
 
   verify.check = function(args) {
-    var promise    = injector.q.Promise;
-    var connection = injector.connection;
+    var promise       = injector.q.Promise;
+    var connection    = injector.connection;
+    var ProfileModel  = injector.ProfileModel;
+    var profileSearch = new ProfileModel();
 
     return promise(function(resolve, reject) {
-      var profileName  = 'profileName';
       var profileError = 'profile.name.registered';
 
-      var modelFilter = {
-        tableName: 'profiles',
-        limit: 1,
-        fields: [
-          { attr: profileName, kind: 'name', value: args.profileName, comparator: 'like' }
-        ]
-      };
+      profileSearch.fields = [{ attr: 'profileId',   kind: 'primary' }];
+      profileSearch.where  = [{ attr: 'profileName', kind: 'foreign', value: args.profileName, comparator: 'like' }];
+      profileSearch.limit  = 1;
 
-      connection.searchByModel(modelFilter).then(function(resultSet) {
+      connection.searchByModel(profileSearch).then(function(resultSet) {
         if (resultSet.count) return reject(profileError);
         resolve(args);
       }).catch(reject);

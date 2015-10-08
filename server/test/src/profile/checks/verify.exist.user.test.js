@@ -6,6 +6,8 @@ var profileHelper   = require('../profile.helper');
 var userHelper      = require('../../user/user.helper');
 var expect          = require('chai').expect;
 var VerifyExistUser = require(srcKauris.concat('profile/checks/verify.exist.user'));
+var UserModel       = require(srcKauris.concat('user/user.model'));
+var ProfileModel    = require(srcKauris.concat('profile/profile.model'));
 
 describe('Profile', function() {
   describe('Checks', function () {
@@ -15,7 +17,11 @@ describe('Profile', function() {
 
         beforeEach(function() {
           string       = 'string';
-          injector     = { q: q };
+          injector     = {
+            q:            q,
+            UserModel:    UserModel,
+            ProfileModel: ProfileModel
+          };
           errorProfile = 'profile.exist.user';
 
           return profileHelper.prepareProfile().then(function(newProfileArgs) {
@@ -57,9 +63,8 @@ describe('Profile', function() {
           expectedSearchByModel = {
             tableName: 'users',
             limit: 1,
-            fields: [
-              { attr: 'userProfile', kind: 'foreign', value: profileArgs.profileId, comparator: '=' }
-            ]
+            fields: [{ attr: 'userId',      kind: 'primary' }],
+            where:  [{ attr: 'userProfile', kind: 'foreign', value: profileArgs.profileId, comparator: '=' }]
           };
 
           return this.connectionMockLib.make(emptyRows, callMethod).then(function(connectionMocked) {
