@@ -17,7 +17,7 @@ function VerifyRegisteredName(injector) {
       userSearch.where  = [{ attr: 'userProfile', kind: 'foreign', value: args.profileId, comparator: '=' }];
       userSearch.limit  = 1;
 
-      connection.searchByModel(userSearch).then(function(resultSet) {
+      connection.search(userSearch).then(function(resultSet) {
         if (resultSet.count) return reject(profileError);
         resolve(args);
       }).catch(reject);

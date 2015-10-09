@@ -10,7 +10,7 @@ function ConnectionMockLib() {
 
     return q.Promise(function(resolve) {
       resolve({
-        searchByModel: function(args) {
+        search: function(args) {
           return q.Promise(function(resolve) {
             if (callMethod) callMethod(args);
 
