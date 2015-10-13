@@ -4,6 +4,7 @@ function ProfileUpdate(injector) {
   var service = this;
 
   service.save = function(profileArgs) {
+    var lodash            = injector.lodash;
     var connection        = injector.connection;
     var ProfileModel      = injector.ProfileModel;
     var ProfileValidation = injector.ProfileValidation;
@@ -15,19 +16,16 @@ function ProfileUpdate(injector) {
       var attrs = Object.keys(profile);
       var where = [];
 
-      var args = profileModel.fields.filter(function(field) {
-        var filtered = attrs.indexOf(field.attr) > -1;
+      var args = profileModel.fields.map(function(field) {
+        var setField  = lodash.cloneDeep(field);
+        var filtered  = attrs.indexOf(setField.attr) > -1;
+        var isPrimary = field.kind === 'primary';
 
-        if (filtered) {
-          field.value = profile[field.attr];
+        if (filtered)  setField.value = profile[field.attr];
+        if (isPrimary) where.push(lodash.cloneDeep(setField));
+        if (isPrimary) delete setField.value;
 
-          if (field.kind === 'primary') {
-            where.push(field);
-            filtered = false;
-          }
-        }
-
-        return filtered;
+        return setField;
       });
 
       profileModel.action = 'update';

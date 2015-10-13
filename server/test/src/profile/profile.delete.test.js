@@ -32,15 +32,6 @@ describe('Profile', function() {
           newProfileArgs.profileId = 10;
           profileArgs = newProfileArgs;
 
-          expectedDeleteRow = {
-            tableName: 'profiles',
-            action: 'delete',
-
-            where: [
-              { attr: 'profileId', kind: 'primary', value: profileArgs.profileId }
-            ]
-          };
-
           var connection = {
             persist: function(args) {
               return q.Promise(function(resolve) {
@@ -58,6 +49,10 @@ describe('Profile', function() {
             ProfileModel: ProfileModel,
             ProfileValidation: ProfileValidation
           };
+
+          return profileArgs;
+        }).then(profileHelper.prepareDeleteProfile).then(function(deleteProfile) {
+          expectedDeleteRow = deleteProfile;
         });
       });
 
@@ -69,8 +64,8 @@ describe('Profile', function() {
 
           expect(profileValidationCalled).to.be.deep.equal(profileArgs);
           expect(deleteArgumentsCalled).to.be.deep.equal(expectedDeleteRow);
-        }).catch(function() {
-          return expect(false).to.be.ok;
+        }).catch(function(err) {
+          throw err;
         });
       });
     });

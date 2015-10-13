@@ -31,14 +31,6 @@ describe('Profile', function() {
         return profileHelper.prepareProfile().then(function(newProfileArgs) {
           profileArgs = newProfileArgs;
 
-          expectedCreateRow = {
-            tableName: 'profiles',
-            action: 'create',
-            fields: [
-              { attr: 'profileName', kind: 'name', value: profileArgs.profileName }
-            ]
-          };
-
           var connection = {
             persist: function(args) {
               return q.Promise(function(resolve) {
@@ -57,6 +49,10 @@ describe('Profile', function() {
             ProfileModel: ProfileModel,
             ProfileValidation: ProfileValidation
           };
+
+          return profileArgs;
+        }).then(profileHelper.prepareCreateProfile).then(function(createProfile) {
+          expectedCreateRow = createProfile;
         });
       });
 
@@ -69,8 +65,8 @@ describe('Profile', function() {
 
           expect(profileValidationCalled).to.be.deep.equal(profileArgs);
           expect(createArgumentsCalled).to.be.deep.equal(expectedCreateRow);
-        }).catch(function() {
-          return expect(false).to.be.ok;
+        }).catch(function(err) {
+          throw err;
         });
       });
     });

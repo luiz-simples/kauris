@@ -14,15 +14,23 @@ describe('Profile', function() {
       beforeEach(function() {
         injector = {
           q: q,
-          ProfileModel: ProfileModel
+          lodash: lodash,
+          connection: connection,
+          ProfileModel: ProfileModel,
+          ProfileValidation: ProfileValidation
         };
+
+          return profileArgs;
+        }).then(profileHelper.prepareDeleteProfile).then(function(deleteProfile) {
+          expectedDeleteRow = deleteProfile;
+        });
       });
 
       it('should search by profile.', function() {
         var test = this;
 
-        var emptyRows       = [];
-        var correctArgument = null;
+        var emptyRows             = [];
+        var correctArgument       = null;
         var expectedSearchProfile = null;
         var callMethod = function(argument) {
           correctArgument = argument;
@@ -32,18 +40,18 @@ describe('Profile', function() {
           page: 10,
           limit: 25,
           fields: [
-            { attr: 'attr3', kind: 'string' },
-            { attr: 'attr4', kind: 'string' }
+            { attr: 'profileId',   kind: 'primary' },
+            { attr: 'profileName', kind: 'string' }
           ],
 
           where: [
-            { attr: 'attr1', kind: 'string', value: 'test', comparator: '=' },
-            { attr: 'attr2', kind: 'string', value: 'test', comparator: '=' }
+            { attr: 'profileId',   kind: 'primary', value: 404,    comparator: '=' },
+            { attr: 'profileName', kind: 'string',  value: 'test', comparator: '=' }
           ],
 
           order: [
-            { attr: 'attr3', kind: 'string', order: 'ASC'  },
-            { attr: 'attr4', kind: 'string', order: 'DESC' }
+            { attr: 'profileId',   kind: 'primary', order: 'ASC'  },
+            { attr: 'profileName', kind: 'string',  order: 'DESC' }
           ]
         };
 
@@ -52,18 +60,18 @@ describe('Profile', function() {
         expectedSearchProfile.limit = 25;
 
         expectedSearchProfile.fields = [
-          { attr: 'attr3', kind: 'string' },
-          { attr: 'attr4', kind: 'string' }
+          { attr: 'profileId',   kind: 'primary' },
+          { attr: 'profileName', kind: 'string' }
         ];
 
         expectedSearchProfile.where = [
-          { attr: 'attr1', kind: 'string', value: 'test', comparator: '=' },
-          { attr: 'attr2', kind: 'string', value: 'test', comparator: '=' }
+          { attr: 'profileId',   kind: 'primary', value: 404,    comparator: '=' },
+          { attr: 'profileName', kind: 'string',  value: 'test', comparator: 'like' }
         ];
 
         expectedSearchProfile.order = [
-          { attr: 'attr3', kind: 'string', order: 'ASC'  },
-          { attr: 'attr4', kind: 'string', order: 'DESC' }
+          { attr: 'profileId',   kind: 'primary', order: 'ASC'  },
+          { attr: 'profileName', kind: 'string',  order: 'DESC' }
         ];
 
         return test.connectionMockLib.make(emptyRows, callMethod).then(function(connectionMocked) {
@@ -72,8 +80,8 @@ describe('Profile', function() {
           return profileSearch.list(params);
         }).then(function() {
           expect(correctArgument).to.deep.equal(expectedSearchProfile);
-        }).catch(function() {
-          return expect(false).to.be.ok;
+        }).catch(function(err) {
+          throw err;
         });
       });
 
@@ -101,8 +109,8 @@ describe('Profile', function() {
           return profileSearch.list(params);
         }).then(function() {
           expect(correctArgument).to.deep.equal(expectedSearchProfile);
-        }).catch(function() {
-          return expect(false).to.be.ok;
+        }).catch(function(err) {
+          throw err;
         });
       });
     });

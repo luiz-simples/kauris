@@ -7,7 +7,7 @@ function VerifyRegisteredName(injector) {
     var promise    = injector.q.Promise;
     var connection = injector.connection;
     var UserModel  = injector.UserModel;
-    console.log(UserModel);
+
     var userSearch = new UserModel();
 
     return promise(function(resolve, reject) {

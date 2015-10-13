@@ -4,6 +4,7 @@ function ProfileCreate(injector) {
   var service = this;
 
   service.save = function(profileArgs) {
+    var lodash            = injector.lodash;
     var connection        = injector.connection;
     var ProfileModel      = injector.ProfileModel;
     var ProfileValidation = injector.ProfileValidation;
@@ -12,13 +13,13 @@ function ProfileCreate(injector) {
     var profileValidation = new ProfileValidation(injector);
 
     var saveProfile = function(profile) {
-
       var attrs = Object.keys(profile);
 
-      var args = profileModel.fields.filter(function(field) {
-        var filtered = attrs.indexOf(field.attr) > -1;
-        if (filtered) field.value = profile[field.attr];
-        return filtered;
+      var args = profileModel.fields.map(function(field) {
+        var setField = lodash.cloneDeep(field);
+        var filtered = attrs.indexOf(setField.attr) > -1;
+        if (filtered) setField.value = profile[field.attr];
+        return setField;
       });
 
       profileModel.action = 'create';

@@ -27,7 +27,7 @@ describe('Profile', function() {
           delete profileArgs.profileName;
 
           return verifyEmptyName.check(profileArgs).then(function() {
-            return expect(false).to.be.ok;
+            throw new Error('verifyEmptyName.check not rejected.');
           }).catch(function(error) {
             expect(error).to.a(string);
             expect(error).to.be.equal(errorProfileNameEmpty);
@@ -38,7 +38,7 @@ describe('Profile', function() {
           profileArgs.profileName = '';
 
           return verifyEmptyName.check(profileArgs).then(function() {
-            return expect(false).to.be.ok;
+            throw new Error('verifyEmptyName.check not rejected.');
           }).catch(function(error) {
             expect(error).to.a(string);
             expect(error).to.be.equal(errorProfileNameEmpty);

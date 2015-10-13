@@ -32,19 +32,6 @@ describe('Profile', function() {
           newProfileArgs.profileId = 10;
           profileArgs = newProfileArgs;
 
-          expecteUpdateRow = {
-            tableName: 'profiles',
-            action: 'update',
-
-            fields: [
-              { attr: 'profileName', kind: 'name', value: profileArgs.profileName }
-            ],
-
-            where: [
-              { attr: 'profileId', kind: 'primary', value: profileArgs.profileId }
-            ]
-          };
-
           var connection = {
             persist: function(args) {
               return q.Promise(function(resolve) {
@@ -62,6 +49,10 @@ describe('Profile', function() {
             ProfileModel: ProfileModel,
             ProfileValidation: ProfileValidation
           };
+
+          return profileArgs;
+        }).then(profileHelper.prepareUpdateProfile).then(function(updateProfile) {
+          expecteUpdateRow = updateProfile;
         });
       });
 
@@ -73,8 +64,8 @@ describe('Profile', function() {
 
           expect(profileValidationCalled).to.be.deep.equal(profileArgs);
           expect(updateArgumentsCalled).to.be.deep.equal(expecteUpdateRow);
-        }).catch(function() {
-          return expect(false).to.be.ok;
+        }).catch(function(err) {
+          throw err;
         });
       });
     });

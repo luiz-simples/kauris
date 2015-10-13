@@ -45,7 +45,7 @@ describe('Profile', function() {
 
             return verifyExistUser.check(profileArgs);
           }).then(function() {
-            return expect(false).to.be.ok;
+            throw new Error('verifyExistUser.check not rejected.');
           }).catch(function(error) {
             expect(error).to.a(string);
             expect(error).to.be.equal(errorProfile);
@@ -74,8 +74,8 @@ describe('Profile', function() {
             return verifyExistUser.check(profileArgs);
           }).then(function() {
             expect(correctArgument).to.be.deep.equal(expectedSearchByModel);
-          }).catch(function() {
-            return expect(false).to.be.ok;
+          }).catch(function(err) {
+            throw err;
           });
         });
       });

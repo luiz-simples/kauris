@@ -56,8 +56,8 @@ describe('Profile', function() {
           expect(profileResolved).to.be.deep.equal(profileArgs);
           expect(verifyEmptyNameCalled).to.be.deep.equal(profileArgs);
           expect(verifyRegisteredNameCalled).to.be.deep.equal(profileArgs);
-        }).catch(function() {
-          return expect(false).to.be.ok;
+        }).catch(function(err) {
+          throw err;
         });
       });
     });
