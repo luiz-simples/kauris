@@ -14,16 +14,8 @@ describe('Profile', function() {
       beforeEach(function() {
         injector = {
           q: q,
-          lodash: lodash,
-          connection: connection,
-          ProfileModel: ProfileModel,
-          ProfileValidation: ProfileValidation
+          ProfileModel: ProfileModel
         };
-
-          return profileArgs;
-        }).then(profileHelper.prepareDeleteProfile).then(function(deleteProfile) {
-          expectedDeleteRow = deleteProfile;
-        });
       });
 
       it('should search by profile.', function() {
@@ -46,7 +38,7 @@ describe('Profile', function() {
 
           where: [
             { attr: 'profileId',   kind: 'primary', value: 404,    comparator: '=' },
-            { attr: 'profileName', kind: 'string',  value: 'test', comparator: '=' }
+            { attr: 'profileName', kind: 'string',  value: 'test', comparator: 'like' }
           ],
 
           order: [

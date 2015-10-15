@@ -8,17 +8,19 @@
   "scripts": {
     "test": "mocha test/"
   },
+
   "devDependencies": {
     "chai": "^3.3.0",
     "faker": "^3.0.1",
     "mocha": "^2.3.3"
   },
+
   "dependencies": {
-    "cpf_cnpj": "0.0.2",
-    "lodash": "^3.10.1",
-    "moment-timezone": "^0.4.0",
     "q": "^1.4.1",
+    "squel": "^4.2.0",
+    "lodash": "^3.10.1",
+    "cpf_cnpj": "0.0.2",
     "q-postgres": "^1.0.1",
-    "squel": "^4.2.0"
+    "moment-timezone": "^0.4.0"
   }
 }

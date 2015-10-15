@@ -54,11 +54,11 @@ describe('Connection', function() {
         ];
       });
 
-      it('should pass sql for delete record.', function() {
-        var sqlSearchExpected = 'SELECT profiles.profileId, profiles.profileName FROM profiles WHERE (profiles.profileId = 404) AND (profiles.profileName like \'test\')';
+      it('should pass sql for search records.', function() {
+        var sqlSearchExpected = 'SELECT profiles.profileId, profiles.profileName FROM profiles WHERE (profiles.profileId = 404) AND (profiles.profileName like \'test\') ORDER BY profiles.profileId ASC, profiles.profileName DESC LIMIT 25 OFFSET 225';
 
         return connection.search(searchRows).then(function() {
-          expect(sqlSearchExpected).to.be.equal(sqlSearchPassed);
+          expect(sqlSearchPassed).to.be.equal(sqlSearchExpected);
         }).catch(function(err) {
           throw err;
         });

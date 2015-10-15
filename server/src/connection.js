@@ -24,6 +24,26 @@ function Connection(injector) {
         searchBuilder.where(where, value);
       });
 
+      config.order.forEach(function(orderBy) {
+        var attr  = orderBy.attr;
+        var dir   = orderBy.order;
+        var field = config.tableName.concat('.', attr);
+
+        searchBuilder.order(field, dir.toUpperCase() !== 'DESC');
+      });
+
+      var minPage  = 1;
+      var minLimit = 10;
+
+      var page  = config.hasOwnProperty('page')  && config.page  ? config.page  : minPage;
+      var limit = config.hasOwnProperty('limit') && config.limit ? config.limit : minLimit;
+
+      if (page  < 0) page  = minPage;
+      if (limit < 0) limit = minLimit;
+
+      searchBuilder.limit(limit);
+      searchBuilder.offset((page-1)*limit);
+
       return searchBuilder.toString();
     },
 
