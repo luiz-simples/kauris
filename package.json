@@ -5,7 +5,7 @@
   "author": "Nurimba <luiz.simples@gmail.com>",
   "license": "UNLICENSED",
   "scripts": {
-    "install": "cd server/ && npm install && npm update --save && cd ../",
+    "install": "cd server/ && npm install",
     "test": "cd server/ && npm test && cd ../"
   },
   "repository": {
