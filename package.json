@@ -5,8 +5,8 @@
   "author": "Nurimba <luiz.simples@gmail.com>",
   "license": "UNLICENSED",
   "scripts": {
-    "install": "cd server/ && npm install",
-    "test": "cd server/ && npm test && cd ../"
+    "install": "cd server/ && npm install && cd ../client && npm install && cd ../",
+    "test": "cd server/ && npm test && cd ../client && npm test && cd ../"
   },
   "repository": {
     "type": "git",
