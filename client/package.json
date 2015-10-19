@@ -2,37 +2,41 @@
   "name": "kauris-client",
   "version": "1.0.0",
   "description": "Kauris Client",
-  "main": "client.js",
   "author": "Nurimba <luiz.simples@gmail.com>",
   "license": "UNLICENSED",
+
+  "scripts": {
+    "start": "gulp",
+    "build": "npm install browserify envify uglifyjs && browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > js/bundle.min.js",
+    "postinstall": "bower install --allow-root --config.interactive=false"
+  },
+
+  "devDependencies": {
+    "browser-sync": "^2.9.11",
+    "browser-sync-spa": "^1.0.3",
+    "browserify": "^11.2.0",
+    "envify": "^3.4.0",
+    "gulp": "^3.9.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-util": "^3.0.6",
+    "lodash.assign": "^3.2.0",
+    "reactify": "^1.1.1",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.4.0",
+    "wrench": "^1.5.8"
+  },
+
   "dependencies": {
-    "classnames": "^2.1.5",
-    "flux": "^2.1.1",
-    "keymirror": "^0.1.1",
-    "object-assign": "^4.0.1",
+    "lodash": "^3.10.1",
     "react": "^0.14.0",
     "react-dom": "^0.14.0"
   },
-  "devDependencies": {
-    "browserify": "^11.2.0",
-    "envify": "^3.4.0",
-    "jest-cli": "^0.5.10",
-    "reactify": "^1.1.1",
-    "uglify-js": "^2.5.0",
-    "watchify": "^3.4.0"
-  },
-  "scripts": {
-    "start": "watchify -o js/bundle.js -v -d js/app.js",
-    "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > js/bundle.min.js",
-    "test": "jest"
-  },
+
   "browserify": {
     "transform": [
       "reactify",
       "envify"
     ]
-  },
-  "jest": {
-    "rootDir": "./js"
   }
 }
