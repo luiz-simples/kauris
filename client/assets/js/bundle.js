@@ -24362,8 +24362,7 @@ var App = React.createClass({displayName: "App",
           React.createElement("div", {className: "container-fluid"}, 
             React.createElement("div", {className: "row"}, 
               React.createElement("div", {className: "col-lg-12"}, 
-                this.props.children, 
-                "asds"
+                this.props.children
               )
             )
           )
@@ -24376,7 +24375,32 @@ var App = React.createClass({displayName: "App",
 module.exports = App;
 
 
-},{"./Menu":235,"react":232}],234:[function(require,module,exports){
+},{"./Menu":236,"react":232}],234:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+var Loading = React.createClass({displayName: "Loading",
+
+  render: function () {
+    return(
+      React.createElement("section", null, 
+        React.createElement("h4", null, "Carregando informações. Aguarde."), 
+        React.createElement("div", {className: "progress"}, 
+          React.createElement("div", {
+            className: "progress-bar progress-bar-striped active", 
+            style: { width: '100%'}}
+          )
+        )
+      )
+    );
+  }
+});
+
+module.exports = Loading;
+
+
+},{"react":232}],235:[function(require,module,exports){
 /*globals document:false*/
 'use strict';
 
@@ -24400,7 +24424,7 @@ const history = useBasename(createHistory)({
 var render = function() {
   ReactDom.render((
     React.createElement(Router, {history: history}, 
-      React.createElement(Route, {path: "/dashboard", component: App}, 
+      React.createElement(Route, {path: "/", component: App}, 
         React.createElement(Route, {path: "/profiles", component: ProfileList})
       )
     )
@@ -24410,7 +24434,7 @@ var render = function() {
 document.addEventListener('DOMContentLoaded', render);
 
 
-},{"./App":233,"./profile/ProfileList":238,"history":16,"react":232,"react-dom":31,"react-router":51}],235:[function(require,module,exports){
+},{"./App":233,"./profile/ProfileList":239,"history":16,"react":232,"react-dom":31,"react-router":51}],236:[function(require,module,exports){
 'use strict';
 
 var React    = require('react');
@@ -24428,7 +24452,7 @@ var Menu = React.createClass({displayName: "Menu",
             React.createElement("span", {className: "icon-bar"}), 
             React.createElement("span", {className: "icon-bar"})
           ), 
-          React.createElement("a", {className: "navbar-brand", href: "index.html"}, "SB Admin v2.0")
+          React.createElement("a", {className: "navbar-brand", href: "index.html"}, "Kauris")
         ), 
 
         React.createElement(MenuTop, null), 
@@ -24444,7 +24468,7 @@ var Menu = React.createClass({displayName: "Menu",
 module.exports = Menu;
 
 
-},{"./MenuLeft":236,"./MenuTop":237,"react":232}],236:[function(require,module,exports){
+},{"./MenuLeft":237,"./MenuTop":238,"react":232}],237:[function(require,module,exports){
 'use strict';
 
 var React       = require('react');
@@ -24468,7 +24492,7 @@ var MenuLeft = React.createClass({displayName: "MenuLeft",
           ), 
 
           React.createElement("li", null, 
-            React.createElement(Link, {to: '/dashboard'}, React.createElement("i", {className: "fa fa-dashboard fa-fw"}), " Dashboard")
+            React.createElement(Link, {to: '/'}, React.createElement("i", {className: "fa fa-dashboard fa-fw"}), " Dashboard")
           ), 
 
           React.createElement("li", null, 
@@ -24491,7 +24515,7 @@ var MenuLeft = React.createClass({displayName: "MenuLeft",
 module.exports = MenuLeft;
 
 
-},{"react":232,"react-router":51}],237:[function(require,module,exports){
+},{"react":232,"react-router":51}],238:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -24744,16 +24768,178 @@ var MenuTop = React.createClass({displayName: "MenuTop",
 module.exports = MenuTop;
 
 
-},{"react":232}],238:[function(require,module,exports){
+},{"react":232}],239:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+var React   = require('react');
+var Loading = require('../Loading');
+
+var profileCols = [
+  { attr: 'profileId',   type: 'primary', viewCol: true, viewFilter: false },
+  { attr: 'profileName', type: 'name',    viewCol: true, viewFilter: false }
+];
+
+var profileRows = [
+  { profileId: 1, profileName: 'Admin' },
+  { profileId: 2, profileName: 'Guest' }
+];
 
 var ProfileList = React.createClass({displayName: "ProfileList",
+  getInitialState: function() {
+		return {
+      data: [],
+      cols: profileCols,
+      loaded: false,
+    };
+	},
+
+  componentDidMount: function() {
+    var profileList = this;
+
+    setTimeout(function() {
+      profileList.setState({
+        data: [profileRows],
+        loaded: true
+      });
+
+    }.bind(profileList), 2000);
+  },
+
   render: function () {
+    var trRows;
+    var trLoading;
+    var profileList = this;
+
+    var state      = profileList.state;
+    var rows       = state.data;
+    var cols       = state.cols;
+    var loaded     = Boolean(state.loaded);
+    var othersCols = 1;
+    var totalCols  = cols.length + othersCols;
+
+    if (!loaded) {
+      trLoading =
+        React.createElement("tr", null, 
+          React.createElement("td", {colSpan: totalCols, style: { textAlign: 'center', backgroundColor: '#fff'}}, 
+            React.createElement(Loading, null)
+          )
+        )
+      ;
+    }
+
+    if (loaded) {
+      var withData    = rows && rows.length;
+      var withoutData = !withData;
+
+      if (withoutData) {
+        trRows = React.createElement("tr", null, 
+          React.createElement("td", {colSpan: totalCols, style: { textAlign: 'center', backgroundColor: '#fff'}}, 
+            React.createElement("section", null, 
+              React.createElement("h4", null, "Nenhuma informação encontrada.")
+            )
+          )
+        );
+      }
+
+      if (withData) {
+        trRows = rows.map(function(row, tri) {
+          var max = -1;
+          var tds = cols.map(function(col, tdi) {
+            max++;
+
+            var contentTd = React.createElement("i", {style: { display: 'block', width: '100%', color: '#8A8A8A', textAlign: 'center'}}, "vazio");
+
+            var withData = row.hasOwnProperty(col.attr) && row[col.attr];
+            if (withData) contentTd = row[col.attr];
+
+            return React.createElement("td", {key: tdi}, contentTd);
+          });
+
+          tds.push(React.createElement("td", {key: ++max, style: { textAlign: 'center'}}, 
+            React.createElement("button", {type: "button", title: "view", className: "btn btn-default btn-primary"}, 
+              React.createElement("span", {className: "glyphicon glyphicon-eye-open"})
+            ), 
+            " ", 
+            React.createElement("button", {type: "button", title: "edit", className: "btn btn-default btn-success"}, 
+              React.createElement("span", {className: "glyphicon glyphicon-pencil"})
+            ), 
+            " ", 
+            React.createElement("button", {type: "button", title: "delete", className: "btn btn-default btn-danger"}, 
+              React.createElement("span", {className: "glyphicon glyphicon-trash"})
+            )
+          ));
+
+          return React.createElement("tr", {key: tri}, tds);
+        });
+      }
+    }
+
     return(
       React.createElement("div", {id: "wrapper"}, 
-        React.createElement("h1", {className: "page-header"}, "Profiles")
+        React.createElement("h1", {className: "page-header"}, "Profiles"), 
+        React.createElement("div", {className: "panel panel-default"}, 
+          React.createElement("div", {className: "panel-heading"}, 
+            React.createElement("i", {className: "fa fa-comments fa-fw"}), " Profiles List", 
+
+            React.createElement("div", {className: "btn-group pull-right"}, 
+                React.createElement("button", {type: "button", className: "btn btn-default btn-xs dropdown-toggle", "data-toggle": "dropdown", "aria-expanded": "false"}, 
+                  React.createElement("i", {className: "fa fa-chevron-down"})
+                ), 
+
+                React.createElement("ul", {className: "dropdown-menu slidedown"}, 
+                    React.createElement("li", null, 
+                        React.createElement("a", {href: "#"}, 
+                            React.createElement("i", {className: "fa fa-refresh fa-fw"}), " Refresh"
+                        )
+                    ), 
+                    React.createElement("li", null, 
+                        React.createElement("a", {href: "#"}, 
+                            React.createElement("i", {className: "fa fa-check-circle fa-fw"}), " Available"
+                        )
+                    ), 
+                    React.createElement("li", null, 
+                        React.createElement("a", {href: "#"}, 
+                            React.createElement("i", {className: "fa fa-times fa-fw"}), " Busy"
+                        )
+                    ), 
+                    React.createElement("li", null, 
+                        React.createElement("a", {href: "#"}, 
+                            React.createElement("i", {className: "fa fa-clock-o fa-fw"}), " Away"
+                        )
+                    ), 
+                    React.createElement("li", {className: "divider"}), 
+                    React.createElement("li", null, 
+                        React.createElement("a", {href: "#"}, 
+                            React.createElement("i", {className: "fa fa-sign-out fa-fw"}), " Sign Out"
+                        )
+                    )
+                )
+            )
+          ), 
+
+          React.createElement("div", {className: "panel-body"}, 
+            React.createElement("div", {className: "table-responsive"}, 
+              React.createElement("table", {className: "table table-bordered table-hover table-striped"}, 
+                React.createElement("thead", null, 
+                  React.createElement("tr", null, 
+                    React.createElement("th", {style: { textAlign: 'center', width: '75px'}}, "Code"), 
+                    React.createElement("th", null, "Profile"), 
+                    React.createElement("th", {style: { textAlign: 'center', width: '150px'}})
+                  )
+                ), 
+
+                React.createElement("tbody", null, 
+                  trLoading, 
+                  trRows
+                )
+              )
+            ), 
+
+            React.createElement("div", {className: "text-right"}, 
+              React.createElement("a", {href: "#"}, "View All Transactions ", React.createElement("i", {className: "fa fa-arrow-circle-right"}))
+            )
+          )
+        )
       )
     );
   }
@@ -24762,7 +24948,7 @@ var ProfileList = React.createClass({displayName: "ProfileList",
 module.exports = ProfileList;
 
 
-},{"react":232}]},{},[234])
+},{"../Loading":234,"react":232}]},{},[235])
 
 
 //# sourceMappingURL=bundle.js.map

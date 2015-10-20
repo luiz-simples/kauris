@@ -14,7 +14,6 @@ var App = React.createClass({
             <div className="row">
               <div className="col-lg-12">
                 {this.props.children}
-                asds
               </div>
             </div>
           </div>

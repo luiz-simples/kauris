@@ -21,7 +21,7 @@ const history = useBasename(createHistory)({
 var render = function() {
   ReactDom.render((
     <Router history={history}>
-      <Route path="/dashboard" component={App}>
+      <Route path="/" component={App}>
         <Route path="/profiles" component={ProfileList} />
       </Route>
     </Router>

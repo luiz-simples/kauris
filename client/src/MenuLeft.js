@@ -21,7 +21,7 @@ var MenuLeft = React.createClass({
           </li>
 
           <li>
-            <Link to={'/dashboard'}><i className="fa fa-dashboard fa-fw"></i> Dashboard</Link>
+            <Link to={'/'}><i className="fa fa-dashboard fa-fw"></i> Dashboard</Link>
           </li>
 
           <li>
