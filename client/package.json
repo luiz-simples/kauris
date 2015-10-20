@@ -4,13 +4,11 @@
   "description": "Kauris Client",
   "author": "Nurimba <luiz.simples@gmail.com>",
   "license": "UNLICENSED",
-
   "scripts": {
     "start": "gulp",
     "build": "npm install browserify envify uglifyjs && browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > js/bundle.min.js",
     "postinstall": "bower install --allow-root --config.interactive=false"
   },
-
   "devDependencies": {
     "browser-sync": "^2.9.11",
     "browser-sync-spa": "^1.0.3",
@@ -26,13 +24,14 @@
     "watchify": "^3.4.0",
     "wrench": "^1.5.8"
   },
-
   "dependencies": {
+    "history": "^1.12.5",
     "lodash": "^3.10.1",
     "react": "^0.14.0",
-    "react-dom": "^0.14.0"
+    "react-dom": "^0.14.0",
+    "react-router": "^1.0.0-rc3",
+    "react-router-historyjs-location": "0.0.1"
   },
-
   "browserify": {
     "transform": [
       "reactify",

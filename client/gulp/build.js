@@ -14,7 +14,7 @@ var browserSync    = require('browser-sync');
 var browserSyncSpa = require('browser-sync-spa');
 
 var browser    = 'default';
-var pathApp    = __dirname.concat('/../src/app.js');
+var pathApp    = __dirname.concat('/../src/Main.js');
 var pathBundle = __dirname.concat('/../assets/js');
 var customOpts = {
   entries: [pathApp],
