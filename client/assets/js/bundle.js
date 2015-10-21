@@ -24434,7 +24434,7 @@ var render = function() {
 document.addEventListener('DOMContentLoaded', render);
 
 
-},{"./App":233,"./profile/ProfileList":239,"history":16,"react":232,"react-dom":31,"react-router":51}],236:[function(require,module,exports){
+},{"./App":233,"./profile/ProfileList":240,"history":16,"react":232,"react-dom":31,"react-router":51}],236:[function(require,module,exports){
 'use strict';
 
 var React    = require('react');
@@ -24769,14 +24769,124 @@ module.exports = MenuTop;
 
 
 },{"react":232}],239:[function(require,module,exports){
+/*globals $:false*/
 'use strict';
 
-var React   = require('react');
-var Loading = require('../Loading');
+var React = require('react');
+
+var ListOptions = React.createClass({displayName: "ListOptions",
+  componentDidMount: function() {
+    $(this.refs.listDropdownToggle).submenupicker();
+  },
+
+  render: function () {
+    var listOptions = this;
+    var cols = listOptions.props.cols;
+    var viewCols = cols.map(function(col, index) {
+      return React.createElement("li", {key: index}, 
+        React.createElement("div", {className: "col-sm-offset-1"}, 
+          React.createElement("div", {style: { margin: '0 10px 5px 0'}, className: "checkbox"}, 
+            React.createElement("label", null, 
+              React.createElement("input", {type: "checkbox"}), " ", col.title
+            ), 
+
+            React.createElement("div", {className: "pull-right"}, 
+              React.createElement("button", {type: "button", className: "btn btn-default btn-xs pull-right"}, 
+                React.createElement("i", {className: "fa fa-caret-down"})
+              ), 
+              React.createElement("button", {type: "button", className: "btn btn-default btn-xs pull-right"}, 
+                React.createElement("i", {className: "fa fa-caret-up"})
+              )
+            )
+          )
+        )
+      );
+    });
+
+    var viewFilters = cols.map(function(col, index) {
+      return React.createElement("li", {key: index}, 
+        React.createElement("div", {className: "col-sm-offset-1"}, 
+          React.createElement("div", {style: { margin: '0 10px 5px 0'}, className: "checkbox"}, 
+            React.createElement("label", null, 
+              React.createElement("input", {type: "checkbox"}), " ", col.title
+            ), 
+
+            React.createElement("div", {className: "pull-right"}, 
+              React.createElement("button", {type: "button", className: "btn btn-default btn-xs pull-right"}, 
+                React.createElement("i", {className: "fa fa-caret-down"})
+              ), 
+              React.createElement("button", {type: "button", className: "btn btn-default btn-xs pull-right"}, 
+                React.createElement("i", {className: "fa fa-caret-up"})
+              )
+            )
+          )
+        )
+      );
+    });
+
+    return(
+      React.createElement("div", {className: "btn-group"}, 
+        React.createElement("button", {
+          type: "button", 
+          className: "btn btn-default btn-xs", 
+          title: "add new", 
+          style: { width: '30px'}
+        }, 
+          React.createElement("i", {className: "fa fa-plus-square-o"})
+        ), 
+
+        React.createElement("button", {
+          type: "button", 
+          ref: "listDropdownToggle", 
+          className: "btn btn-default btn-xs dropdown-toggle", 
+          "data-toggle": "dropdown", 
+          role: "button", 
+          title: "config", 
+          "aria-haspopup": "true", 
+          "aria-expanded": "false"
+        }, 
+          React.createElement("i", {className: "fa fa-cogs"})
+        ), 
+
+        React.createElement("ul", {className: "dropdown-menu dropdown-menu-right"}, 
+          React.createElement("li", {className: "dropdown-submenu"}, 
+            React.createElement("a", {href: "#"}, "View cols"), 
+            React.createElement("ul", {className: "dropdown-menu dropdown-menu-right"}, viewCols)
+          ), 
+
+          React.createElement("li", {className: "dropdown-submenu"}, 
+            React.createElement("a", {href: "#"}, "View filters"), 
+            React.createElement("ul", {className: "dropdown-menu dropdown-menu-right"}, viewFilters)
+          ), 
+
+          React.createElement("li", {className: "divider"}), 
+
+          React.createElement("li", null, 
+            React.createElement("div", {style: { margin: '0 0 0 10px'}, className: "checkbox"}, 
+              React.createElement("label", null, 
+                React.createElement("input", {type: "checkbox"}), " Distinct"
+              )
+            )
+          )
+        )
+      )
+    );
+  }
+});
+
+module.exports = ListOptions;
+
+
+},{"react":232}],240:[function(require,module,exports){
+'use strict';
+
+var React       = require('react');
+var Loading     = require('../Loading');
+var ListOptions = require('../list/ListOptions');
 
 var profileCols = [
-  { attr: 'profileId',   type: 'primary', viewCol: true, viewFilter: false },
-  { attr: 'profileName', type: 'name',    viewCol: true, viewFilter: false }
+  { attr: 'profileId',   title: 'Code',    kind: 'primary', viewCol: true, viewFilter: false },
+  { attr: 'profileName', title: 'Profile', kind: 'name',    viewCol: true, viewFilter: false }
 ];
 
 var profileRows = [
@@ -24797,11 +24907,13 @@ var ProfileList = React.createClass({displayName: "ProfileList",
     var profileList = this;
 
     setTimeout(function() {
+      var isMounted = profileList.isMounted();
+      if (!isMounted) return;
+
       profileList.setState({
-        data: [profileRows],
+        data: profileRows,
         loaded: true
       });
-
     }.bind(profileList), 2000);
   },
 
@@ -24810,12 +24922,22 @@ var ProfileList = React.createClass({displayName: "ProfileList",
     var trLoading;
     var profileList = this;
 
+    var max        = 0;
     var state      = profileList.state;
     var rows       = state.data;
     var cols       = state.cols;
     var loaded     = Boolean(state.loaded);
     var othersCols = 1;
     var totalCols  = cols.length + othersCols;
+
+    max = -1;
+    var tableCols = cols.map(function(col, index) {
+      if (index > max) max = index;
+      var config = {};
+      if (col.kind === 'primary') config.align = 'center';
+      if (col.kind === 'primary') config.width = '75px';
+      return React.createElement("th", {key: index, style: config}, col.title);
+    }).concat([React.createElement("th", {key: ++max, style: { textAlign: 'center', width: '100px'}}, React.createElement(ListOptions, {cols: cols}))]);
 
     if (!loaded) {
       trLoading =
@@ -24842,8 +24964,22 @@ var ProfileList = React.createClass({displayName: "ProfileList",
       }
 
       if (withData) {
+        var actions = React.createElement("div", null, 
+          React.createElement("button", {type: "button", title: "view", className: "btn btn-xs btn-default btn-primary"}, 
+            React.createElement("span", {className: "glyphicon glyphicon-eye-open"})
+          ), 
+          " ", 
+          React.createElement("button", {type: "button", title: "edit", className: "btn btn-xs btn-default btn-success"}, 
+            React.createElement("span", {className: "glyphicon glyphicon-pencil"})
+          ), 
+          " ", 
+          React.createElement("button", {type: "button", title: "delete", className: "btn btn-xs btn-default btn-danger"}, 
+            React.createElement("span", {className: "glyphicon glyphicon-trash"})
+          )
+        );
+
         trRows = rows.map(function(row, tri) {
-          var max = -1;
+          max = -1;
           var tds = cols.map(function(col, tdi) {
             max++;
 
@@ -24855,77 +24991,26 @@ var ProfileList = React.createClass({displayName: "ProfileList",
             return React.createElement("td", {key: tdi}, contentTd);
           });
 
-          tds.push(React.createElement("td", {key: ++max, style: { textAlign: 'center'}}, 
-            React.createElement("button", {type: "button", title: "view", className: "btn btn-default btn-primary"}, 
-              React.createElement("span", {className: "glyphicon glyphicon-eye-open"})
-            ), 
-            " ", 
-            React.createElement("button", {type: "button", title: "edit", className: "btn btn-default btn-success"}, 
-              React.createElement("span", {className: "glyphicon glyphicon-pencil"})
-            ), 
-            " ", 
-            React.createElement("button", {type: "button", title: "delete", className: "btn btn-default btn-danger"}, 
-              React.createElement("span", {className: "glyphicon glyphicon-trash"})
-            )
-          ));
+          tds.push(React.createElement("td", {key: ++max, style: { textAlign: 'center'}}, actions));
 
           return React.createElement("tr", {key: tri}, tds);
         });
       }
     }
 
-    return(
+    return (
       React.createElement("div", {id: "wrapper"}, 
         React.createElement("h1", {className: "page-header"}, "Profiles"), 
         React.createElement("div", {className: "panel panel-default"}, 
           React.createElement("div", {className: "panel-heading"}, 
-            React.createElement("i", {className: "fa fa-comments fa-fw"}), " Profiles List", 
-
-            React.createElement("div", {className: "btn-group pull-right"}, 
-                React.createElement("button", {type: "button", className: "btn btn-default btn-xs dropdown-toggle", "data-toggle": "dropdown", "aria-expanded": "false"}, 
-                  React.createElement("i", {className: "fa fa-chevron-down"})
-                ), 
-
-                React.createElement("ul", {className: "dropdown-menu slidedown"}, 
-                    React.createElement("li", null, 
-                        React.createElement("a", {href: "#"}, 
-                            React.createElement("i", {className: "fa fa-refresh fa-fw"}), " Refresh"
-                        )
-                    ), 
-                    React.createElement("li", null, 
-                        React.createElement("a", {href: "#"}, 
-                            React.createElement("i", {className: "fa fa-check-circle fa-fw"}), " Available"
-                        )
-                    ), 
-                    React.createElement("li", null, 
-                        React.createElement("a", {href: "#"}, 
-                            React.createElement("i", {className: "fa fa-times fa-fw"}), " Busy"
-                        )
-                    ), 
-                    React.createElement("li", null, 
-                        React.createElement("a", {href: "#"}, 
-                            React.createElement("i", {className: "fa fa-clock-o fa-fw"}), " Away"
-                        )
-                    ), 
-                    React.createElement("li", {className: "divider"}), 
-                    React.createElement("li", null, 
-                        React.createElement("a", {href: "#"}, 
-                            React.createElement("i", {className: "fa fa-sign-out fa-fw"}), " Sign Out"
-                        )
-                    )
-                )
-            )
+            React.createElement("i", {className: "fa fa-lock fa-fw"}), " Profiles List"
           ), 
 
           React.createElement("div", {className: "panel-body"}, 
             React.createElement("div", {className: "table-responsive"}, 
               React.createElement("table", {className: "table table-bordered table-hover table-striped"}, 
                 React.createElement("thead", null, 
-                  React.createElement("tr", null, 
-                    React.createElement("th", {style: { textAlign: 'center', width: '75px'}}, "Code"), 
-                    React.createElement("th", null, "Profile"), 
-                    React.createElement("th", {style: { textAlign: 'center', width: '150px'}})
-                  )
+                  React.createElement("tr", null, tableCols)
                 ), 
 
                 React.createElement("tbody", null, 
@@ -24935,8 +25020,16 @@ var ProfileList = React.createClass({displayName: "ProfileList",
               )
             ), 
 
-            React.createElement("div", {className: "text-right"}, 
-              React.createElement("a", {href: "#"}, "View All Transactions ", React.createElement("i", {className: "fa fa-arrow-circle-right"}))
+            React.createElement("nav", null, 
+              React.createElement("ul", {className: "pager pager-sm"}, 
+                React.createElement("li", null, React.createElement("a", {href: "#", "aria-label": "Previous"}, React.createElement("span", {"aria-hidden": "true"}, "«"))), 
+                React.createElement("li", null, React.createElement("a", {href: "#"}, "1")), 
+                React.createElement("li", null, React.createElement("a", {href: "#"}, "2")), 
+                React.createElement("li", null, React.createElement("a", {href: "#"}, "3")), 
+                React.createElement("li", null, React.createElement("a", {href: "#"}, "4")), 
+                React.createElement("li", null, React.createElement("a", {href: "#"}, "5")), 
+                React.createElement("li", null, React.createElement("a", {href: "#", "aria-label": "Next"}, React.createElement("span", {"aria-hidden": "true"}, "»")))
+              )
             )
           )
         )
@@ -24948,7 +25041,7 @@ var ProfileList = React.createClass({displayName: "ProfileList",
 module.exports = ProfileList;
 
 
-},{"../Loading":234,"react":232}]},{},[235])
+},{"../Loading":234,"../list/ListOptions":239,"react":232}]},{},[235])
 
 
 //# sourceMappingURL=bundle.js.map

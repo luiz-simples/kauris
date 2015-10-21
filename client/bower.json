@@ -21,6 +21,7 @@
     "jquery": "~2.1.4",
     "bootstrap": "~3.3.5",
     "font-awesome": "~4.4.0",
-    "metisMenu": "~2.2.0"
+    "metisMenu": "~2.2.0",
+    "bootstrap-submenu": "~2.0.1"
   }
 }
