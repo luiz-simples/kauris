@@ -26,10 +26,14 @@ var MenuLeft = React.createClass({
 
           <li>
             <a href=".">
-              <i className="fa fa-bar-chart-o fa-fw"></i> Profiles<span className="fa arrow"></span>
+              <i className="fa fa-lock fa-fw"></i> Profiles<span className="fa arrow"></span>
             </a>
 
             <ul className="nav nav-second-level">
+              <li>
+                <Link to={'/profiles/new'}>New</Link>
+              </li>
+
               <li>
                 <Link to={'/profiles'}>Search</Link>
               </li>

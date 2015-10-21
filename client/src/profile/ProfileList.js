@@ -120,7 +120,7 @@ var ProfileList = React.createClass({
 
     return (
       <div id="wrapper">
-        <h1 className="page-header">Profiles</h1>
+        <h3 className="page-header">Profiles</h3>
         <div className="panel panel-default">
           <div className="panel-heading">
             <i className="fa fa-lock fa-fw"></i> Profiles List

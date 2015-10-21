@@ -24410,6 +24410,7 @@ var ReactDom    = require('react-dom');
 var myHistory   = require('history');
 var ReactRouter = require('react-router');
 var ProfileList = require('./profile/ProfileList');
+var ProfileForm = require('./profile/ProfileForm');
 
 var Route       = ReactRouter.Route;
 var Router      = ReactRouter.Router;
@@ -24420,12 +24421,17 @@ var createHistory = myHistory.createHistory;
 const history = useBasename(createHistory)({
   basename: ''
 });
+var newBase = document.createElement('base');
+newBase.setAttribute('href', document.location.hostname);
+document.getElementsByTagName('head')[0].appendChild(newBase);
 
 var render = function() {
+
   ReactDom.render((
     React.createElement(Router, {history: history}, 
       React.createElement(Route, {path: "/", component: App}, 
-        React.createElement(Route, {path: "/profiles", component: ProfileList})
+        React.createElement(Route, {path: "/profiles", component: ProfileList}), 
+        React.createElement(Route, {path: "/profiles/new", component: ProfileForm})
       )
     )
   ), document.getElementById('app'));
@@ -24434,7 +24440,7 @@ var render = function() {
 document.addEventListener('DOMContentLoaded', render);
 
 
-},{"./App":233,"./profile/ProfileList":240,"history":16,"react":232,"react-dom":31,"react-router":51}],236:[function(require,module,exports){
+},{"./App":233,"./profile/ProfileForm":240,"./profile/ProfileList":241,"history":16,"react":232,"react-dom":31,"react-router":51}],236:[function(require,module,exports){
 'use strict';
 
 var React    = require('react');
@@ -24497,10 +24503,14 @@ var MenuLeft = React.createClass({displayName: "MenuLeft",
 
           React.createElement("li", null, 
             React.createElement("a", {href: "."}, 
-              React.createElement("i", {className: "fa fa-bar-chart-o fa-fw"}), " Profiles", React.createElement("span", {className: "fa arrow"})
+              React.createElement("i", {className: "fa fa-lock fa-fw"}), " Profiles", React.createElement("span", {className: "fa arrow"})
             ), 
 
             React.createElement("ul", {className: "nav nav-second-level"}, 
+              React.createElement("li", null, 
+                React.createElement(Link, {to: '/profiles/new'}, "New")
+              ), 
+
               React.createElement("li", null, 
                 React.createElement(Link, {to: '/profiles'}, "Search")
               )
@@ -24880,6 +24890,220 @@ module.exports = ListOptions;
 },{"react":232}],240:[function(require,module,exports){
 'use strict';
 
+var React = require('react');
+// var Loading = require('../Loading');
+
+// var profileCols = [
+//   { attr: 'profileId',   title: 'Code',    kind: 'primary', viewCol: true, viewFilter: false },
+//   { attr: 'profileName', title: 'Profile', kind: 'name',    viewCol: true, viewFilter: false }
+// ];
+
+var ProfileForm = React.createClass({displayName: "ProfileForm",
+  render: function () {
+    return (
+      React.createElement("div", {id: "wrapper"}, 
+        React.createElement("h3", {className: "page-header"}, "Profiles"), 
+        React.createElement("div", {className: "panel panel-default"}, 
+          React.createElement("div", {className: "panel-heading"}, 
+            React.createElement("i", {className: "fa fa-lock fa-fw"}), " Profile Form", 
+            React.createElement("div", {style: { display: 'block', backgroundColor: '#fff !important'}, className: "pull-right"}, 
+              React.createElement("button", {style: { width: '75px'}, type: "button", className: "btn btn-xs btn-outline btn-success"}, "Save"), 
+              " ", 
+              React.createElement("button", {style: { width: '75px'}, type: "button", className: "btn btn-xs btn-outline btn-danger"}, "Cancel")
+            )
+          ), 
+
+          React.createElement("div", {className: "panel-body"}, 
+            React.createElement("div", {className: "row"}, 
+              React.createElement("div", {className: "col-lg-6"}, 
+                  React.createElement("form", {role: "form"}, 
+                    React.createElement("div", {className: "form-group"}, 
+                      React.createElement("label", null, "Text Input"), 
+                      React.createElement("input", {className: "form-control"}), 
+                      React.createElement("p", {className: "help-block"}, "Example block-level help text here.")
+                    ), 
+                    React.createElement("div", {className: "form-group"}, 
+                      React.createElement("label", null, "Text Input with Placeholder"), 
+                      React.createElement("input", {className: "form-control", placeholder: "Enter text"})
+                    ), 
+                    React.createElement("div", {className: "form-group"}, 
+                      React.createElement("label", null, "Static Control"), 
+                      React.createElement("p", {className: "form-control-static"}, "email@example.com")
+                    ), 
+                    React.createElement("div", {className: "form-group"}, 
+                      React.createElement("label", null, "File input"), 
+                      React.createElement("input", {type: "file"})
+                    ), 
+                    React.createElement("div", {className: "form-group"}, 
+                      React.createElement("label", null, "Text area"), 
+                      React.createElement("textarea", {className: "form-control", rows: "3"})
+                    ), 
+                    React.createElement("div", {className: "form-group"}, 
+                      React.createElement("label", null, "Checkboxes"), 
+                      React.createElement("div", {className: "checkbox"}, 
+                        React.createElement("label", null, 
+                          React.createElement("input", {type: "checkbox", value: ""}), " Checkbox 1"
+                        )
+                      ), 
+                      React.createElement("div", {className: "checkbox"}, 
+                        React.createElement("label", null, 
+                          React.createElement("input", {type: "checkbox", value: ""}), " Checkbox 2"
+                        )
+                      ), 
+                      React.createElement("div", {className: "checkbox"}, 
+                        React.createElement("label", null, 
+                          React.createElement("input", {type: "checkbox", value: ""}), "Checkbox 3"
+                        )
+                      )
+                    ), 
+                    React.createElement("div", {className: "form-group"}, 
+                      React.createElement("label", null, "Inline Checkboxes"), 
+                      React.createElement("label", {className: "checkbox-inline"}, 
+                        React.createElement("input", {type: "checkbox"}), "1"
+                      ), 
+                      React.createElement("label", {className: "checkbox-inline"}, 
+                        React.createElement("input", {type: "checkbox"}), "2"
+                      ), 
+                      React.createElement("label", {className: "checkbox-inline"}, 
+                        React.createElement("input", {type: "checkbox"}), "3"
+                      )
+                    ), 
+                    React.createElement("div", {className: "form-group"}, 
+                      React.createElement("label", null, "Radio Buttons"), 
+                      React.createElement("div", {className: "radio"}, 
+                        React.createElement("label", null, 
+                          React.createElement("input", {type: "radio", name: "optionsRadios", id: "optionsRadios1", value: "option1", checked: ""}), "Radio 1"
+                        )
+                      ), 
+                      React.createElement("div", {className: "radio"}, 
+                        React.createElement("label", null, 
+                          React.createElement("input", {type: "radio", name: "optionsRadios", id: "optionsRadios2", value: "option2"}), "Radio 2"
+                        )
+                      ), 
+                      React.createElement("div", {className: "radio"}, 
+                        React.createElement("label", null, 
+                          React.createElement("input", {type: "radio", name: "optionsRadios", id: "optionsRadios3", value: "option3"}), "Radio 3"
+                        )
+                      )
+                    ), 
+                    React.createElement("div", {className: "form-group"}, 
+                      React.createElement("label", null, "Inline Radio Buttons"), 
+                      React.createElement("label", {className: "radio-inline"}, 
+                        React.createElement("input", {type: "radio", name: "optionsRadiosInline", id: "optionsRadiosInline1", value: "option1", checked: ""}), "1"
+                      ), 
+                      React.createElement("label", {className: "radio-inline"}, 
+                        React.createElement("input", {type: "radio", name: "optionsRadiosInline", id: "optionsRadiosInline2", value: "option2"}), "2"
+                      ), 
+                      React.createElement("label", {className: "radio-inline"}, 
+                        React.createElement("input", {type: "radio", name: "optionsRadiosInline", id: "optionsRadiosInline3", value: "option3"}), "3"
+                      )
+                    ), 
+                    React.createElement("div", {className: "form-group"}, 
+                      React.createElement("label", null, "Selects"), 
+                      React.createElement("select", {className: "form-control"}, 
+                        React.createElement("option", null, "1"), 
+                        React.createElement("option", null, "2"), 
+                        React.createElement("option", null, "3"), 
+                        React.createElement("option", null, "4"), 
+                        React.createElement("option", null, "5")
+                      )
+                    ), 
+                    React.createElement("div", {className: "form-group"}, 
+                      React.createElement("label", null, "Multiple Selects"), 
+                      React.createElement("select", {multiple: "", className: "form-control"}, 
+                        React.createElement("option", null, "1"), 
+                        React.createElement("option", null, "2"), 
+                        React.createElement("option", null, "3"), 
+                        React.createElement("option", null, "4"), 
+                        React.createElement("option", null, "5")
+                      )
+                    ), 
+                    React.createElement("button", {type: "submit", className: "btn btn-default"}, "Submit Button"), 
+                    React.createElement("button", {type: "reset", className: "btn btn-default"}, "Reset Button")
+                  )
+                ), 
+
+                React.createElement("div", {className: "col-lg-6"}, 
+                  React.createElement("h1", null, "Disabled Form States"), 
+                  React.createElement("form", {role: "form"}, 
+                    React.createElement("fieldset", {disabled: ""}, 
+                      React.createElement("div", {className: "form-group"}, 
+                        React.createElement("label", {htmlFor: "disabledSelect"}, "Disabled input"), 
+                        React.createElement("input", {className: "form-control", id: "disabledInput", type: "text", placeholder: "Disabled input", disabled: ""})
+                      ), 
+                      React.createElement("div", {className: "form-group"}, 
+                        React.createElement("label", {htmlFor: "disabledSelect"}, "Disabled select menu"), 
+                        React.createElement("select", {id: "disabledSelect", className: "form-control"}, 
+                          React.createElement("option", null, "Disabled select")
+                        )
+                      ), 
+                      React.createElement("div", {className: "checkbox"}, 
+                        React.createElement("label", null, 
+                          React.createElement("input", {type: "checkbox"}), "Disabled Checkbox"
+                        )
+                      ), 
+                      React.createElement("button", {type: "submit", className: "btn btn-primary"}, "Disabled Button")
+                    )
+                  ), 
+
+                  React.createElement("h1", null, "Form Validation States"), 
+                  React.createElement("form", {role: "form"}, 
+                    React.createElement("div", {className: "form-group has-success"}, 
+                      React.createElement("label", {className: "control-label", htmlFor: "inputSuccess"}, "Input with success"), 
+                      React.createElement("input", {type: "text", className: "form-control", id: "inputSuccess"})
+                    ), 
+                    React.createElement("div", {className: "form-group has-warning"}, 
+                      React.createElement("label", {className: "control-label", htmlFor: "inputWarning"}, "Input with warning"), 
+                      React.createElement("input", {type: "text", className: "form-control", id: "inputWarning"})
+                    ), 
+                    React.createElement("div", {className: "form-group has-error"}, 
+                      React.createElement("label", {className: "control-label", htmlFor: "inputError"}, "Input with error"), 
+                      React.createElement("input", {type: "text", className: "form-control", id: "inputError"})
+                    )
+                  ), 
+                React.createElement("h1", null, "Input Groups"), 
+                React.createElement("form", {role: "form"}, 
+                  React.createElement("div", {className: "form-group input-group"}, 
+                    React.createElement("span", {className: "input-group-addon"}, "@"), 
+                    React.createElement("input", {type: "text", className: "form-control", placeholder: "Username"})
+                  ), 
+                  React.createElement("div", {className: "form-group input-group"}, 
+                    React.createElement("input", {type: "text", className: "form-control"}), 
+                    React.createElement("span", {className: "input-group-addon"}, ".00")
+                  ), 
+                  React.createElement("div", {className: "form-group input-group"}, 
+                    React.createElement("span", {className: "input-group-addon"}, React.createElement("i", {className: "fa fa-eur"})
+                    ), 
+                    React.createElement("input", {type: "text", className: "form-control", placeholder: "Font Awesome Icon"})
+                  ), 
+                  React.createElement("div", {className: "form-group input-group"}, 
+                    React.createElement("span", {className: "input-group-addon"}, "$"), 
+                    React.createElement("input", {type: "text", className: "form-control"}), 
+                    React.createElement("span", {className: "input-group-addon"}, ".00")
+                  ), 
+                  React.createElement("div", {className: "form-group input-group"}, 
+                    React.createElement("input", {type: "text", className: "form-control"}), 
+                    React.createElement("span", {className: "input-group-btn"}, 
+                      React.createElement("button", {className: "btn btn-default", type: "button"}, React.createElement("i", {className: "fa fa-search"})
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
+    );
+  }
+});
+
+module.exports = ProfileForm;
+
+
+},{"react":232}],241:[function(require,module,exports){
+'use strict';
+
 var React       = require('react');
 var Loading     = require('../Loading');
 var ListOptions = require('../list/ListOptions');
@@ -25000,7 +25224,7 @@ var ProfileList = React.createClass({displayName: "ProfileList",
 
     return (
       React.createElement("div", {id: "wrapper"}, 
-        React.createElement("h1", {className: "page-header"}, "Profiles"), 
+        React.createElement("h3", {className: "page-header"}, "Profiles"), 
         React.createElement("div", {className: "panel panel-default"}, 
           React.createElement("div", {className: "panel-heading"}, 
             React.createElement("i", {className: "fa fa-lock fa-fw"}), " Profiles List"
