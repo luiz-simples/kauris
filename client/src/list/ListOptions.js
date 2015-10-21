@@ -79,23 +79,19 @@ var ListOptions = React.createClass({
 
         <ul className="dropdown-menu dropdown-menu-right">
           <li className="dropdown-submenu">
-            <a href="#">View cols</a>
-            <ul className="dropdown-menu dropdown-menu-right">{viewCols}</ul>
+            <a tabIndex="0">Cols</a>
+
+            <ul className="dropdown-menu">
+              {viewCols}
+            </ul>
           </li>
 
           <li className="dropdown-submenu">
-            <a href="#">View filters</a>
-            <ul className="dropdown-menu dropdown-menu-right">{viewFilters}</ul>
-          </li>
+            <a tabIndex="0">Filters</a>
 
-          <li className="divider"></li>
-
-          <li>
-            <div style={{ margin: '0 0 0 10px' }} className="checkbox">
-              <label>
-                <input type="checkbox" /> Distinct
-              </label>
-            </div>
+            <ul className="dropdown-menu">
+              {viewFilters}
+            </ul>
           </li>
         </ul>
       </div>

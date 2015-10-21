@@ -2,16 +2,27 @@
 
 var React = require('react');
 
+var dateInputCount = 0;
+
 var FormFieldsDate = React.createClass({
+  handleChange: function(event) {
+    var value = String(event.target.value || '').trim();
+    if (!value.length) value = undefined;
+    this.props.change(this.props.field, value);
+  },
+
   render: function () {
+    var cfg     = this.props.field;
+    var val     = this.props.value;
+    var htmlFor = 'date'.concat(++dateInputCount);
+
     return(
       <div className="form-group has-success col-md-3">
-        <label className="control-label" htmlFor="inputSuccess">Date</label>
+        <label className="control-label" htmlFor={htmlFor}>{cfg.label}</label>
         <div className="input-group">
           <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
-          <input type="text" id="inputSuccess" className="form-control" placeholder="write here" />
+          <input defaultValue={val} onChange={this.handleChange} type="text" id={htmlFor} className="form-control" placeholder="write here" />
         </div>
-        <p className="help-block">Example block-level help text here.</p>
       </div>
     );
   }
