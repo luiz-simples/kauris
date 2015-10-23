@@ -3,11 +3,10 @@
 var React = require('react');
 
 var Loading = React.createClass({
-
   render: function () {
     return(
       <section>
-        <h4>Carregando informações. Aguarde.</h4>
+        <h4>Loading information. Wait a few minutes.</h4>
         <div className="progress">
           <div
             className="progress-bar progress-bar-striped active"

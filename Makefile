@@ -40,3 +40,22 @@ run-dev:
 		--rm \
 		-it \
 		kauris-dev
+
+run-cordova:
+	( ( docker stop ${CN_DEV} && docker rm ${CN_DEV} ) || echo "Container not found: ${CN_DEV}" ) && \
+	make run-db-postgres && \
+	cp -Rf ${PWD}/docker/cordova ${PWD}/Dockerfile && \
+	docker build --rm -t cordova-dev . && \
+	rm -Rf ${PWD}/Dockerfile && \
+	docker run \
+		-v ${HOME}/.gitconfig:/root/.gitconfig \
+		-v ${HOME}/.ssh:/root/.ssh \
+		-v ${PWD}:/cordova/sys \
+		-w /cordova/sys \
+		-h dev \
+		--link $(DB_CONT):$(DB_HOST) \
+		--dns=8.8.8.8 \
+		--name ${CN_DEV} \
+		--rm \
+		-it \
+		cordova-dev

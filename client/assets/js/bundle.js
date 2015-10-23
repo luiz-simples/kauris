@@ -36737,11 +36737,10 @@ module.exports = App;
 var React = require('react');
 
 var Loading = React.createClass({displayName: "Loading",
-
   render: function () {
     return(
       React.createElement("section", null, 
-        React.createElement("h4", null, "Carregando informações. Aguarde."), 
+        React.createElement("h4", null, "Loading information. Wait a few minutes."), 
         React.createElement("div", {className: "progress"}, 
           React.createElement("div", {
             className: "progress-bar progress-bar-striped active", 
@@ -36783,7 +36782,6 @@ newBase.setAttribute('href', document.location.hostname);
 document.getElementsByTagName('head')[0].appendChild(newBase);
 
 var render = function() {
-
   ReactDom.render((
     React.createElement(Router, {history: history}, 
       React.createElement(Route, {path: "/", component: App}, 

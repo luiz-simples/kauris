@@ -7,22 +7,8 @@
   "scripts": {
     "start": "gulp",
     "build": "npm install browserify envify uglifyjs && browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > js/bundle.min.js",
-    "postinstall": "bower install --allow-root --config.interactive=false"
-  },
-  "devDependencies": {
-    "browser-sync": "^2.9.11",
-    "browser-sync-spa": "^1.0.3",
-    "browserify": "^11.2.0",
-    "envify": "^3.4.0",
-    "gulp": "^3.9.0",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-util": "^3.0.6",
-    "lodash.assign": "^3.2.0",
-    "reactify": "^1.1.1",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.4.0",
-    "wrench": "^1.5.8"
+    "postinstall": "bower install --allow-root --config.interactive=false",
+    "test": "jest"
   },
   "dependencies": {
     "history": "^1.12.5",
@@ -30,6 +16,36 @@
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-router": "^1.0.0-rc3"
+  },
+  "jest": {
+    "testDirectoryName": "tests",
+    "scriptPreprocessor": "./node_modules/babel-jest",
+    "unmockedModulePathPatterns": [
+      "./node_modules/lodash",
+      "./node_modules/history",
+      "./node_modules/react",
+      "./node_modules/react-dom",
+      "./node_modules/react-router",
+      "./node_modules/react-addons-test-utils"
+    ]
+  },
+  "devDependencies": {
+    "babel-jest": "^5.3.0",
+    "browser-sync": "^2.9.11",
+    "browser-sync-spa": "^1.0.3",
+    "browserify": "^11.2.0",
+    "envify": "^3.4.0",
+    "gulp": "^3.9.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-util": "^3.0.6",
+    "jest-cli": "^0.6.0",
+    "lodash.assign": "^3.2.0",
+    "react-addons-test-utils": "^0.14.0",
+    "reactify": "^1.1.1",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.4.0",
+    "wrench": "^1.5.8"
   },
   "browserify": {
     "transform": [

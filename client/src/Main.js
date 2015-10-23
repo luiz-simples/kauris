@@ -24,7 +24,6 @@ newBase.setAttribute('href', document.location.hostname);
 document.getElementsByTagName('head')[0].appendChild(newBase);
 
 var render = function() {
-
   ReactDom.render((
     <Router history={history}>
       <Route path='/' component={App}>
