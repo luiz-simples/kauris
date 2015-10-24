@@ -1,4 +1,3 @@
-/*globals jest:false */
 'use strict';
 
 function returnSuperAgent() {

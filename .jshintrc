@@ -25,6 +25,9 @@
     "after": false,
     "afterEach": false,
     "describe": false,
-    "it": false
+    "it": false,
+    "pit": false,
+    "jest": false,
+    "expect": false
   }
 }

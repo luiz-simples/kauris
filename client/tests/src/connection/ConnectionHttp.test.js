@@ -1,4 +1,3 @@
-/*globals jest:false, expect:false, pit:false */
 'use strict';
 
 var pathConnectionHttp = '../../../src/connection/ConnectionHttp';

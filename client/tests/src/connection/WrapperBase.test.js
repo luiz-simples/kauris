@@ -1,4 +1,3 @@
-/*globals jest:false, expect:false */
 'use strict';
 
 var pathWrapperBase = '../../../src/connection/WrapperBase';
