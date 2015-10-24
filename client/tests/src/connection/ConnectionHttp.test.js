@@ -46,6 +46,16 @@ describe('ConnectionHttp', function() {
       connectionHttp = new ConnectionHttp();
     });
 
+    pit('should request get', function() {
+      return connectionHttp.request(verbs.GET, addr, args).then(function(res) {
+        expect(superagent.get.mock.calls).toEqual([[addr]]);
+        expect(superagent.send.mock.calls).toEqual([[args]]);
+        expect(superagent.set.mock.calls).toEqual([['Accept', 'application/json']]);
+        expect(res).toEqual(response);
+        clearMocks();
+      });
+    });
+
     pit('should request post', function() {
       return connectionHttp.request(verbs.POST, addr, args).then(function(res) {
         expect(superagent.post.mock.calls).toEqual([[addr]]);
