@@ -11,8 +11,10 @@
     "test": "jest"
   },
   "dependencies": {
-    "history": "^1.12.5",
+    "q": "^1.4.1",
     "lodash": "^3.10.1",
+    "history": "^1.12.5",
+    "superagent": "^1.4.0",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-router": "^1.0.0-rc3"
@@ -21,6 +23,7 @@
     "testDirectoryName": "tests",
     "scriptPreprocessor": "./node_modules/babel-jest",
     "unmockedModulePathPatterns": [
+      "./node_modules/q",
       "./node_modules/lodash",
       "./node_modules/history",
       "./node_modules/react",
@@ -38,6 +41,7 @@
     "gulp": "^3.9.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-util": "^3.0.6",
+    "jasmine-pit": "^2.0.2",
     "jest-cli": "^0.6.0",
     "lodash.assign": "^3.2.0",
     "react-addons-test-utils": "^0.14.0",
