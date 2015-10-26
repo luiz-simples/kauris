@@ -1,54 +1,54 @@
 'use strict';
 
-var pathWrapperBase = '../../../src/connection/WrapperBase';
-jest.dontMock(pathWrapperBase);
-var WrapperBase = require(pathWrapperBase);
+var pathRequesterORM = '../../../src/connection/RequesterORM';
+jest.dontMock(pathRequesterORM);
+var RequesterORM = require(pathRequesterORM);
 
-describe('WrapperBase', function() {
+describe('RequesterORM', function() {
   describe('#url', function() {
     it('should return / when empty baseUrl', function() {
-      var wrapperBase = new WrapperBase();
-      var urlMounted  = wrapperBase.url();
+      var orm = new RequesterORM();
+      var urlMounted  = orm.url();
       expect(urlMounted).toEqual('/');
     });
 
     it ('should return /profiles when call .one("profiles")', function() {
-      var wrapperBase = new WrapperBase();
+      var orm = new RequesterORM();
       var routeName   = 'profiles';
-      var urlMounted  = wrapperBase.one(routeName).url();
+      var urlMounted  = orm.one(routeName).url();
       expect(urlMounted).toEqual('/profiles');
     });
 
     it ('should ignore / when call .one("/profiles")', function() {
-      var wrapperBase = new WrapperBase();
+      var orm = new RequesterORM();
       var routeName   = '/profiles';
-      var urlMounted  = wrapperBase.one(routeName).url();
+      var urlMounted  = orm.one(routeName).url();
       expect(urlMounted).toEqual('/profiles');
     });
 
     it ('should return /profiles when call .all("profiles")', function() {
-      var wrapperBase = new WrapperBase();
+      var orm = new RequesterORM();
       var routeName   = 'profiles';
-      var urlMounted  = wrapperBase.all(routeName).url();
+      var urlMounted  = orm.all(routeName).url();
       expect(urlMounted).toEqual('/profiles');
     });
 
     it ('should ignore / when call .all("/profiles")', function() {
-      var wrapperBase = new WrapperBase();
+      var orm = new RequesterORM();
       var routeName   = '/profiles';
-      var urlMounted  = wrapperBase.all(routeName).url();
+      var urlMounted  = orm.all(routeName).url();
       expect(urlMounted).toEqual('/profiles');
     });
 
     it ('should return /profiles when call .all("profiles").one(1)', function() {
-      var wrapperBase = new WrapperBase();
-      var urlMounted  = wrapperBase.all('profiles').one(1).url();
+      var orm = new RequesterORM();
+      var urlMounted  = orm.all('profiles').one(1).url();
       expect(urlMounted).toEqual('/profiles/1');
     });
 
     it ('should return others instances when call .all or .one', function() {
-      var wrapperBase = new WrapperBase();
-      var profiles    = wrapperBase.all('profiles');
+      var orm = new RequesterORM();
+      var profiles    = orm.all('profiles');
       var profileNew  = profiles.one('new');
 
       expect(profiles.url()).toEqual('/profiles');

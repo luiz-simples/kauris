@@ -4,7 +4,7 @@ var promise = require('q').Promise;
 var request = require('superagent');
 var getUrlPath = require('./util/GetUrlPath');
 
-function ConnectionHttp(prtc, host, port) {
+function RequesterHttp(prtc, host, port) {
   var http = this;
 
   http.request = function(verb, address, params) {
@@ -22,4 +22,4 @@ function ConnectionHttp(prtc, host, port) {
   };
 }
 
-module.exports = ConnectionHttp;
+module.exports = RequesterHttp;

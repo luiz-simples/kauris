@@ -1,28 +1,27 @@
 'use strict';
 
-var pathConnectionHttp = '../../../../src/connection/ConnectionHttp';
-var pathGetUrlPath = '../../../../src/connection/util/GetUrlPath';
-var pathGetProtocol = '../../../../src/connection/util/GetProtocol';
 var pathGetHost = '../../../../src/connection/util/GetHost';
+var pathGetUrlPath = '../../../../src/connection/util/GetUrlPath';
 var pathGetBaseUrl = '../../../../src/connection/util/GetBaseUrl';
+var pathGetProtocol = '../../../../src/connection/util/GetProtocol';
+var pathRequesterHttp = '../../../../src/connection/RequesterHttp';
 
-jest.dontMock(pathConnectionHttp);
-jest.dontMock(pathGetUrlPath);
-jest.dontMock(pathGetProtocol);
 jest.dontMock(pathGetHost);
 jest.dontMock(pathGetBaseUrl);
+jest.dontMock(pathGetUrlPath);
+jest.dontMock(pathGetProtocol);
+jest.dontMock(pathRequesterHttp);
 
-var ConnectionHttp = require(pathConnectionHttp);
+var RequesterHttp = require(pathRequesterHttp);
 var superagent = require('superagent');
 
-describe('ConnectionHttp', function() {
-  describe('#request with initializers', function() {
+describe('RequesterHttp', function() {
+  describe('#request without initializers', function() {
     var response,
       verbs,
       addr,
       args,
-      path,
-      connectionHttp,
+      http,
       clearMocks,
       err,
       verbCall,
@@ -46,8 +45,7 @@ describe('ConnectionHttp', function() {
         superagent.delete.mockClear();
       };
 
-      path = '/profiles';
-      addr = 'http://127.0.0.1:1337'.concat(path);
+      addr = 'http://127.0.0.1:1337/profiles';
 
       response = {
         request:  '',
@@ -65,10 +63,7 @@ describe('ConnectionHttp', function() {
       err = function(e) { throw e; };
 
       args = { profileId: 1, profileName: 'Profile Name' };
-      var prtc = 'http';
-      var host = '127.0.0.1';
-      var port = '1337';
-      connectionHttp = new ConnectionHttp(prtc, host, port);
+      http = new RequesterHttp();
 
       verbCall = [[addr]];
       sendCall = [[args]];
@@ -80,7 +75,8 @@ describe('ConnectionHttp', function() {
     });
 
     pit('should request get', function() {
-      return connectionHttp.request(verbs.GET, path, args).then(function(res) {
+      console.log(addr);
+      return http.request(verbs.GET, addr, args).then(function(res) {
         expect(superagent.get.mock.calls).toEqual(verbCall);
         expect(superagent.send.mock.calls).toEqual(sendCall);
         expect(superagent.set.mock.calls).toEqual(acceptCall);
@@ -89,7 +85,7 @@ describe('ConnectionHttp', function() {
     });
 
     pit('should request post', function() {
-      return connectionHttp.request(verbs.POST, path, args).then(function(res) {
+      return http.request(verbs.POST, addr, args).then(function(res) {
         expect(superagent.post.mock.calls).toEqual(verbCall);
         expect(superagent.send.mock.calls).toEqual(sendCall);
         expect(superagent.set.mock.calls).toEqual(acceptCall);
@@ -98,7 +94,7 @@ describe('ConnectionHttp', function() {
     });
 
     pit('should request put', function() {
-      return connectionHttp.request(verbs.PUT, path, args).then(function(res) {
+      return http.request(verbs.PUT, addr, args).then(function(res) {
         expect(superagent.put.mock.calls).toEqual(verbCall);
         expect(superagent.send.mock.calls).toEqual(sendCall);
         expect(superagent.set.mock.calls).toEqual(acceptCall);
@@ -107,7 +103,7 @@ describe('ConnectionHttp', function() {
     });
 
     pit('should request delete', function() {
-      return connectionHttp.request(verbs.DELETE, path, args).then(function(res) {
+      return http.request(verbs.DELETE, addr, args).then(function(res) {
         expect(superagent.delete.mock.calls).toEqual(verbCall);
         expect(superagent.send.mock.calls).toEqual(sendCall);
         expect(superagent.set.mock.calls).toEqual(acceptCall);
