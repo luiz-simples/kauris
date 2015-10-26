@@ -6,18 +6,6 @@ var WrapperBase = require(pathWrapperBase);
 
 describe('WrapperBase', function() {
   describe('#url', function() {
-    var baseUrl;
-
-    beforeEach(function() {
-      baseUrl = 'http://localhost/';
-    });
-
-    it('should return base url', function() {
-      var wrapperBase = new WrapperBase(baseUrl);
-      var urlMounted  = wrapperBase.url();
-      expect(urlMounted).toEqual('http://localhost/');
-    });
-
     it('should return / when empty baseUrl', function() {
       var wrapperBase = new WrapperBase();
       var urlMounted  = wrapperBase.url();

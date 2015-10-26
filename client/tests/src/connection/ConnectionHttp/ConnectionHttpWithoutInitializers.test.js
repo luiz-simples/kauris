@@ -1,13 +1,26 @@
 'use strict';
 
-var pathConnectionHttp = '../../../src/connection/ConnectionHttp';
+var pathConnectionHttp = '../../../../src/connection/ConnectionHttp';
+var pathConnectionBase = '../../../../src/connection/ConnectionBase';
+
 jest.dontMock(pathConnectionHttp);
+jest.dontMock(pathConnectionBase);
+
 var ConnectionHttp = require(pathConnectionHttp);
 var superagent = require('superagent');
 
 describe('ConnectionHttp', function() {
-  describe('#request', function() {
-    var response, verbs, addr, args, connectionHttp, clearMocks;
+  describe('#request without initializers', function() {
+    var response,
+      verbs,
+      addr,
+      args,
+      connectionHttp,
+      clearMocks,
+      err,
+      verbCall,
+      sendCall,
+      acceptCall;
 
     beforeEach(function() {
       verbs = {
@@ -26,7 +39,7 @@ describe('ConnectionHttp', function() {
         superagent.delete.mockClear();
       };
 
-      addr = 'http://localhost/profiles';
+      addr = 'http://127.0.0.1:1337/profiles';
 
       response = {
         request:  '',
@@ -41,48 +54,55 @@ describe('ConnectionHttp', function() {
         return response;
       });
 
+      err = function(e) { throw e; };
+
       args = { profileId: 1, profileName: 'Profile Name' };
       connectionHttp = new ConnectionHttp();
+
+      verbCall = [[addr]];
+      sendCall = [[args]];
+      acceptCall = [['Accept', 'application/json']];
+    });
+
+    afterEach(function() {
+      clearMocks();
     });
 
     pit('should request get', function() {
+      console.log(addr);
       return connectionHttp.request(verbs.GET, addr, args).then(function(res) {
-        expect(superagent.get.mock.calls).toEqual([[addr]]);
-        expect(superagent.send.mock.calls).toEqual([[args]]);
-        expect(superagent.set.mock.calls).toEqual([['Accept', 'application/json']]);
+        expect(superagent.get.mock.calls).toEqual(verbCall);
+        expect(superagent.send.mock.calls).toEqual(sendCall);
+        expect(superagent.set.mock.calls).toEqual(acceptCall);
         expect(res).toEqual(response);
-        clearMocks();
-      });
+      }).catch(err);
     });
 
     pit('should request post', function() {
       return connectionHttp.request(verbs.POST, addr, args).then(function(res) {
-        expect(superagent.post.mock.calls).toEqual([[addr]]);
-        expect(superagent.send.mock.calls).toEqual([[args]]);
-        expect(superagent.set.mock.calls).toEqual([['Accept', 'application/json']]);
+        expect(superagent.post.mock.calls).toEqual(verbCall);
+        expect(superagent.send.mock.calls).toEqual(sendCall);
+        expect(superagent.set.mock.calls).toEqual(acceptCall);
         expect(res).toEqual(response);
-        clearMocks();
-      });
+      }).catch(err);
     });
 
     pit('should request put', function() {
       return connectionHttp.request(verbs.PUT, addr, args).then(function(res) {
-        expect(superagent.put.mock.calls).toEqual([[addr]]);
-        expect(superagent.send.mock.calls).toEqual([[args]]);
-        expect(superagent.set.mock.calls).toEqual([['Accept', 'application/json']]);
+        expect(superagent.put.mock.calls).toEqual(verbCall);
+        expect(superagent.send.mock.calls).toEqual(sendCall);
+        expect(superagent.set.mock.calls).toEqual(acceptCall);
         expect(res).toEqual(response);
-        clearMocks();
-      });
+      }).catch(err);
     });
 
     pit('should request delete', function() {
       return connectionHttp.request(verbs.DELETE, addr, args).then(function(res) {
-        expect(superagent.delete.mock.calls).toEqual([[addr]]);
-        expect(superagent.send.mock.calls).toEqual([[args]]);
-        expect(superagent.set.mock.calls).toEqual([['Accept', 'application/json']]);
+        expect(superagent.delete.mock.calls).toEqual(verbCall);
+        expect(superagent.send.mock.calls).toEqual(sendCall);
+        expect(superagent.set.mock.calls).toEqual(acceptCall);
         expect(res).toEqual(response);
-        clearMocks();
-      });
+      }).catch(err);
     });
   });
 });

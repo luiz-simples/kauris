@@ -2,13 +2,16 @@
 
 var promise = require('q').Promise;
 var request = require('superagent');
+var connectionBase = require('./ConnectionBase');
 
-function ConnectionHttp() {
-  var connection = this;
+function ConnectionHttp(prtc, host, port) {
+  var http = this;
 
-  connection.request = function(verb, address, params) {
+  http.request = function(verb, address, params) {
+    var url = connectionBase(prtc, host, port, address);
+
     return promise(function(resolve, reject) {
-      request[(verb ? String(verb) : 'GET').toLowerCase()](address)
+      request[(verb ? String(verb) : 'GET').toLowerCase()](url)
         .send(params)
         .set('Accept', 'application/json')
         .end(function(err, res) {
