@@ -1,10 +1,16 @@
 'use strict';
 
 var pathConnectionHttp = '../../../../src/connection/ConnectionHttp';
-var pathConnectionBase = '../../../../src/connection/ConnectionBase';
+var pathGetUrlPath = '../../../../src/connection/util/GetUrlPath';
+var pathGetProtocol = '../../../../src/connection/util/GetProtocol';
+var pathGetHost = '../../../../src/connection/util/GetHost';
+var pathGetBaseUrl = '../../../../src/connection/util/GetBaseUrl';
 
 jest.dontMock(pathConnectionHttp);
-jest.dontMock(pathConnectionBase);
+jest.dontMock(pathGetUrlPath);
+jest.dontMock(pathGetProtocol);
+jest.dontMock(pathGetHost);
+jest.dontMock(pathGetBaseUrl);
 
 var ConnectionHttp = require(pathConnectionHttp);
 var superagent = require('superagent');

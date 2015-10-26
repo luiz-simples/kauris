@@ -2,13 +2,13 @@
 
 var promise = require('q').Promise;
 var request = require('superagent');
-var connectionBase = require('./ConnectionBase');
+var getUrlPath = require('./util/GetUrlPath');
 
 function ConnectionHttp(prtc, host, port) {
   var http = this;
 
   http.request = function(verb, address, params) {
-    var url = connectionBase(prtc, host, port, address);
+    var url = getUrlPath(prtc, host, port, address);
 
     return promise(function(resolve, reject) {
       request[(verb ? String(verb) : 'GET').toLowerCase()](url)
