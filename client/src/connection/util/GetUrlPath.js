@@ -4,12 +4,13 @@ var separator = '/';
 var getBaseUrl = require('./GetBaseUrl');
 
 function GetUrlPath(prtc, host, port, address) {
+  address = String(address || '').trim();
   var baseRoute = getBaseUrl(prtc, host, port);
   var transformBase = baseRoute.length;
 
   if (transformBase) {
-    var withoutBase = String(address).trim().indexOf(baseRoute) !== 0;
-    var withoutSeparator = String(address).trim().indexOf(separator) !== 0;
+    var withoutBase      = address.indexOf(baseRoute) !== 0;
+    var withoutSeparator = address.indexOf(separator) !== 0;
 
     if (withoutBase) {
       if (withoutSeparator) address = separator.concat(address);
