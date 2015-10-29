@@ -34,4 +34,10 @@ function RequesterSocket(prtc, host, port) {
   };
 }
 
-module.exports = RequesterSocket;
+var socketInstance;
+module.exports = {
+  getInstance: function(prtc, host, port) {
+    if (!socketInstance) socketInstance = new RequesterSocket(prtc, host, port);
+    return socketInstance;
+  }
+};

@@ -42,7 +42,7 @@ describe('RequesterSocket', function() {
       var prtc = 'http';
       var host = '127.0.0.1';
       var port = '1338';
-      socket = new RequesterSocket(prtc, host, port);
+      socket = RequesterSocket.getInstance(prtc, host, port);
     });
 
     afterEach(function() {

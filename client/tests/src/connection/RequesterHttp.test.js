@@ -64,7 +64,7 @@ describe('RequesterHttp', function() {
       var prtc = 'http';
       var host = '127.0.0.1';
       var port = '1337';
-      http = new RequesterHttp(prtc, host, port);
+      http = RequesterHttp.getInstance(prtc, host, port);
 
       verbCall = [[addr]];
       sendCall = [[args]];

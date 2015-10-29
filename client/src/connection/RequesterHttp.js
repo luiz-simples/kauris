@@ -22,4 +22,10 @@ function RequesterHttp(prtc, host, port) {
   };
 }
 
-module.exports = RequesterHttp;
+var httpInstance;
+module.exports = {
+  getInstance: function(prtc, host, port) {
+    if (!httpInstance) httpInstance = new RequesterHttp(prtc, host, port);
+    return httpInstance;
+  }
+};
