@@ -5,7 +5,7 @@ var React = require('react');
 
 var moneyInputCount = 0;
 
-var FormFieldsMoney = React.createClass({
+var FormFieldMoney = React.createClass({
   handleChange: function(event) {
     var value = String(event.target.value || '').trim();
     if (!value.length) value = undefined;
@@ -50,4 +50,4 @@ var FormFieldsMoney = React.createClass({
   }
 });
 
-module.exports = FormFieldsMoney;
+module.exports = FormFieldMoney;

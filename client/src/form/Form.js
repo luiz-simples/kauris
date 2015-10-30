@@ -3,17 +3,17 @@
 var React = require('react');
 
 var typesFields = {
-  date:     require('../form/fields/FormFieldsDate'),
-  datetime: require('../form/fields/FormFieldsDateTime'),
-  email:    require('../form/fields/FormFieldsEmail'),
-  integer:  require('../form/fields/FormFieldsInteger'),
-  money:    require('../form/fields/FormFieldsMoney'),
-  percent:  require('../form/fields/FormFieldsPercent'),
-  primary:  require('../form/fields/FormFieldsPrimary'),
-  select:   require('../form/fields/FormFieldsSelect'),
-  string:   require('../form/fields/FormFieldsString'),
-  text:     require('../form/fields/FormFieldsText'),
-  time:     require('../form/fields/FormFieldsTime')
+  date:     require('../form/fields/FormFieldDate'),
+  datetime: require('../form/fields/FormFieldDateTime'),
+  email:    require('../form/fields/FormFieldEmail'),
+  integer:  require('../form/fields/FormFieldInteger'),
+  money:    require('../form/fields/FormFieldMoney'),
+  percent:  require('../form/fields/FormFieldPercent'),
+  primary:  require('../form/fields/FormFieldPrimary'),
+  select:   require('../form/fields/FormFieldSelect'),
+  string:   require('../form/fields/FormFieldString'),
+  text:     require('../form/fields/FormFieldText'),
+  time:     require('../form/fields/FormFieldTime')
 };
 
 var Form = React.createClass({

@@ -2,9 +2,9 @@
 
 var React = require('react');
 
-var primaryInputCount = 0;
+var dateTimeInputCount = 0;
 
-var FormFieldsPrimary = React.createClass({
+var FormFieldDateTime = React.createClass({
   handleChange: function(event) {
     var value = String(event.target.value || '').trim();
     if (!value.length) value = undefined;
@@ -14,18 +14,18 @@ var FormFieldsPrimary = React.createClass({
   render: function() {
     var cfg     = this.props.field;
     var val     = this.props.value;
-    var htmlFor = 'primary'.concat(++primaryInputCount);
+    var htmlFor = 'primary'.concat(++dateTimeInputCount);
 
     return(
-      <div className="form-group col-md-2">
+      <div className="form-group has-success col-md-3">
         <label className="control-label" htmlFor={htmlFor}>{cfg.label}</label>
         <div className="input-group">
-          <span className="input-group-addon"><i className="fa fa-barcode"></i></span>
-          <input defaultValue={val} onChange={this.handleChange} type="text" className="form-control" id={htmlFor} placeholder={cfg.pĺace} disabled />
+          <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
+          <input defaultValue={val} onChange={this.handleChange} type="text" className="form-control" id={htmlFor} placeholder={cfg.pĺace} />
         </div>
       </div>
     );
   }
 });
 
-module.exports = FormFieldsPrimary;
+module.exports = FormFieldDateTime;

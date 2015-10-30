@@ -2,9 +2,9 @@
 
 var React = require('react');
 
-var emailInputCount = 0;
+var primaryInputCount = 0;
 
-var FormFieldsEmail = React.createClass({
+var FormFieldPrimary = React.createClass({
   handleChange: function(event) {
     var value = String(event.target.value || '').trim();
     if (!value.length) value = undefined;
@@ -14,18 +14,18 @@ var FormFieldsEmail = React.createClass({
   render: function() {
     var cfg     = this.props.field;
     var val     = this.props.value;
-    var htmlFor = 'primary'.concat(++emailInputCount);
+    var htmlFor = 'primary'.concat(++primaryInputCount);
 
     return(
-      <div className="form-group has-success col-md-6">
+      <div className="form-group col-md-2">
         <label className="control-label" htmlFor={htmlFor}>{cfg.label}</label>
         <div className="input-group">
-          <span className="input-group-addon"><i className="fa fa-envelope-o"></i></span>
-          <input defaultValue={val} onChange={this.handleChange} type="text" className="form-control" id={htmlFor} placeholder={cfg.pĺace} />
+          <span className="input-group-addon"><i className="fa fa-barcode"></i></span>
+          <input defaultValue={val} onChange={this.handleChange} type="text" className="form-control" id={htmlFor} placeholder={cfg.pĺace} disabled />
         </div>
       </div>
     );
   }
 });
 
-module.exports = FormFieldsEmail;
+module.exports = FormFieldPrimary;

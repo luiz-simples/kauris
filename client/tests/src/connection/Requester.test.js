@@ -57,9 +57,9 @@ describe('Requester', function() {
         });
       });
 
-      var path   = 'http://localhost/profiles';
-      var get    = 'GET';
-      var params = {};
+      var path   = 'http://localhost/circles';
+      var get    = 'POST';
+      var params = { id: 1, name: 'Blá' };
       return requester.getProtocol().request(get, path, params).then(function() {
         expect(requesterSocket.request.mock.calls).toEqual([[get, path, params]]);
       }).catch(err);

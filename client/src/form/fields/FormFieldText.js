@@ -4,7 +4,7 @@ var React = require('react');
 
 var textInputCount = 0;
 
-var FormFieldsText = React.createClass({
+var FormFieldText = React.createClass({
   handleChange: function(event) {
     var value = String(event.target.value || '').trim();
     if (!value.length) value = undefined;
@@ -25,4 +25,4 @@ var FormFieldsText = React.createClass({
   }
 });
 
-module.exports = FormFieldsText;
+module.exports = FormFieldText;

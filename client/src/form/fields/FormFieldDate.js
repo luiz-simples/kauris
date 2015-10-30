@@ -2,30 +2,30 @@
 
 var React = require('react');
 
-var timeInputCount = 0;
+var dateInputCount = 0;
 
-var FormFieldsTime = React.createClass({
+var FormFieldDate = React.createClass({
   handleChange: function(event) {
     var value = String(event.target.value || '').trim();
     if (!value.length) value = undefined;
     this.props.change(this.props.field, value);
   },
 
-  render: function() {
+  render: function () {
     var cfg     = this.props.field;
     var val     = this.props.value;
-    var htmlFor = 'time'.concat(++timeInputCount);
+    var htmlFor = 'date'.concat(++dateInputCount);
 
     return(
       <div className="form-group has-success col-md-3">
         <label className="control-label" htmlFor={htmlFor}>{cfg.label}</label>
         <div className="input-group">
-          <span className="input-group-addon"><i className="fa fa-clock-o"></i></span>
-          <input defaultValue={val} onChange={this.handleChange} type="text" className="form-control" id={htmlFor} placeholder={cfg.pĺace} />
+          <span className="input-group-addon"><i className="fa fa-calendar"></i></span>
+          <input defaultValue={val} onChange={this.handleChange} type="text" id={htmlFor} className="form-control" placeholder="write here" />
         </div>
       </div>
     );
   }
 });
 
-module.exports = FormFieldsTime;
+module.exports = FormFieldDate;

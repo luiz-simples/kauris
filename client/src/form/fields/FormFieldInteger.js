@@ -5,7 +5,7 @@ var React = require('react');
 
 var integerInputCount = 0;
 
-var FormFieldsInteger = React.createClass({
+var FormFieldInteger = React.createClass({
   handleChange: function(event) {
     var value = String(event.target.value || '').trim();
     if (!value.length) value = undefined;
@@ -50,4 +50,4 @@ var FormFieldsInteger = React.createClass({
   }
 });
 
-module.exports = FormFieldsInteger;
+module.exports = FormFieldInteger;

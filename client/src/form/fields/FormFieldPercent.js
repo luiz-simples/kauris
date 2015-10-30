@@ -5,7 +5,7 @@ var React = require('react');
 
 var percentInputCount = 0;
 
-var FormFieldsPercent = React.createClass({
+var FormFieldPercent = React.createClass({
   handleChange: function(event) {
     var value = String(event.target.value || '').trim();
     if (!value.length) value = undefined;
@@ -50,4 +50,4 @@ var FormFieldsPercent = React.createClass({
   }
 });
 
-module.exports = FormFieldsPercent;
+module.exports = FormFieldPercent;

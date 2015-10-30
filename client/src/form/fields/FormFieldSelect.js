@@ -4,7 +4,7 @@ var React = require('react');
 
 var selectInputCount = 0;
 
-var FormFieldsSelect = React.createClass({
+var formFieldelect = React.createClass({
   handleChange: function(event) {
     var value = String(event.target.value || '').trim();
     if (!value.length) value = undefined;
@@ -31,4 +31,4 @@ var FormFieldsSelect = React.createClass({
   }
 });
 
-module.exports = FormFieldsSelect;
+module.exports = formFieldelect;
