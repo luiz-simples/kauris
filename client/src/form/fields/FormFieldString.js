@@ -7,35 +7,52 @@ var stringInputCount = 0;
 var formFieldtring = React.createClass({
   getInitialState: function() {
 		return {
-      className: ''
+      dirty: false,
+      valid: false
     };
 	},
 
   handleChange: function(event) {
     var cfg = this.props.field;
-    var required = cfg.hasOwnProperty('required') && cfg.required;
     var className = '';
     var value = String(event.target.value || '').trim();
     var filled = value.length;
     if (!filled) value = undefined;
-
     if (filled) className = 'has-success';
-    if (!filled && required) className = 'has-error';
+    var valid = true;
+
+    if (cfg.hasOwnProperty('validations') && cfg.validations.length) {
+      for (var i = 0, c = cfg.validations.length; i < c; i++) {
+        var validation = cfg.validations[i];
+        var invalid = !validation.verify(value);
+        if (invalid) {
+          valid = false;
+          break;
+        }
+      }
+    }
 
     this.setState({
-      className: className
+      dirty: true,
+      valid: valid
     }, function() {
       cfg.change(cfg, value);
     });
   },
 
   render: function() {
-    var cfg     = this.props.field;
-    var val     = cfg.value;
-    var htmlFor = 'string'.concat(++stringInputCount);
-
-    var className = 'form-group col-md-6 '.concat(this.state.className || '');
+    var state     = this.state;
+    var cfg       = this.props.field;
+    var val       = cfg.value;
+    var htmlFor   = 'string'.concat(++stringInputCount);
+    var className = 'form-group col-md-6';
     var readOnly  = cfg.hasOwnProperty('readonly') && cfg.readonly;
+
+    var fieldDirty = state.dirty;
+    if (fieldDirty) {
+      var classState = state.valid ? 'has-success' : 'has-error';
+      className = className + ' ' + classState;
+    }
 
     return(
       <div ref="containerField" className={className}>

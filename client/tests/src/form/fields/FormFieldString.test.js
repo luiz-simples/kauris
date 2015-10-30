@@ -1,13 +1,17 @@
 'use strict';
 
-var pathFormFieldString = '../../../../src/form/fields/FormFieldString';
+var pathFormFieldString    = '../../../../src/form/fields/FormFieldString';
+var pathValidationRequired = '../../../../src/form/fields/validations/ValidationRequired';
 
 jest.dontMock(pathFormFieldString);
+jest.dontMock(pathValidationRequired);
 
-var React           = require('react');
-var ReactDOM        = require('react-dom');
-var TestUtils       = require('react-addons-test-utils');
-var FormFieldString = require(pathFormFieldString);
+var React     = require('react');
+var ReactDOM  = require('react-dom');
+var TestUtils = require('react-addons-test-utils');
+
+var FormFieldString    = require(pathFormFieldString);
+var ValidationRequired = require(pathValidationRequired);
 
 var findElement = ReactDOM.findDOMNode;
 var changeValue = function(element, text) {
@@ -45,7 +49,8 @@ describe('FormFieldString', function() {
       place:  'write here a string',
       attr:   'fieldAttr',
       value:  emptyStr,
-      change: jest.genMockFunction()
+      change: jest.genMockFunction(),
+      validations: []
     };
   });
 
@@ -70,13 +75,18 @@ describe('FormFieldString', function() {
 
     var classSuccess = 'has-success';
     var container    = field.refs.containerField;
+    var refr = findElement(container);
+    console.log(refr.className);
+
     var hasSuccess   = hasClass(container, classSuccess);
 
     expect(hasSuccess).toBeTruthy();
   });
 
   it('should has-error when empty filled.', function() {
-    fieldCfg.required = true;
+    var validationRequired = new ValidationRequired();
+    fieldCfg.validations.push(validationRequired);
+
     var field = TestUtils.renderIntoDocument(<FormFieldString field={fieldCfg}/>);
     var input = field.refs.inputField;
     changeText(input, emptyStr);
