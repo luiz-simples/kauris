@@ -1,40 +1,51 @@
 'use strict';
 
+require('../../Prototypes');
+
 var React = require('react');
+var ValidationMessage = require('./validations/ValidationMessage');
 
 var stringInputCount = 0;
 
-var formFieldtring = React.createClass({
+var FormFieldString = React.createClass({
   getInitialState: function() {
 		return {
+      valid: true,
       dirty: false,
-      valid: false
+      errorName: undefined
     };
 	},
 
   handleChange: function(event) {
     var cfg = this.props.field;
     var className = '';
-    var value = String(event.target.value || '').trim();
+    var errorName = false;
+
+    var value  = String(event.target.value || '').trim();
+    var valid  = true;
     var filled = value.length;
+
     if (!filled) value = undefined;
-    if (filled) className = 'has-success';
-    var valid = true;
 
     if (cfg.hasOwnProperty('validations') && cfg.validations.length) {
       for (var i = 0, c = cfg.validations.length; i < c; i++) {
         var validation = cfg.validations[i];
         var invalid = !validation.verify(value);
+
         if (invalid) {
           valid = false;
+          errorName = validation.errorName;
           break;
         }
       }
     }
 
+    if (valid) className = 'has-success';
+
     this.setState({
       dirty: true,
-      valid: valid
+      valid: valid,
+      errorName: errorName
     }, function() {
       cfg.change(cfg, value);
     });
@@ -54,16 +65,42 @@ var formFieldtring = React.createClass({
       className = className + ' ' + classState;
     }
 
+    var messageField;
+    var errorName = state.errorName;
+
+    if (errorName) {
+      var errorRef = 'msgError'.concat(errorName.capitalize());
+      messageField = <ValidationMessage
+        ref={errorRef}
+        type='danger'
+        message={errorRef.translate()}
+      />;
+    }
+
     return(
-      <div ref="containerField" className={className}>
-        <label ref="labelField" className="control-label" htmlFor={htmlFor}>{cfg.label}</label>
-        <div className="input-group">
-          <span className="input-group-addon"><i className="fa fa-text-width"></i></span>
-          <input readOnly={readOnly} ref="inputField" defaultValue={val} onChange={this.handleChange} type="text" className="form-control" id={htmlFor} placeholder={cfg.pĺace} />
+      <div ref='containerField' className={className}>
+        <label ref='labelField' className='control-label' htmlFor={htmlFor}>
+          {cfg.label}
+        </label>
+
+        <div className='input-group'>
+          <span className='input-group-addon'><i className='fa fa-text-width'></i></span>
+          <input
+            id={htmlFor}
+            ref='stringField'
+            readOnly={readOnly}
+            defaultValue={val}
+            onChange={this.handleChange}
+            type='text'
+            className='form-control'
+            placeholder={cfg.pĺace}
+          />
         </div>
+
+        {messageField}
       </div>
     );
   }
 });
 
-module.exports = formFieldtring;
+module.exports = FormFieldString;

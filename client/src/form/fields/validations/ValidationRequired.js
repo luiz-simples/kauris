@@ -9,7 +9,9 @@ function ValidationRequired() {
     if (isNumber) value = String(value);
 
     value = String(value || '').trim();
-    return !!value;
+    var isValid = !!value;
+
+    return isValid;
   };
 }
 

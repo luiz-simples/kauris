@@ -20,9 +20,10 @@
     "react-router": "^1.0.0-rc3"
   },
   "jest": {
-    "testDirectoryName": "tests",
+    "testDirectoryName": "tests/src",
     "scriptPreprocessor": "./node_modules/babel-jest",
     "unmockedModulePathPatterns": [
+      "./tests/support",
       "./node_modules/q",
       "./node_modules/lodash",
       "./node_modules/history",

@@ -2,7 +2,7 @@
 
 var React = require('react');
 
-var InputMessage = React.createClass({
+var ValidationMessage = React.createClass({
   render: function () {
     var type = this.props.type;
     var msgn = this.props.message;
@@ -12,4 +12,4 @@ var InputMessage = React.createClass({
   }
 });
 
-module.exports = InputMessage;
+module.exports = ValidationMessage;
