@@ -11,13 +11,13 @@
     "test": "jest"
   },
   "dependencies": {
-    "q": "^1.4.1",
-    "lodash": "^3.10.1",
     "history": "^1.12.5",
-    "superagent": "^1.4.0",
+    "lodash": "^3.10.1",
+    "q": "^1.4.1",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
-    "react-router": "^1.0.0-rc3"
+    "react-router": "^1.0.0-rc3",
+    "superagent": "^1.4.0"
   },
   "jest": {
     "testDirectoryName": "tests/src",

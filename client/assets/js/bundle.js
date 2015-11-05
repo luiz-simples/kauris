@@ -36795,7 +36795,7 @@ var render = function() {
 document.addEventListener('DOMContentLoaded', render);
 
 
-},{"./App":234,"./profile/ProfileForm":255,"./profile/ProfileList":256,"history":16,"react":233,"react-dom":32,"react-router":52}],237:[function(require,module,exports){
+},{"./App":234,"./profile/ProfileForm":258,"./profile/ProfileList":259,"history":16,"react":233,"react-dom":32,"react-router":52}],237:[function(require,module,exports){
 'use strict';
 
 var React    = require('react');
@@ -37136,20 +37136,47 @@ module.exports = MenuTop;
 },{"react":233}],240:[function(require,module,exports){
 'use strict';
 
+String.prototype.capitalize = function() {
+  return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+String.prototype.translate = function() {
+  var key = this;
+  var degaultLang = 'en';
+
+  var i18n = {
+    en: {
+      msgErrorRequired: 'This field is required.'
+    },
+
+    br: {
+      msgErrorRequired: 'Este campo é obrigatório.'
+    }
+  };
+
+  return i18n[degaultLang].hasOwnProperty(key) && i18n[degaultLang][key] ?
+    i18n[degaultLang][key] :
+    key;
+};
+
+
+},{}],241:[function(require,module,exports){
+'use strict';
+
 var React = require('react');
 
 var typesFields = {
-  date:     require('../form/fields/FormFieldsDate'),
-  datetime: require('../form/fields/FormFieldsDateTime'),
-  email:    require('../form/fields/FormFieldsEmail'),
-  integer:  require('../form/fields/FormFieldsInteger'),
-  money:    require('../form/fields/FormFieldsMoney'),
-  percent:  require('../form/fields/FormFieldsPercent'),
-  primary:  require('../form/fields/FormFieldsPrimary'),
-  select:   require('../form/fields/FormFieldsSelect'),
-  string:   require('../form/fields/FormFieldsString'),
-  text:     require('../form/fields/FormFieldsText'),
-  time:     require('../form/fields/FormFieldsTime')
+  date:     require('../form/fields/FormFieldDate'),
+  datetime: require('../form/fields/FormFieldDateTime'),
+  email:    require('../form/fields/FormFieldEmail'),
+  integer:  require('../form/fields/FormFieldInteger'),
+  money:    require('../form/fields/FormFieldMoney'),
+  percent:  require('../form/fields/FormFieldPercent'),
+  primary:  require('../form/fields/FormFieldPrimary'),
+  select:   require('../form/fields/FormFieldSelect'),
+  string:   require('../form/fields/FormFieldString'),
+  text:     require('../form/fields/FormFieldText'),
+  time:     require('../form/fields/FormFieldTime')
 };
 
 var Form = React.createClass({displayName: "Form",
@@ -37159,17 +37186,18 @@ var Form = React.createClass({displayName: "Form",
   },
 
   render: function () {
-    var form = this;
+    var form  = this;
     var model = form.props.model;
 
     var fields = this.props.fields.map(function(formField, index) {
       var Field = typesFields[formField.kind];
-      var val   = null;
+      formField.value = null;
 
       if (model.hasOwnProperty(formField.attr))
-        val = model[formField.attr];
+        formField.value = model[formField.attr];
+      formField.change = form.hangleChangeProperty;
 
-      return React.createElement(Field, {key: index, field: formField, value: val, change: form.hangleChangeProperty});
+      return React.createElement(Field, {key: index, field: formField});
     });
 
     return (
@@ -37203,14 +37231,14 @@ var Form = React.createClass({displayName: "Form",
 module.exports = Form;
 
 
-},{"../form/fields/FormFieldsDate":241,"../form/fields/FormFieldsDateTime":242,"../form/fields/FormFieldsEmail":243,"../form/fields/FormFieldsInteger":244,"../form/fields/FormFieldsMoney":245,"../form/fields/FormFieldsPercent":246,"../form/fields/FormFieldsPrimary":247,"../form/fields/FormFieldsSelect":248,"../form/fields/FormFieldsString":249,"../form/fields/FormFieldsText":250,"../form/fields/FormFieldsTime":251,"react":233}],241:[function(require,module,exports){
+},{"../form/fields/FormFieldDate":242,"../form/fields/FormFieldDateTime":243,"../form/fields/FormFieldEmail":244,"../form/fields/FormFieldInteger":245,"../form/fields/FormFieldMoney":246,"../form/fields/FormFieldPercent":247,"../form/fields/FormFieldPrimary":248,"../form/fields/FormFieldSelect":249,"../form/fields/FormFieldString":250,"../form/fields/FormFieldText":251,"../form/fields/FormFieldTime":252,"react":233}],242:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 
 var dateInputCount = 0;
 
-var FormFieldsDate = React.createClass({displayName: "FormFieldsDate",
+var FormFieldDate = React.createClass({displayName: "FormFieldDate",
   handleChange: function(event) {
     var value = String(event.target.value || '').trim();
     if (!value.length) value = undefined;
@@ -37234,17 +37262,17 @@ var FormFieldsDate = React.createClass({displayName: "FormFieldsDate",
   }
 });
 
-module.exports = FormFieldsDate;
+module.exports = FormFieldDate;
 
 
-},{"react":233}],242:[function(require,module,exports){
+},{"react":233}],243:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 
 var dateTimeInputCount = 0;
 
-var FormFieldsDateTime = React.createClass({displayName: "FormFieldsDateTime",
+var FormFieldDateTime = React.createClass({displayName: "FormFieldDateTime",
   handleChange: function(event) {
     var value = String(event.target.value || '').trim();
     if (!value.length) value = undefined;
@@ -37268,17 +37296,17 @@ var FormFieldsDateTime = React.createClass({displayName: "FormFieldsDateTime",
   }
 });
 
-module.exports = FormFieldsDateTime;
+module.exports = FormFieldDateTime;
 
 
-},{"react":233}],243:[function(require,module,exports){
+},{"react":233}],244:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 
 var emailInputCount = 0;
 
-var FormFieldsEmail = React.createClass({displayName: "FormFieldsEmail",
+var FormFieldEmail = React.createClass({displayName: "FormFieldEmail",
   handleChange: function(event) {
     var value = String(event.target.value || '').trim();
     if (!value.length) value = undefined;
@@ -37302,66 +37330,163 @@ var FormFieldsEmail = React.createClass({displayName: "FormFieldsEmail",
   }
 });
 
-module.exports = FormFieldsEmail;
+module.exports = FormFieldEmail;
 
 
-},{"react":233}],244:[function(require,module,exports){
-/*globals $:false*/
+},{"react":233}],245:[function(require,module,exports){
 'use strict';
 
+require('../../Prototypes');
+
 var React = require('react');
+var ValidationMessage = require('./validations/ValidationMessage');
 
 var integerInputCount = 0;
 
-var FormFieldsInteger = React.createClass({displayName: "FormFieldsInteger",
-  handleChange: function(event) {
-    var value = String(event.target.value || '').trim();
-    if (!value.length) value = undefined;
-    this.props.change(this.props.field, value);
-  },
+var FormFieldInteger = React.createClass({displayName: "FormFieldInteger",
+  getInitialState: function() {
+		return {
+      valid: true,
+      dirty: false,
+      errorName: undefined
+    };
+	},
 
-  componentDidMount: function() {
-    var field = this;
-    var input = $(field.refs.spinnerInput);
-
-    $(this.refs.btnFirstOfType).on('click', function() {
-      var val = (parseInt(input.val(), 10) || 0) + 1;
-      input.val(val);
-      field.handleChange({ target: { value: val }});
+  handleKeyDown: function(e) {
+    console.log({
+      which: e.which,
+      keyCode: e.keyCode,
+      charCode: e.charCode
     });
 
-    $(this.refs.btnLastOfType).on('click', function() {
-      var val = (parseInt(input.val(), 10) || 0) - 1;
-      input.val(val);
-      field.handleChange({ target: { value: val }});
+    var chrNum;
+    var keyBck =  8;
+    var keyTab =  9;
+    var keyHom = 36;
+    var keyEnd = 35;
+    var keyDel = 45;
+    var keyIns = 46;
+    var keyEnt = 13;
+    var keyUp  = 38;
+    var keyDwn = 40;
+    var keyPrr = 37;
+    var keyNxt = 39;
+    var iniNum = 48;
+    var iniPad = 96;
+    var keyNum = e.which || e.keyCode || e.charCode;
+
+    var ctrl = [
+      keyUp,
+      keyDwn,
+      keyPrr,
+      keyNxt,
+      keyHom,
+      keyEnd,
+      keyDel,
+      keyIns,
+      keyEnt,
+      keyBck,
+      keyTab
+    ];
+
+    if (ctrl.indexOf(keyNum) > -1) chrNum = keyNum;
+    if (keyNum >= iniNum && keyNum <= (iniNum+9)) chrNum = keyNum - iniNum;
+    if (keyNum >= iniPad && keyNum <= (iniPad+9)) chrNum = keyNum - iniPad;
+    if (chrNum === undefined) e.preventDefault();
+  },
+
+  handleChange: function(event) {
+    var cfg = this.props.field;
+    var className = '';
+    var errorName = false;
+
+    var value  = String(event.target.value || '').trim();
+    var valid  = true;
+    var filled = value.length;
+
+    if (!filled) value = undefined;
+
+    if (cfg.hasOwnProperty('validations') && cfg.validations.length) {
+      for (var i = 0, c = cfg.validations.length; i < c; i++) {
+        var validation = cfg.validations[i];
+        var invalid = !validation.verify(value);
+
+        if (invalid) {
+          valid = false;
+          errorName = validation.errorName;
+          break;
+        }
+      }
+    }
+
+    if (valid) className = 'has-success';
+
+    this.setState({
+      dirty: true,
+      valid: valid,
+      errorName: errorName
+    }, function() {
+      cfg.change(cfg, value);
     });
   },
 
   render: function() {
-    var cfg     = this.props.field;
-    var val     = this.props.value;
-    var htmlFor = 'primary'.concat(++integerInputCount);
+    var state     = this.state;
+    var cfg       = this.props.field;
+    var val       = cfg.value;
+    var htmlFor   = 'string'.concat(++integerInputCount);
+    var className = 'form-group col-md-6';
+    var readOnly  = cfg.hasOwnProperty('readonly') && cfg.readonly;
+
+    var fieldDirty = state.dirty;
+    if (fieldDirty) {
+      var classState = state.valid ? 'has-success' : 'has-error';
+      className = className + ' ' + classState;
+    }
+
+    var messageField;
+    var errorName = state.errorName;
+
+    if (errorName) {
+      var errorRef = 'msgError'.concat(errorName.capitalize());
+      messageField = React.createElement(ValidationMessage, {
+        ref: errorRef, 
+        type: "danger", 
+        message: errorRef.translate()}
+      );
+    }
 
     return(
-      React.createElement("div", {className: "form-group has-success col-sm-3 col-md-2"}, 
-        React.createElement("label", {className: "control-label", htmlFor: htmlFor}, cfg.label), 
-        React.createElement("div", {className: "input-group spinner"}, 
-          React.createElement("span", {className: "input-group-addon"}, React.createElement("i", {className: "fa fa-sort-numeric-desc"})), 
-          React.createElement("input", {defaultValue: val, ref: "spinnerInput", onChange: this.handleChange, type: "text", className: "form-control", id: htmlFor, placeholder: cfg.pĺace}), 
-          React.createElement("div", {className: "input-group-btn-vertical"}, 
-            React.createElement("button", {ref: "btnFirstOfType", className: "btn btn-default", type: "button"}, React.createElement("i", {className: "fa fa-caret-up"})), 
-            React.createElement("button", {ref: "btnLastOfType", className: "btn btn-default", type: "button"}, React.createElement("i", {className: "fa fa-caret-down"}))
+      React.createElement("div", {ref: "containerField", className: className}, 
+        React.createElement("label", {ref: "labelField", className: "control-label", htmlFor: htmlFor}, 
+          cfg.label
+        ), 
+
+        React.createElement("div", {className: "input-group"}, 
+          React.createElement("span", {className: "input-group-addon"}, React.createElement("i", {className: "fa fa-sort-numeric-asc"})), 
+          React.createElement("input", {
+            id: htmlFor, 
+            ref: "integerField", 
+            readOnly: readOnly, 
+            defaultValue: val, 
+            onChange: this.handleChange, 
+            onKeyDown: this.handleKeyDown, 
+            type: "text", 
+            className: "form-control", 
+            placeholder: cfg.pĺace}
           )
-        )
+        ), 
+
+        messageField
       )
     );
   }
 });
 
-module.exports = FormFieldsInteger;
+module.exports = FormFieldInteger;
 
 
-},{"react":233}],245:[function(require,module,exports){
+},{"../../Prototypes":240,"./validations/ValidationMessage":253,"react":233}],246:[function(require,module,exports){
 /*globals $:false*/
 'use strict';
 
@@ -37369,7 +37494,7 @@ var React = require('react');
 
 var moneyInputCount = 0;
 
-var FormFieldsMoney = React.createClass({displayName: "FormFieldsMoney",
+var FormFieldMoney = React.createClass({displayName: "FormFieldMoney",
   handleChange: function(event) {
     var value = String(event.target.value || '').trim();
     if (!value.length) value = undefined;
@@ -37414,10 +37539,10 @@ var FormFieldsMoney = React.createClass({displayName: "FormFieldsMoney",
   }
 });
 
-module.exports = FormFieldsMoney;
+module.exports = FormFieldMoney;
 
 
-},{"react":233}],246:[function(require,module,exports){
+},{"react":233}],247:[function(require,module,exports){
 /*globals $:false*/
 'use strict';
 
@@ -37425,7 +37550,7 @@ var React = require('react');
 
 var percentInputCount = 0;
 
-var FormFieldsPercent = React.createClass({displayName: "FormFieldsPercent",
+var FormFieldPercent = React.createClass({displayName: "FormFieldPercent",
   handleChange: function(event) {
     var value = String(event.target.value || '').trim();
     if (!value.length) value = undefined;
@@ -37470,51 +37595,170 @@ var FormFieldsPercent = React.createClass({displayName: "FormFieldsPercent",
   }
 });
 
-module.exports = FormFieldsPercent;
+module.exports = FormFieldPercent;
 
 
-},{"react":233}],247:[function(require,module,exports){
+},{"react":233}],248:[function(require,module,exports){
 'use strict';
 
+require('../../Prototypes');
+
 var React = require('react');
+var ValidationMessage = require('./validations/ValidationMessage');
 
-var primaryInputCount = 0;
+var stringInputCount = 0;
 
-var FormFieldsPrimary = React.createClass({displayName: "FormFieldsPrimary",
+var FormFieldPrimary = React.createClass({displayName: "FormFieldPrimary",
+  getInitialState: function() {
+		return {
+      valid: true,
+      dirty: false,
+      errorName: undefined
+    };
+	},
+
+  handleKeyDown: function(e) {
+    console.log({
+      which: e.which,
+      keyCode: e.keyCode,
+      charCode: e.charCode
+    });
+
+    var chrNum;
+    var keyBck =  8;
+    var keyTab =  9;
+    var keyHom = 36;
+    var keyEnd = 35;
+    var keyDel = 45;
+    var keyIns = 46;
+    var keyEnt = 13;
+    var keyUp  = 38;
+    var keyDwn = 40;
+    var keyPrr = 37;
+    var keyNxt = 39;
+    var iniNum = 48;
+    var iniPad = 96;
+    var keyNum = e.which || e.keyCode || e.charCode;
+
+    var ctrl = [
+      keyUp,
+      keyDwn,
+      keyPrr,
+      keyNxt,
+      keyHom,
+      keyEnd,
+      keyDel,
+      keyIns,
+      keyEnt,
+      keyBck,
+      keyTab
+    ];
+
+    if (ctrl.indexOf(keyNum) > -1) chrNum = keyNum;
+    if (keyNum >= iniNum && keyNum <= (iniNum+9)) chrNum = keyNum - iniNum;
+    if (keyNum >= iniPad && keyNum <= (iniPad+9)) chrNum = keyNum - iniPad;
+    if (chrNum === undefined) e.preventDefault();
+  },
+
   handleChange: function(event) {
-    var value = String(event.target.value || '').trim();
-    if (!value.length) value = undefined;
-    this.props.change(this.props.field, value);
+    var cfg = this.props.field;
+    var className = '';
+    var errorName = false;
+
+    var value  = String(event.target.value || '').trim();
+    var valid  = true;
+    var filled = value.length;
+
+    if (!filled) value = undefined;
+
+    if (cfg.hasOwnProperty('validations') && cfg.validations.length) {
+      for (var i = 0, c = cfg.validations.length; i < c; i++) {
+        var validation = cfg.validations[i];
+        var invalid = !validation.verify(value);
+
+        if (invalid) {
+          valid = false;
+          errorName = validation.errorName;
+          break;
+        }
+      }
+    }
+
+    if (valid) className = 'has-success';
+
+    this.setState({
+      dirty: true,
+      valid: valid,
+      errorName: errorName
+    }, function() {
+      cfg.change(cfg, value);
+    });
   },
 
   render: function() {
-    var cfg     = this.props.field;
-    var val     = this.props.value;
-    var htmlFor = 'primary'.concat(++primaryInputCount);
+    var state     = this.state;
+    var cfg       = this.props.field;
+    var val       = cfg.value;
+    var htmlFor   = 'string'.concat(++stringInputCount);
+    var className = 'form-group col-md-6';
+    var readOnly  = cfg.hasOwnProperty('readonly') && cfg.readonly;
+
+    var fieldDirty = state.dirty;
+    if (fieldDirty) {
+      var classState = state.valid ? 'has-success' : 'has-error';
+      className = className + ' ' + classState;
+    }
+
+    var messageField;
+    var errorName = state.errorName;
+
+    if (errorName) {
+      var errorRef = 'msgError'.concat(errorName.capitalize());
+      messageField = React.createElement(ValidationMessage, {
+        ref: errorRef, 
+        type: "danger", 
+        message: errorRef.translate()}
+      );
+    }
 
     return(
-      React.createElement("div", {className: "form-group col-md-2"}, 
-        React.createElement("label", {className: "control-label", htmlFor: htmlFor}, cfg.label), 
+      React.createElement("div", {ref: "containerField", className: className}, 
+        React.createElement("label", {ref: "labelField", className: "control-label", htmlFor: htmlFor}, 
+          cfg.label
+        ), 
+
         React.createElement("div", {className: "input-group"}, 
-          React.createElement("span", {className: "input-group-addon"}, React.createElement("i", {className: "fa fa-barcode"})), 
-          React.createElement("input", {defaultValue: val, onChange: this.handleChange, type: "text", className: "form-control", id: htmlFor, placeholder: cfg.pĺace, disabled: true})
-        )
+          React.createElement("span", {className: "input-group-addon"}, React.createElement("i", {className: "fa fa-key"})), 
+          React.createElement("input", {
+            id: htmlFor, 
+            ref: "primaryField", 
+            readOnly: readOnly, 
+            defaultValue: val, 
+            onChange: this.handleChange, 
+            onKeyDown: this.handleKeyDown, 
+            type: "text", 
+            className: "form-control", 
+            placeholder: cfg.pĺace}
+          )
+        ), 
+
+        messageField
       )
     );
   }
 });
 
-module.exports = FormFieldsPrimary;
+module.exports = FormFieldPrimary;
 
 
-},{"react":233}],248:[function(require,module,exports){
+},{"../../Prototypes":240,"./validations/ValidationMessage":253,"react":233}],249:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 
 var selectInputCount = 0;
 
-var FormFieldsSelect = React.createClass({displayName: "FormFieldsSelect",
+var formFieldelect = React.createClass({displayName: "formFieldelect",
   handleChange: function(event) {
     var value = String(event.target.value || '').trim();
     if (!value.length) value = undefined;
@@ -37541,82 +37785,231 @@ var FormFieldsSelect = React.createClass({displayName: "FormFieldsSelect",
   }
 });
 
-module.exports = FormFieldsSelect;
-
-
-},{"react":233}],249:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
-
-var stringInputCount = 0;
-
-var FormFieldsString = React.createClass({displayName: "FormFieldsString",
-  handleChange: function(event) {
-    var value = String(event.target.value || '').trim();
-    if (!value.length) value = undefined;
-    this.props.change(this.props.field, value);
-  },
-
-  render: function() {
-    var cfg     = this.props.field;
-    var val     = this.props.value;
-    var htmlFor = 'string'.concat(++stringInputCount);
-
-    return(
-      React.createElement("div", {className: "form-group col-md-6"}, 
-        React.createElement("label", {className: "control-label", htmlFor: htmlFor}, cfg.label), 
-        React.createElement("div", {className: "input-group"}, 
-          React.createElement("span", {className: "input-group-addon"}, React.createElement("i", {className: "fa fa-text-width"})), 
-          React.createElement("input", {defaultValue: val, onChange: this.handleChange, type: "text", className: "form-control", id: htmlFor, placeholder: cfg.pĺace})
-        )
-      )
-    );
-  }
-});
-
-module.exports = FormFieldsString;
+module.exports = formFieldelect;
 
 
 },{"react":233}],250:[function(require,module,exports){
 'use strict';
 
+require('../../Prototypes');
+
 var React = require('react');
+var ValidationMessage = require('./validations/ValidationMessage');
 
-var textInputCount = 0;
+var stringInputCount = 0;
 
-var FormFieldsText = React.createClass({displayName: "FormFieldsText",
+var FormFieldString = React.createClass({displayName: "FormFieldString",
+  getInitialState: function() {
+		return {
+      valid: true,
+      dirty: false,
+      errorName: undefined
+    };
+	},
+
   handleChange: function(event) {
-    var value = String(event.target.value || '').trim();
-    if (!value.length) value = undefined;
-    this.props.change(this.props.field, value);
+    var cfg = this.props.field;
+    var className = '';
+    var errorName = false;
+
+    var value  = String(event.target.value || '').trim();
+    var valid  = true;
+    var filled = value.length;
+
+    if (!filled) value = undefined;
+
+    if (cfg.hasOwnProperty('validations') && cfg.validations.length) {
+      for (var i = 0, c = cfg.validations.length; i < c; i++) {
+        var validation = cfg.validations[i];
+        var invalid = !validation.verify(value);
+
+        if (invalid) {
+          valid = false;
+          errorName = validation.errorName;
+          break;
+        }
+      }
+    }
+
+    if (valid) className = 'has-success';
+
+    this.setState({
+      dirty: true,
+      valid: valid,
+      errorName: errorName
+    }, function() {
+      cfg.change(cfg, value);
+    });
   },
 
   render: function() {
-    var cfg     = this.props.field;
-    var val     = this.props.value;
-    var htmlFor = 'text'.concat(++textInputCount);
+    var state     = this.state;
+    var cfg       = this.props.field;
+    var val       = cfg.value;
+    var htmlFor   = 'string'.concat(++stringInputCount);
+    var className = 'form-group col-md-6';
+    var readOnly  = cfg.hasOwnProperty('readonly') && cfg.readonly;
+
+    var fieldDirty = state.dirty;
+    if (fieldDirty) {
+      var classState = state.valid ? 'has-success' : 'has-error';
+      className = className + ' ' + classState;
+    }
+
+    var messageField;
+    var errorName = state.errorName;
+
+    if (errorName) {
+      var errorRef = 'msgError'.concat(errorName.capitalize());
+      messageField = React.createElement(ValidationMessage, {
+        ref: errorRef, 
+        type: "danger", 
+        message: errorRef.translate()}
+      );
+    }
 
     return(
-      React.createElement("div", {className: "form-group has-success col-md-12"}, 
-        React.createElement("label", {className: "control-label", htmlFor: htmlFor}, cfg.label), 
-        React.createElement("textarea", {defaultValue: val, onChange: this.handleChange, className: "form-control", id: htmlFor, placeholder: cfg.pĺace, rows: "9"})
+      React.createElement("div", {ref: "containerField", className: className}, 
+        React.createElement("label", {ref: "labelField", className: "control-label", htmlFor: htmlFor}, 
+          cfg.label
+        ), 
+
+        React.createElement("div", {className: "input-group"}, 
+          React.createElement("span", {className: "input-group-addon"}, React.createElement("i", {className: "fa fa-text-width"})), 
+          React.createElement("input", {
+            id: htmlFor, 
+            ref: "stringField", 
+            readOnly: readOnly, 
+            defaultValue: val, 
+            onChange: this.handleChange, 
+            type: "text", 
+            className: "form-control", 
+            placeholder: cfg.pĺace}
+          )
+        ), 
+
+        messageField
       )
     );
   }
 });
 
-module.exports = FormFieldsText;
+module.exports = FormFieldString;
 
 
-},{"react":233}],251:[function(require,module,exports){
+},{"../../Prototypes":240,"./validations/ValidationMessage":253,"react":233}],251:[function(require,module,exports){
+'use strict';
+
+require('../../Prototypes');
+
+var React = require('react');
+var ValidationMessage = require('./validations/ValidationMessage');
+
+var stringInputCount = 0;
+
+var FormFieldText = React.createClass({displayName: "FormFieldText",
+  getInitialState: function() {
+		return {
+      valid: true,
+      dirty: false,
+      errorName: undefined
+    };
+	},
+
+  handleChange: function(event) {
+    var cfg = this.props.field;
+    var className = '';
+    var errorName = false;
+
+    var value  = String(event.target.value || '').trim();
+    var valid  = true;
+    var filled = value.length;
+
+    if (!filled) value = undefined;
+
+    if (cfg.hasOwnProperty('validations') && cfg.validations.length) {
+      for (var i = 0, c = cfg.validations.length; i < c; i++) {
+        var validation = cfg.validations[i];
+        var invalid = !validation.verify(value);
+
+        if (invalid) {
+          valid = false;
+          errorName = validation.errorName;
+          break;
+        }
+      }
+    }
+
+    if (valid) className = 'has-success';
+
+    this.setState({
+      dirty: true,
+      valid: valid,
+      errorName: errorName
+    }, function() {
+      cfg.change(cfg, value);
+    });
+  },
+
+  render: function() {
+    var state     = this.state;
+    var cfg       = this.props.field;
+    var val       = cfg.value;
+    var htmlFor   = 'text'.concat(++stringInputCount);
+    var className = 'form-group col-md-6';
+    var readOnly  = cfg.hasOwnProperty('readonly') && cfg.readonly;
+
+    var fieldDirty = state.dirty;
+    if (fieldDirty) {
+      var classState = state.valid ? 'has-success' : 'has-error';
+      className = className + ' ' + classState;
+    }
+
+    var messageField;
+    var errorName = state.errorName;
+
+    if (errorName) {
+      var errorRef = 'msgError'.concat(errorName.capitalize());
+      messageField = React.createElement(ValidationMessage, {
+        ref: errorRef, 
+        type: "danger", 
+        message: errorRef.translate()}
+      );
+    }
+
+    return(
+      React.createElement("div", {ref: "containerField", className: className}, 
+        React.createElement("label", {ref: "labelField", className: "control-label", htmlFor: htmlFor}, 
+          cfg.label
+        ), 
+        React.createElement("textarea", {
+          id: htmlFor, 
+          ref: "textField", 
+          readOnly: readOnly, 
+          defaultValue: val, 
+          onChange: this.handleChange, 
+          className: "form-control", 
+          placeholder: cfg.pĺace, 
+          rows: "9"}
+        ), 
+
+        messageField
+      )
+    );
+  }
+});
+
+module.exports = FormFieldText;
+
+
+},{"../../Prototypes":240,"./validations/ValidationMessage":253,"react":233}],252:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 
 var timeInputCount = 0;
 
-var FormFieldsTime = React.createClass({displayName: "FormFieldsTime",
+var FormFieldTime = React.createClass({displayName: "FormFieldTime",
   handleChange: function(event) {
     var value = String(event.target.value || '').trim();
     if (!value.length) value = undefined;
@@ -37640,10 +38033,49 @@ var FormFieldsTime = React.createClass({displayName: "FormFieldsTime",
   }
 });
 
-module.exports = FormFieldsTime;
+module.exports = FormFieldTime;
 
 
-},{"react":233}],252:[function(require,module,exports){
+},{"react":233}],253:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+var ValidationMessage = React.createClass({displayName: "ValidationMessage",
+  render: function () {
+    var type = this.props.type;
+    var msgn = this.props.message;
+
+    var className = 'alert alert-'.concat(type);
+    return React.createElement("div", {className: className}, msgn);
+  }
+});
+
+module.exports = ValidationMessage;
+
+
+},{"react":233}],254:[function(require,module,exports){
+'use strict';
+
+function ValidationRequired() {
+  var required = this;
+  required.errorName = 'required';
+
+  required.verify = function(value) {
+    var isNumber = !isNaN(parseFloat(value, 10));
+    if (isNumber) value = String(value);
+
+    value = String(value || '').trim();
+    var isValid = !!value;
+
+    return isValid;
+  };
+}
+
+module.exports = ValidationRequired;
+
+
+},{}],255:[function(require,module,exports){
 'use strict';
 
 var React       = require('react');
@@ -37774,7 +38206,7 @@ var List = React.createClass({displayName: "List",
 module.exports = List;
 
 
-},{"../Loading":235,"./ListOptions":253,"react":233}],253:[function(require,module,exports){
+},{"../Loading":235,"./ListOptions":256,"react":233}],256:[function(require,module,exports){
 /*globals $:false*/
 'use strict';
 
@@ -37879,8 +38311,10 @@ var ListOptions = React.createClass({displayName: "ListOptions",
 module.exports = ListOptions;
 
 
-},{"react":233}],254:[function(require,module,exports){
+},{"react":233}],257:[function(require,module,exports){
 'use strict';
+
+var ValidationRequired = require('../form/fields/validations/ValidationRequired');
 
 module.exports = function() {
   return [
@@ -37898,8 +38332,13 @@ module.exports = function() {
       viewForm: true,
 
       viewColumn: true,
-      viewFilter: false
+      viewFilter: false,
+
+      validations: [
+        new ValidationRequired()
+      ]
     },
+
     {
       attr:  'profileName',
       kind:  'string',
@@ -37914,13 +38353,17 @@ module.exports = function() {
       viewList: true,
 
       viewColumn: true,
-      viewFilter: false
+      viewFilter: false,
+
+      validations: [
+        new ValidationRequired()
+      ]
     }
   ];
 };
 
 
-},{}],255:[function(require,module,exports){
+},{"../form/fields/validations/ValidationRequired":254}],258:[function(require,module,exports){
 'use strict';
 
 var React         = require('react');
@@ -37947,7 +38390,7 @@ var ProfileForm = React.createClass({displayName: "ProfileForm",
 module.exports = ProfileForm;
 
 
-},{"../form/Form":240,"./ProfileFields":254,"lodash":31,"react":233}],256:[function(require,module,exports){
+},{"../form/Form":241,"./ProfileFields":257,"lodash":31,"react":233}],259:[function(require,module,exports){
 'use strict';
 
 var List          = require('../list/List');
@@ -38002,7 +38445,7 @@ var ProfileList = React.createClass({displayName: "ProfileList",
 module.exports = ProfileList;
 
 
-},{"../list/List":252,"./ProfileFields":254,"lodash":31,"react":233}]},{},[236])
+},{"../list/List":255,"./ProfileFields":257,"lodash":31,"react":233}]},{},[236])
 
 
 //# sourceMappingURL=bundle.js.map

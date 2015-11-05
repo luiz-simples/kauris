@@ -1,5 +1,7 @@
 'use strict';
 
+var ValidationRequired = require('../form/fields/validations/ValidationRequired');
+
 module.exports = function() {
   return [
     {
@@ -16,8 +18,13 @@ module.exports = function() {
       viewForm: true,
 
       viewColumn: true,
-      viewFilter: false
+      viewFilter: false,
+
+      validations: [
+        new ValidationRequired()
+      ]
     },
+
     {
       attr:  'profileName',
       kind:  'string',
@@ -32,7 +39,11 @@ module.exports = function() {
       viewList: true,
 
       viewColumn: true,
-      viewFilter: false
+      viewFilter: false,
+
+      validations: [
+        new ValidationRequired()
+      ]
     }
   ];
 };

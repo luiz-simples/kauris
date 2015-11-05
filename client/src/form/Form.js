@@ -23,17 +23,18 @@ var Form = React.createClass({
   },
 
   render: function () {
-    var form = this;
+    var form  = this;
     var model = form.props.model;
 
     var fields = this.props.fields.map(function(formField, index) {
       var Field = typesFields[formField.kind];
-      var val   = null;
+      formField.value = null;
 
       if (model.hasOwnProperty(formField.attr))
-        val = model[formField.attr];
+        formField.value = model[formField.attr];
+      formField.change = form.hangleChangeProperty;
 
-      return <Field key={index} field={formField} value={val} change={form.hangleChangeProperty} />;
+      return <Field key={index} field={formField} />;
     });
 
     return (
