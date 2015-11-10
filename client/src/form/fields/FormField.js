@@ -38,9 +38,9 @@ var FormField = {
 
     allPromises(validations).then(function() {
       setState(state, value);
-    }).catch(function(errors) {
+    }).catch(function(error) {
       state.valid = false;
-      state.errorName = errors.shift();
+      state.errorName = error;
       setState(state);
     });
   }

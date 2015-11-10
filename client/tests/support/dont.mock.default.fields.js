@@ -7,6 +7,7 @@ var pathFormField          = pathSrc.concat('form/fields/FormField');
 var pathFormFieldText      = pathSrc.concat('form/fields/FormFieldText');
 var pathFormFieldString    = pathSrc.concat('form/fields/FormFieldString');
 var pathFormFieldInteger   = pathSrc.concat('form/fields/FormFieldInteger');
+var pathFormFieldPrimary   = pathSrc.concat('form/fields/FormFieldPrimary');
 var pathValidationMessage  = pathSrc.concat('form/fields/validations/ValidationMessage');
 var pathValidationRequired = pathSrc.concat('form/fields/validations/ValidationRequired');
 
@@ -16,5 +17,6 @@ jest.dontMock(pathFormField);
 jest.dontMock(pathFormFieldText);
 jest.dontMock(pathFormFieldString);
 jest.dontMock(pathFormFieldInteger);
+jest.dontMock(pathFormFieldPrimary);
 jest.dontMock(pathValidationMessage);
 jest.dontMock(pathValidationRequired);

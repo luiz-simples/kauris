@@ -31,7 +31,7 @@ describe('FormFieldString', function() {
     };
   });
 
-  it('should view label and filled', function() {
+  it('should view label', function() {
     var field = TestUtils.renderIntoDocument(<FormFieldString field={fieldCfg} />);
     var label = support.getText(field.refs.labelField);
     expect(label).toEqual('Form Field String');

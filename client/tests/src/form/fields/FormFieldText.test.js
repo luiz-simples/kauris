@@ -11,7 +11,7 @@ var pathSrc                = '../../../../src/';
 var pathFormFieldText      = pathSrc.concat('form/fields/FormFieldText');
 var pathValidationRequired = pathSrc.concat('form/fields/validations/ValidationRequired');
 
-var FormFieldText    = require(pathFormFieldText);
+var FormFieldText      = require(pathFormFieldText);
 var ValidationRequired = require(pathValidationRequired);
 
 describe('FormFieldText', function() {
@@ -31,7 +31,7 @@ describe('FormFieldText', function() {
     };
   });
 
-  it('should view label and filled', function() {
+  it('should view label', function() {
     var field = TestUtils.renderIntoDocument(<FormFieldText field={fieldCfg} />);
     var label = support.getText(field.refs.labelField);
     expect(label).toEqual('Form Field Text');
