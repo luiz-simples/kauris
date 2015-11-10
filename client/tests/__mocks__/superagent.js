@@ -22,7 +22,7 @@ function endMethod(callEnd) {
   callEnd(error, response);
 }
 
-var superAgentMock ={
+var superAgentMock = {
   end:    jest.genMockFunction().mockImplementation(endMethod),
   set:    jest.genMockFunction().mockImplementation(returnSuperAgent),
   get:    jest.genMockFunction().mockImplementation(returnSuperAgent),

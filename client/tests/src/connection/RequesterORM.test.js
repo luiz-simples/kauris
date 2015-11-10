@@ -12,41 +12,41 @@ describe('RequesterORM', function() {
       expect(urlMounted).toEqual('/');
     });
 
-    it ('should return /profiles when call .one("profiles")', function() {
+    it('should return /profiles when call .one("profiles")', function() {
       var orm = new RequesterORM();
       var routeName   = 'profiles';
       var urlMounted  = orm.one(routeName).url();
       expect(urlMounted).toEqual('/profiles');
     });
 
-    it ('should ignore / when call .one("/profiles")', function() {
+    it('should ignore / when call .one("/profiles")', function() {
       var orm = new RequesterORM();
       var routeName   = '/profiles';
       var urlMounted  = orm.one(routeName).url();
       expect(urlMounted).toEqual('/profiles');
     });
 
-    it ('should return /profiles when call .all("profiles")', function() {
+    it('should return /profiles when call .all("profiles")', function() {
       var orm = new RequesterORM();
       var routeName   = 'profiles';
       var urlMounted  = orm.all(routeName).url();
       expect(urlMounted).toEqual('/profiles');
     });
 
-    it ('should ignore / when call .all("/profiles")', function() {
+    it('should ignore / when call .all("/profiles")', function() {
       var orm = new RequesterORM();
       var routeName   = '/profiles';
       var urlMounted  = orm.all(routeName).url();
       expect(urlMounted).toEqual('/profiles');
     });
 
-    it ('should return /profiles when call .all("profiles").one(1)', function() {
+    it('should return /profiles when call .all("profiles").one(1)', function() {
       var orm = new RequesterORM();
       var urlMounted  = orm.all('profiles').one(1).url();
       expect(urlMounted).toEqual('/profiles/1');
     });
 
-    it ('should return others instances when call .all or .one', function() {
+    it('should return others instances when call .all or .one', function() {
       var orm = new RequesterORM();
       var profiles    = orm.all('profiles');
       var profileNew  = profiles.one('new');

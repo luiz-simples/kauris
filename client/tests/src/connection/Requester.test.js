@@ -21,7 +21,10 @@ describe('Requester', function() {
     var clearMocks, requester, err;
 
     beforeEach(function() {
-      err = function(e) { throw e; };
+      err = function(e) {
+        throw e;
+      };
+
       clearMocks = function() {};
       requester = new Requester();
     });

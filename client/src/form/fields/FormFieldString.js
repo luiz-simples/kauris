@@ -1,55 +1,15 @@
 'use strict';
 
-require('../../Prototypes');
-
 var React = require('react');
+var formField = require('./FormField');
 var ValidationMessage = require('./validations/ValidationMessage');
 
 var stringInputCount = 0;
 
 var FormFieldString = React.createClass({
-  getInitialState: function() {
-		return {
-      valid: true,
-      dirty: false,
-      errorName: undefined
-    };
-	},
-
-  handleChange: function(event) {
-    var cfg = this.props.field;
-    var className = '';
-    var errorName = false;
-
-    var value  = String(event.target.value || '').trim();
-    var valid  = true;
-    var filled = value.length;
-
-    if (!filled) value = undefined;
-
-    if (cfg.hasOwnProperty('validations') && cfg.validations.length) {
-      for (var i = 0, c = cfg.validations.length; i < c; i++) {
-        var validation = cfg.validations[i];
-        var invalid = !validation.verify(value);
-
-        if (invalid) {
-          valid = false;
-          errorName = validation.errorName;
-          break;
-        }
-      }
-    }
-
-    if (valid) className = 'has-success';
-
-    this.setState({
-      dirty: true,
-      valid: valid,
-      errorName: errorName
-    }, function() {
-      cfg.change(cfg, value);
-    });
-  },
+  getInitialState: formField.getInitialState,
+  handleSetState:  formField.handleSetState,
+  handleChange:    formField.handleChange,
 
   render: function() {
     var state     = this.state;
@@ -70,11 +30,11 @@ var FormFieldString = React.createClass({
 
     if (errorName) {
       var errorRef = 'msgError'.concat(errorName.capitalize());
-      messageField = <ValidationMessage
-        ref={errorRef}
-        type='danger'
-        message={errorRef.translate()}
-      />;
+      messageField = React.createElement(ValidationMessage, {
+        ref: errorRef,
+        type: 'danger',
+        message: errorRef.translate()
+      });
     }
 
     return(

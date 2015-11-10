@@ -15,7 +15,7 @@ var Router      = ReactRouter.Router;
 var useBasename   = myHistory.useBasename;
 var createHistory = myHistory.createHistory;
 
-const history = useBasename(createHistory)({
+var history = useBasename(createHistory)({
   basename: ''
 });
 

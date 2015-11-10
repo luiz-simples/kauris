@@ -8,49 +8,49 @@ var support = require(pathSupport.concat('support'));
 require(pathSupport.concat('dont.mock.default.fields'));
 
 var pathSrc                = '../../../../src/';
-var pathFormFieldString    = pathSrc.concat('form/fields/FormFieldString');
+var pathFormFieldInteger   = pathSrc.concat('form/fields/FormFieldInteger');
 var pathValidationRequired = pathSrc.concat('form/fields/validations/ValidationRequired');
 
-var FormFieldString    = require(pathFormFieldString);
+var FormFieldInteger   = require(pathFormFieldInteger);
 var ValidationRequired = require(pathValidationRequired);
 
-describe('FormFieldString', function() {
-  var fieldCfg, emptyStr, newStr;
+describe('FormFieldInteger', function() {
+  var fieldCfg, emptyInt, newInt;
 
   beforeEach(function() {
-    newStr   = 'new value';
-    emptyStr = '';
+    newInt   = '321654987';
+    emptyInt = '';
 
     fieldCfg = {
-      label:  'Form Field String',
-      place:  'write here a string',
+      label:  'Form Field Integer',
+      place:  'write here a integer',
       attr:   'fieldAttr',
-      value:  emptyStr,
+      value:  emptyInt,
       change: jest.genMockFunction(),
       validations: []
     };
   });
 
   it('should view label and filled', function() {
-    var field = TestUtils.renderIntoDocument(<FormFieldString field={fieldCfg} />);
+    var field = TestUtils.renderIntoDocument(<FormFieldInteger field={fieldCfg} />);
     var label = support.getText(field.refs.labelField);
-    expect(label).toEqual('Form Field String');
+    expect(label).toEqual('Form Field Integer');
   });
 
   it('should call change when filled.', function() {
-    var field = TestUtils.renderIntoDocument(<FormFieldString field={fieldCfg} />);
-    var input = field.refs.stringField;
-    support.changeText(input, newStr);
+    var field = TestUtils.renderIntoDocument(<FormFieldInteger field={fieldCfg} />);
+    var input = field.refs.integerField;
+    support.changeText(input, newInt);
 
     setTimeout(function() {
-      expect(fieldCfg.change.mock.calls).toEqual([[fieldCfg, newStr]]);
+      expect(fieldCfg.change.mock.calls).toEqual([[fieldCfg, newInt]]);
     });
   });
 
   it('should have class has-success when filled.', function() {
-    var field = TestUtils.renderIntoDocument(<FormFieldString field={fieldCfg} />);
-    var input = field.refs.stringField;
-    support.changeText(input, newStr);
+    var field = TestUtils.renderIntoDocument(<FormFieldInteger field={fieldCfg} />);
+    var input = field.refs.integerField;
+    support.changeText(input, newInt);
 
     setTimeout(function() {
       var classSuccess = 'has-success';
@@ -64,9 +64,9 @@ describe('FormFieldString', function() {
     var validationRequired = new ValidationRequired();
     fieldCfg.validations.push(validationRequired);
 
-    var field = TestUtils.renderIntoDocument(<FormFieldString field={fieldCfg} />);
-    var input = field.refs.stringField;
-    support.changeText(input, emptyStr);
+    var field = TestUtils.renderIntoDocument(<FormFieldInteger field={fieldCfg} />);
+    var input = field.refs.integerField;
+    support.changeText(input, emptyInt);
 
     setTimeout(function() {
       var classError = 'has-error';
@@ -80,9 +80,9 @@ describe('FormFieldString', function() {
     var validationRequired = new ValidationRequired();
     fieldCfg.validations.push(validationRequired);
 
-    var field = TestUtils.renderIntoDocument(<FormFieldString field={fieldCfg} />);
-    var input = field.refs.stringField;
-    support.changeText(input, emptyStr);
+    var field = TestUtils.renderIntoDocument(<FormFieldInteger field={fieldCfg} />);
+    var input = field.refs.integerField;
+    support.changeText(input, emptyInt);
 
     setTimeout(function() {
       var msgError = 'This field is required.';
@@ -94,16 +94,16 @@ describe('FormFieldString', function() {
 
   it('should read only input.', function() {
     fieldCfg.readonly = true;
-    var field = TestUtils.renderIntoDocument(<FormFieldString field={fieldCfg} />);
-    var input = field.refs.stringField;
+    var field = TestUtils.renderIntoDocument(<FormFieldInteger field={fieldCfg} />);
+    var input = field.refs.integerField;
     var hasReadOnly = support.hasAttr(input, 'readonly');
     expect(hasReadOnly).toBeTruthy();
   });
 
   it('should call change undefined when empty filled.', function() {
-    var field = TestUtils.renderIntoDocument(<FormFieldString field={fieldCfg} />);
-    var input = field.refs.stringField;
-    support.changeText(input, emptyStr);
+    var field = TestUtils.renderIntoDocument(<FormFieldInteger field={fieldCfg} />);
+    var input = field.refs.integerField;
+    support.changeText(input, emptyInt);
 
     setTimeout(function() {
       expect(fieldCfg.change.mock.calls).toEqual([[fieldCfg, undefined]]);

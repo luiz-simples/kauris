@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/luiz-simples/kauris/issues"
   },
-  "homepage": "https://github.com/luiz-simples/kauris#readme"
+  "homepage": "https://github.com/luiz-simples/kauris#readme",
+  "devDependencies": {
+    "eslint": "^1.9.0",
+    "eslint-plugin-react": "^3.8.0"
+  }
 }

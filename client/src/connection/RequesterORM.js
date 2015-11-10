@@ -26,7 +26,7 @@ function RequesterORM(baseUrl, requester) {
     if (!name.length) return orm;
 
     var clearSep = name[0] === separator;
-    if (clearSep) name = name.slice(-1 * (name.length-1));
+    if (clearSep) name = name.slice(-1 * (name.length - 1));
     var base = baseUrl.concat(separator, name);
 
     return new RequesterORM(base, requester);

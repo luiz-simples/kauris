@@ -58,7 +58,9 @@ describe('RequesterHttp', function() {
         return response;
       });
 
-      err = function(e) { throw e; };
+      err = function(e) {
+        throw e;
+      };
 
       args = { profileId: 1, profileName: 'Profile Name' };
       var prtc = 'http';

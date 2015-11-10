@@ -17,12 +17,6 @@ var FormFieldPrimary = React.createClass({
 	},
 
   handleKeyDown: function(e) {
-    console.log({
-      which: e.which,
-      keyCode: e.keyCode,
-      charCode: e.charCode
-    });
-
     var chrNum;
     var keyBck =  8;
     var keyTab =  9;
@@ -54,14 +48,13 @@ var FormFieldPrimary = React.createClass({
     ];
 
     if (ctrl.indexOf(keyNum) > -1) chrNum = keyNum;
-    if (keyNum >= iniNum && keyNum <= (iniNum+9)) chrNum = keyNum - iniNum;
-    if (keyNum >= iniPad && keyNum <= (iniPad+9)) chrNum = keyNum - iniPad;
+    if (keyNum >= iniNum && keyNum <= (iniNum + 9)) chrNum = keyNum - iniNum;
+    if (keyNum >= iniPad && keyNum <= (iniPad + 9)) chrNum = keyNum - iniPad;
     if (chrNum === undefined) e.preventDefault();
   },
 
   handleChange: function(event) {
     var cfg = this.props.field;
-    var className = '';
     var errorName = false;
 
     var value  = String(event.target.value || '').trim();
@@ -82,8 +75,6 @@ var FormFieldPrimary = React.createClass({
         }
       }
     }
-
-    if (valid) className = 'has-success';
 
     this.setState({
       dirty: true,

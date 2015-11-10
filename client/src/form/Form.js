@@ -19,7 +19,7 @@ var typesFields = {
 var Form = React.createClass({
   hangleChangeProperty: function(field, val) {
     this.props.model[field.attr] = val;
-    console.log(this.props.model);
+    // console.log(this.props.model);
   },
 
   render: function () {

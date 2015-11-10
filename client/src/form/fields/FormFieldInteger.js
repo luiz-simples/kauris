@@ -1,29 +1,19 @@
 'use strict';
 
-require('../../Prototypes');
-
 var React = require('react');
+var formField = require('./FormField');
 var ValidationMessage = require('./validations/ValidationMessage');
 
 var integerInputCount = 0;
 
 var FormFieldInteger = React.createClass({
-  getInitialState: function() {
-		return {
-      valid: true,
-      dirty: false,
-      errorName: undefined
-    };
-	},
+  getInitialState: formField.getInitialState,
+  handleSetState:  formField.handleSetState,
+  handleChange:    formField.handleChange,
 
   handleKeyDown: function(e) {
-    console.log({
-      which: e.which,
-      keyCode: e.keyCode,
-      charCode: e.charCode
-    });
-
     var chrNum;
+    var totDig =  9;
     var keyBck =  8;
     var keyTab =  9;
     var keyHom = 36;
@@ -54,45 +44,9 @@ var FormFieldInteger = React.createClass({
     ];
 
     if (ctrl.indexOf(keyNum) > -1) chrNum = keyNum;
-    if (keyNum >= iniNum && keyNum <= (iniNum+9)) chrNum = keyNum - iniNum;
-    if (keyNum >= iniPad && keyNum <= (iniPad+9)) chrNum = keyNum - iniPad;
+    if (keyNum >= iniNum && keyNum <= (iniNum + totDig)) chrNum = keyNum - iniNum;
+    if (keyNum >= iniPad && keyNum <= (iniPad + totDig)) chrNum = keyNum - iniPad;
     if (chrNum === undefined) e.preventDefault();
-  },
-
-  handleChange: function(event) {
-    console.log('CHANNNNNNNNNNNNNNNGE', event.target.value);
-    var cfg = this.props.field;
-    var className = '';
-    var errorName = false;
-
-    var value  = String(event.target.value || '').trim();
-    var valid  = true;
-    var filled = value.length;
-
-    if (!filled) value = undefined;
-
-    if (cfg.hasOwnProperty('validations') && cfg.validations.length) {
-      for (var i = 0, c = cfg.validations.length; i < c; i++) {
-        var validation = cfg.validations[i];
-        var invalid = !validation.verify(value);
-
-        if (invalid) {
-          valid = false;
-          errorName = validation.errorName;
-          break;
-        }
-      }
-    }
-
-    if (valid) className = 'has-success';
-
-    this.setState({
-      dirty: true,
-      valid: valid,
-      errorName: errorName
-    }, function() {
-      cfg.change(cfg, value);
-    });
   },
 
   render: function() {
@@ -114,11 +68,11 @@ var FormFieldInteger = React.createClass({
 
     if (errorName) {
       var errorRef = 'msgError'.concat(errorName.capitalize());
-      messageField = <ValidationMessage
-        ref={errorRef}
-        type='danger'
-        message={errorRef.translate()}
-      />;
+      messageField = React.createElement(ValidationMessage, {
+        ref: errorRef,
+        type: 'danger',
+        message: errorRef.translate()
+      });
     }
 
     return(

@@ -5,43 +5,67 @@ jest.dontMock(pathValidationRequired);
 var ValidationRequired = require(pathValidationRequired);
 
 describe('validationRequired', function() {
-  var validationRequired;
+  var validationRequired, errResolved, errRejected, errorName;
 
   beforeEach(function() {
+    errorName = 'required';
+
+    errResolved = function() {
+      throw 'Validation not rejected';
+    };
+
+    errRejected = function(e) {
+      throw e;
+    };
+
     validationRequired = new ValidationRequired();
   });
 
-  it('should return error name', function() {
-    var errorName = validationRequired.errorName;
-    expect(errorName).toBe('required');
-  });
-
-  it('should return false when empty', function() {
+  pit('should return error name', function() {
     var empty = '';
-    var valid = validationRequired.verify(empty);
-    expect(valid).toBeFalsy();
+
+    return validationRequired.verify(empty).then(errResolved).catch(function(err) {
+      expect(err).toBe(errorName);
+    });
   });
 
-  it('should return false when empty spaces', function() {
+  pit('should return false when empty', function() {
+    var empty = '';
+
+    return validationRequired.verify(empty).then(errResolved).catch(function(err) {
+      expect(err).toBe(errorName);
+    });
+  });
+
+  pit('should return false when empty spaces', function() {
     var empty = '      ';
-    var valid = validationRequired.verify(empty);
-    expect(valid).toBeFalsy();
+
+    return validationRequired.verify(empty).then(errResolved).catch(function(err) {
+      expect(err).toBe(errorName);
+    });
   });
 
-  it('should return false when undefined', function() {
-    var valid = validationRequired.verify(undefined);
-    expect(valid).toBeFalsy();
+  pit('should return false when undefined', function() {
+    return validationRequired.verify(undefined).then(errResolved).catch(function(err) {
+      expect(err).toBe(errorName);
+    });
   });
 
-  it('should return true when zero', function() {
-    var empty = '0';
-    var valid = validationRequired.verify(empty);
-    expect(valid).toBeTruthy();
+  pit('should return true when zero is a string', function() {
+    var zero = '0';
+    var valid = true;
+
+    return validationRequired.verify(zero).then(function() {
+      expect(valid).toBeTruthy();
+    }).catch(errRejected);
   });
 
-  it('should return true when zero', function() {
-    var empty = 0;
-    var valid = validationRequired.verify(empty);
-    expect(valid).toBeTruthy();
+  pit('should return true when zero is a integer', function() {
+    var zero = 0;
+    var valid = true;
+
+    return validationRequired.verify(zero).then(function() {
+      expect(valid).toBeTruthy();
+    }).catch(errRejected);
   });
 });
