@@ -2,7 +2,6 @@
 'use strict';
 
 var React = require('react');
-
 var primaryInputCount = 0;
 
 var FormFieldPrimary = React.createClass({

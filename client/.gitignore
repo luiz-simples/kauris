@@ -1,3 +1,5 @@
 js/bundle.*
 node_modules/
 bower_components/
+assets/js/bundle.js
+assets/js/bundle.js.map

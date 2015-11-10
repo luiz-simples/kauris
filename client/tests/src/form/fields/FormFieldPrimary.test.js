@@ -39,6 +39,13 @@ describe('FormFieldPrimary', function() {
     expect(input.value).toEqual('000000100');
   });
 
+  it('should view empty value when passed undefined', function() {
+    delete fieldCfg.value;
+    var field = TestUtils.renderIntoDocument(<FormFieldPrimary field={fieldCfg} />);
+    var input = field.refs.primaryField;
+    expect(input.value).toEqual('');
+  });
+
   it('should read only input.', function() {
     var field = TestUtils.renderIntoDocument(<FormFieldPrimary field={fieldCfg} />);
     var input = field.refs.primaryField;
