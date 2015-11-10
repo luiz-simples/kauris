@@ -27,7 +27,18 @@ describe('ValidationRequired', function() {
     validationRequired = new ValidationRequired();
   });
 
-  pit('should return error name', function() {
+  pit('should reject when undefined', function() {
+    var empty = undefined;
+
+    return validationRequired.verify(empty).then(errResolved).catch(function(err) {
+      expect(err).toEqual({
+        ref: errorRef,
+        message: errorMessage
+      });
+    });
+  });
+
+  pit('should reject when empty', function() {
     var empty = '';
 
     return validationRequired.verify(empty).then(errResolved).catch(function(err) {
@@ -38,18 +49,7 @@ describe('ValidationRequired', function() {
     });
   });
 
-  pit('should return false when empty', function() {
-    var empty = '';
-
-    return validationRequired.verify(empty).then(errResolved).catch(function(err) {
-      expect(err).toEqual({
-        ref: errorRef,
-        message: errorMessage
-      });
-    });
-  });
-
-  pit('should return false when empty spaces', function() {
+  pit('should reject when empty spaces', function() {
     var empty = '      ';
 
     return validationRequired.verify(empty).then(errResolved).catch(function(err) {
@@ -60,16 +60,7 @@ describe('ValidationRequired', function() {
     });
   });
 
-  pit('should return false when undefined', function() {
-    return validationRequired.verify(undefined).then(errResolved).catch(function(err) {
-      expect(err).toEqual({
-        ref: errorRef,
-        message: errorMessage
-      });
-    });
-  });
-
-  pit('should return true when zero is a string', function() {
+  pit('should resolve when zero is a string', function() {
     var zero = '0';
     var valid = true;
 
@@ -78,7 +69,7 @@ describe('ValidationRequired', function() {
     }).catch(errRejected);
   });
 
-  pit('should return true when zero is a integer', function() {
+  pit('should resolve when zero is a integer', function() {
     var zero = 0;
     var valid = true;
 

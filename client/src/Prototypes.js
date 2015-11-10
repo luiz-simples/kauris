@@ -10,14 +10,16 @@ String.prototype.translate = function() {
 
   var i18n = {
     en: {
-      msgErrorRequired: 'This field is required.',
-      msgErrorLessThan: 'This number is less than {0}.',
+      msgErrorEmail:      'This email is invalid.',
+      msgErrorRequired:   'This field is required.',
+      msgErrorLessThan:   'This number is less than {0}.',
       msgErrorBiggerThan: 'This number is bigger than {0}.'
     },
 
     br: {
-      msgErrorRequired: 'Este campo é obrigatório.',
-      msgErrorLessThan: 'Este número é menor que {0}.',
+      msgErrorEmail:      'Este e-mail é inválido.',
+      msgErrorRequired:   'Este campo é obrigatório.',
+      msgErrorLessThan:   'Este número é menor que {0}.',
       msgErrorBiggerThan: 'Este número é maior que {0}.'
     }
   };
