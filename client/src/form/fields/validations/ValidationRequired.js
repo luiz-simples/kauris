@@ -3,10 +3,10 @@
 var promise = require('q').Promise;
 
 function ValidationRequired() {
-  var required = this;
-  required.errorName = 'required';
+  var validation = this;
+  var errorRef = 'msgErrorRequired';
 
-  required.verify = function(value) {
+  validation.verify = function(value) {
     return promise(function(resolve, reject) {
       var isNumber = !isNaN(parseFloat(value, 10));
       if (isNumber) value = String(value);
@@ -14,7 +14,9 @@ function ValidationRequired() {
       value = String(value || '').trim();
       var isValid = !!value;
 
-      isValid ? resolve() : reject(required.errorName);
+      isValid
+        ? resolve()
+        : reject({ message: errorRef.translate(), ref: errorRef });
     });
   };
 }

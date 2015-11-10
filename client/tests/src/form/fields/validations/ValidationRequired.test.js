@@ -1,14 +1,20 @@
 'use strict';
 
+var pathPrototypes = '../../../../../src/Prototypes';
 var pathValidationRequired = '../../../../../src/form/fields/validations/ValidationRequired';
+
+jest.dontMock(pathPrototypes);
 jest.dontMock(pathValidationRequired);
+
+require(pathPrototypes);
 var ValidationRequired = require(pathValidationRequired);
 
-describe('validationRequired', function() {
-  var validationRequired, errResolved, errRejected, errorName;
+describe('ValidationRequired', function() {
+  var validationRequired, errResolved, errRejected, errorMessage, errorRef;
 
   beforeEach(function() {
-    errorName = 'required';
+    errorRef = 'msgErrorRequired';
+    errorMessage = 'This field is required.';
 
     errResolved = function() {
       throw 'Validation not rejected';
@@ -25,7 +31,10 @@ describe('validationRequired', function() {
     var empty = '';
 
     return validationRequired.verify(empty).then(errResolved).catch(function(err) {
-      expect(err).toBe(errorName);
+      expect(err).toEqual({
+        ref: errorRef,
+        message: errorMessage
+      });
     });
   });
 
@@ -33,7 +42,10 @@ describe('validationRequired', function() {
     var empty = '';
 
     return validationRequired.verify(empty).then(errResolved).catch(function(err) {
-      expect(err).toBe(errorName);
+      expect(err).toEqual({
+        ref: errorRef,
+        message: errorMessage
+      });
     });
   });
 
@@ -41,13 +53,19 @@ describe('validationRequired', function() {
     var empty = '      ';
 
     return validationRequired.verify(empty).then(errResolved).catch(function(err) {
-      expect(err).toBe(errorName);
+      expect(err).toEqual({
+        ref: errorRef,
+        message: errorMessage
+      });
     });
   });
 
   pit('should return false when undefined', function() {
     return validationRequired.verify(undefined).then(errResolved).catch(function(err) {
-      expect(err).toBe(errorName);
+      expect(err).toEqual({
+        ref: errorRef,
+        message: errorMessage
+      });
     });
   });
 

@@ -64,14 +64,14 @@ var FormFieldInteger = React.createClass({
     }
 
     var messageField;
-    var errorName = state.errorName;
+    var errorMessage = state.errorMessage;
 
-    if (errorName) {
-      var errorRef = 'msgError'.concat(errorName.capitalize());
+    if (errorMessage) {
+      var errorRef = state.errorRef;
       messageField = React.createElement(ValidationMessage, {
         ref: errorRef,
         type: 'danger',
-        message: errorRef.translate()
+        message: errorMessage
       });
     }
 

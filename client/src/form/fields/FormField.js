@@ -8,7 +8,8 @@ var FormField = {
 		return {
       valid: true,
       dirty: false,
-      errorName: undefined
+      errorRef: undefined,
+      errorMessage: undefined
     };
 	},
 
@@ -27,7 +28,7 @@ var FormField = {
     var notFilled = !value.length;
     if (notFilled) value = undefined;
 
-    var state = { dirty: true, valid: true, errorName: false };
+    var state = { dirty: true, valid: true, errorMessage: undefined, errorRef: undefined };
     var validations = [];
 
     if (cfg.hasOwnProperty('validations') && cfg.validations.length) {
@@ -40,7 +41,8 @@ var FormField = {
       setState(state, value);
     }).catch(function(error) {
       state.valid = false;
-      state.errorName = error;
+      state.errorRef = error.ref;
+      state.errorMessage = error.message;
       setState(state);
     });
   }

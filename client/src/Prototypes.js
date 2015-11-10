@@ -10,15 +10,28 @@ String.prototype.translate = function() {
 
   var i18n = {
     en: {
-      msgErrorRequired: 'This field is required.'
+      msgErrorRequired: 'This field is required.',
+      msgErrorBiggerThan: 'This number is bigger than {0}.'
     },
 
     br: {
-      msgErrorRequired: 'Este campo é obrigatório.'
+      msgErrorRequired: 'Este campo é obrigatório.',
+      msgErrorBiggerThan: 'Este número é maior que {0}.'
     }
   };
 
-  return i18n[degaultLang].hasOwnProperty(key) && i18n[degaultLang][key] ?
-    i18n[degaultLang][key] :
-    key;
+  var keyKnown = Boolean(i18n[degaultLang].hasOwnProperty(key) && i18n[degaultLang][key]);
+  if (!keyKnown) return key;
+
+  var translate = i18n[degaultLang][key];
+
+  if (arguments) {
+    for(var arg in arguments) {
+      var val = arguments[arg];
+      var argReplace = new RegExp('\\{' + String(arg) + '\\}', 'g');
+      translate = String(translate).replace(argReplace, val);
+    }
+  }
+
+  return translate;
 };
