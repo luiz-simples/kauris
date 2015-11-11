@@ -6,6 +6,10 @@ var React       = require('react');
 var ReactDom    = require('react-dom');
 var myHistory   = require('history');
 var ReactRouter = require('react-router');
+
+var SingleTarget = require('./SingleTarget/SingleTarget');
+var HandlesPreviews = require('./HandlesPreviews/HandlesPreviews');
+
 var ProfileList = require('./profile/ProfileList');
 var ProfileForm = require('./profile/ProfileForm');
 
@@ -27,6 +31,8 @@ var render = function() {
   ReactDom.render((
     <Router history={history}>
       <Route path='/' component={App}>
+        <Route path='/SingleTarget' component={SingleTarget} />
+        <Route path='/HandlesPreviews' component={HandlesPreviews} />
         <Route path='/profiles' component={ProfileList} />
         <Route path='/profiles/new' component={ProfileForm} />
       </Route>

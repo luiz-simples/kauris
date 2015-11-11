@@ -45,16 +45,17 @@ var FormFieldText = React.createClass({
 
         <div className='input-group'>
           <span className='input-group-addon'><i className='fa fa-text-width'></i></span>
-          <input
+          <textarea
             id={htmlFor}
             ref='textField'
             readOnly={readOnly}
             defaultValue={val}
             onChange={this.handleChange}
+            rows={9}
             type='text'
             className='form-control'
             placeholder={cfg.pĺace}
-          />
+          ></textarea>
         </div>
 
         {messageField}

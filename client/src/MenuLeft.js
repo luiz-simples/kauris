@@ -25,6 +25,14 @@ var MenuLeft = React.createClass({
           </li>
 
           <li>
+            <Link to={'/SingleTarget'}><i className="fa fa-cogs fa-fw"></i> SingleTarget</Link>
+          </li>
+
+          <li>
+            <Link to={'/HandlesPreviews'}><i className="fa fa-cogs fa-fw"></i> HandlesPreviews</Link>
+          </li>
+
+          <li>
             <a href=".">
               <i className="fa fa-lock fa-fw"></i> Profiles<span className="fa arrow"></span>
             </a>
