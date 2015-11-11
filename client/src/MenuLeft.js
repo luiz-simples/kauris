@@ -33,6 +33,10 @@ var MenuLeft = React.createClass({
           </li>
 
           <li>
+            <Link to={'/Sortable'}><i className="fa fa-cogs fa-fw"></i> Sortable</Link>
+          </li>
+
+          <li>
             <a href=".">
               <i className="fa fa-lock fa-fw"></i> Profiles<span className="fa arrow"></span>
             </a>

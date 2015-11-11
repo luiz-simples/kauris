@@ -51,7 +51,7 @@ var Box = React.createClass({
     var opacity = isDragging ? 0.4 : 1;
     var boxStyle = {};
 
-    lodash.assign(boxStyle, style, { opacity: opacity});
+    lodash.assign(boxStyle, style, { opacity: opacity });
 
     return connectDragSource(<div style={boxStyle}>{name}</div>);
   }

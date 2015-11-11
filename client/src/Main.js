@@ -7,6 +7,7 @@ var ReactDom    = require('react-dom');
 var myHistory   = require('history');
 var ReactRouter = require('react-router');
 
+var Sortable = require('./Sortable/Sortable');
 var SingleTarget = require('./SingleTarget/SingleTarget');
 var HandlesPreviews = require('./HandlesPreviews/HandlesPreviews');
 
@@ -33,6 +34,7 @@ var render = function() {
       <Route path='/' component={App}>
         <Route path='/SingleTarget' component={SingleTarget} />
         <Route path='/HandlesPreviews' component={HandlesPreviews} />
+        <Route path='/Sortable' component={Sortable} />
         <Route path='/profiles' component={ProfileList} />
         <Route path='/profiles/new' component={ProfileForm} />
       </Route>

@@ -3,7 +3,7 @@
 var React = require('react');
 var Container = require('./Container');
 
-var Builder = React.createClass({
+var HandlesPreviews = React.createClass({
   render: function() {
     return (
       <div>
@@ -20,4 +20,4 @@ var Builder = React.createClass({
   }
 });
 
-module.exports = Builder;
+module.exports = HandlesPreviews;
