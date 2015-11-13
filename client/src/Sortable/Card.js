@@ -1,22 +1,15 @@
 'use strict';
 
 var React       = require('react');
-var lodash      = require('lodash');
 var ReactDOM    = require('react-dom');
 var ReactDND    = require('react-dnd');
 var ItemTypes   = require('./ItemTypes');
+var Tab         = require('./Components/Tab');
+var Alert       = require('./Components/Alert');
 var PropTypes   = React.PropTypes;
 var DragSource  = ReactDND.DragSource;
 var DropTarget  = ReactDND.DropTarget;
 var findDOMNode = ReactDOM.findDOMNode;
-
-var style = {
-  border: '1px dashed gray',
-  padding: '0.5rem 1rem',
-  marginBottom: '.5rem',
-  backgroundColor: 'white',
-  cursor: 'move'
-};
 
 var cardSource = {
   beginDrag: function(props) {
@@ -99,16 +92,42 @@ var Card = React.createClass({
   },
 
   render: function() {
+    var id = this.props.id;
     var text = this.props.text;
     var isDragging = this.props.isDragging;
     var connectDragSource = this.props.connectDragSource;
     var connectDropTarget = this.props.connectDropTarget;
-    var opacity = isDragging ? 0 : 1;
-    var cardStyle = {};
+    var style = {};
 
-    lodash.assign(cardStyle, style, { opacity: opacity });
+    if (isDragging) {
+      style.border          = '1px dashed gray';
+      style.backgroundColor = 'white';
+      style.cursor          = 'move';
+      style.opacity         = 0.45;
+    }
 
-    return connectDragSource(connectDropTarget(<div style={cardStyle}>{text}</div>));
+    var Comp, className;
+    if (id === 1) Comp = Alert;
+    if (id === 2) Comp = Tab;
+    if (id === 3) Comp = Alert;
+    if (id === 4) Comp = Tab;
+    if (id === 5) Comp = Alert;
+    if (id === 6) Comp = Tab;
+    if (id === 7) Comp = Alert;
+
+    if (id === 1) className = 'col-md-4';
+    if (id === 2) className = 'col-md-3';
+    if (id === 3) className = 'col-md-3';
+    if (id === 4) className = 'col-md-4';
+    if (id === 5) className = 'col-md-3';
+    if (id === 6) className = 'col-md-3';
+    if (id === 7) className = 'col-md-4';
+
+    return connectDragSource(connectDropTarget(
+      <div className={className} style={style}>
+        <Comp text={text} />
+      </div>
+    ));
   }
 });
 

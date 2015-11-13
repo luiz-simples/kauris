@@ -6,10 +6,6 @@ var update          = require('react/lib/update');
 var HTML5Backend    = require('react-dnd-html5-backend');
 var DragDropContext = require('react-dnd').DragDropContext;
 
-var style = {
-  width: 400
-};
-
 var Container = React.createClass({
   getInitialState: function() {
     return {
@@ -54,7 +50,7 @@ var Container = React.createClass({
     var cards = container.state.cards;
 
     return (
-      <div style={style}>
+      <div>
         {cards.map(function(card, i) {
           return (
             <Card key={card.id}

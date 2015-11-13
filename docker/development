@@ -17,17 +17,18 @@ RUN echo "" >> /etc/bash.bashrc
 RUN echo "America/Sao_Paulo" > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 RUN apt-get update
+RUN apt-get install -qqy --force-yes apt-utils htop
 RUN apt-get upgrade -qqy --force-yes
 
 RUN echo "LANGUAGE=pt_BR.UTF-8" >> /etc/environment
-RUN echo "LANG=pt_BR.UTF-8"     >> /etc/environment
-RUN echo "LC_ALL=pt_BR.UTF-8"   >> /etc/environment
+RUN echo "LANG=pt_BR.UTF-8" >> /etc/environment
+RUN echo "LC_ALL=pt_BR.UTF-8" >> /etc/environment
 
 RUN apt-get install -qqy --force-yes locales
 RUN locale-gen pt_BR.UTF-8
 RUN dpkg-reconfigure locales
 
-RUN apt-get install -qqy --force-yes htop sudo libfontconfig1 bzip2 tar build-essential python-software-properties vim git curl
+RUN apt-get install -qqy --force-yes sudo libfontconfig1 bzip2 tar build-essential python-software-properties vim git curl
 
 # gpg keys listed at https://github.com/nodejs/node
 RUN set -ex \
@@ -42,6 +43,7 @@ RUN set -ex \
     gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
   done
 
+#NodeJS v4.2.2 - Long Term Support Release
 ENV NODE_VERSION 4.2.2
 
 RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz" \
@@ -51,8 +53,7 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
   && tar -xzf "node-v$NODE_VERSION-linux-x64.tar.gz" -C /usr/local --strip-components=1 \
   && rm "node-v$NODE_VERSION-linux-x64.tar.gz" SHASUMS256.txt.asc
 
-RUN npm install -g bower gulp
-
+RUN npm install -g gulp mocha bower
 RUN npm cache clear
 
 RUN apt-get autoremove -qqy --force-yes
@@ -60,14 +61,11 @@ RUN apt-get autoclean  -qqy --force-yes
 RUN apt-get clean
 RUN apt-get update
 
-RUN echo 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:./node_modules/.bin"' >> /etc/bash.bashrc
-
 RUN echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
     useradd -u 5001 -G users,sudo -d /kauris --shell /bin/bash -m kauris && \
     echo "secret\nsecret" | passwd kauris
 
 RUN usermod -u 1000 kauris
-RUN chown -R kauris.users /usr/local
 
 USER kauris
 
